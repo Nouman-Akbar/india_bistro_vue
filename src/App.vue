@@ -13,6 +13,21 @@ onMounted(() => {
   scroll = new LocomotiveScroll({
     el: document.querySelector('#main') as HTMLElement,
     smooth: true,
+    direction: 'vertical',
+    inertia: 0.5,
+    multiplier: 1,
+    class: 'locomotive',
+    smoothMobile: true,
+    tablet: {
+      smooth: true,
+      inertia: 0.5,
+      multiplier: 1,
+    },
+    mobile: {
+      smooth: true,
+      inertia: 0.5,
+      multiplier: 1,
+    },
   });
 })
 

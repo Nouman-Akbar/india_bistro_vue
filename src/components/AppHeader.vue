@@ -29,7 +29,7 @@ onUnmounted(() => {
       <div class="flex items-center justify-between h-20">
         <div class="flex items-center space-x-3">
           <DragonIcon class="h-8 w-8 text-accent" />
-          <span class="text-xl font-serif font-bold text-text">The Golden Dragon</span>
+          <span class="text-xl font-serif font-bold text-text">India Bistro</span>
         </div>
         <nav class="hidden md:flex items-center space-x-8">
           <a v-for="link in navLinks" :key="link" href="#" class="text-text-muted hover:text-accent transition-colors duration-300">
