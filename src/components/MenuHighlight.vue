@@ -14,9 +14,9 @@ const menuItems = ref<MenuItem[]>([]);
 
 onMounted(() => {
   const imagePool = [
-    'https://images.unsplash.com/photo-1563245372-f21724557952?q=80&w=2794&auto=format&fit=crop',
-    'https://images.unsplash.com/photo-1625937329935-287034AD4286?q=80&w=2787&auto=format&fit=crop',
-    'https://images.unsplash.com/photo-1623786438426-561594700a85?q=80&w=2815&auto=format&fit=crop',
+    'https://images.pexels.com/photos/3296392/pexels-photo-3296392.jpeg',
+    'https://images.pexels.com/photos/3296392/pexels-photo-3296392.jpeg',
+    'https://images.pexels.com/photos/3296392/pexels-photo-3296392.jpeg',
   ];
   for (let i = 0; i < 3; i++) {
     menuItems.value.push({

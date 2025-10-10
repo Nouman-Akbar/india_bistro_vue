@@ -1,11 +1,11 @@
 <script setup lang="ts">
 const galleryImages = [
-  { src: 'https://images.unsplash.com/photo-1555126634-785b58248b4d?q=80&w=2787&auto=format&fit=crop', alt: 'Noodles', class: 'row-span-2' },
-  { src: 'https://images.unsplash.com/photo-1569718212165-fb6926504f05?q=80&w=2800&auto=format&fit=crop', alt: 'Soup' },
-  { src: 'https://images.unsplash.com/photo-1599557422855-731564125134?q=80&w=2787&auto=format&fit=crop', alt: 'Dim sum' },
-  { src: 'https://images.unsplash.com/photo-1541544331-554835a4d204?q=80&w=2787&auto=format&fit=crop', alt: 'Restaurant interior', class: 'col-span-2 row-span-2' },
-  { src: 'https://images.unsplash.com/photo-1562859547-60335a092198?q=80&w=2787&auto=format&fit=crop', alt: 'Plated dish' },
-  { src: 'https://images.unsplash.com/photo-1617054290196-43b48f935515?q=80&w=2787&auto-format&fit=crop', alt: 'Another dish' },
+  { src: 'https://images.pexels.com/photos/2425705/pexels-photo-2425705.jpeg', alt: 'Noodles', class: 'row-span-2' },
+  { src: 'https://images.pexels.com/photos/2425705/pexels-photo-2425705.jpeg', alt: 'Soup' },
+  { src: 'https://images.pexels.com/photos/2425705/pexels-photo-2425705.jpeg', alt: 'Dim sum' },
+  { src: 'https://images.pexels.com/photos/2425705/pexels-photo-2425705.jpeg', alt: 'Restaurant interior', class: 'col-span-2 row-span-2' },
+  { src: 'https://images.pexels.com/photos/2425705/pexels-photo-2425705.jpeg', alt: 'Plated dish' },
+  { src: 'https://images.pexels.com/photos/2425705/pexels-photo-2425705.jpeg', alt: 'Another dish' },
 ];
 </script>
 
