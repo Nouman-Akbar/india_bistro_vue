@@ -97,7 +97,7 @@ const footerImage = new URL('../assets/images/footer-brand.jpg', import.meta.url
 
 .footer-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
   gap: clamp(1.75rem, 4vw, 3rem);
   align-items: stretch;
 }
