@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted } from 'vue'
+import { nextTick, onMounted, onUnmounted } from 'vue'
 import LocomotiveScroll from 'locomotive-scroll'
 import AppHeader from './components/AppHeader.vue'
 import HeroSection from './components/HeroSection.vue'
@@ -9,9 +9,18 @@ import AppFooter from './components/AppFooter.vue'
 
 let scroll: LocomotiveScroll;
 
-onMounted(() => {
+onMounted(async () => {
+  await nextTick();
+
+  const container = document.querySelector('#main');
+
+  if (!container) {
+    console.warn('[LocomotiveScroll] Container `#main` not found.');
+    return;
+  }
+
   scroll = new LocomotiveScroll({
-    el: document.querySelector('#main') as HTMLElement,
+    el: container as HTMLElement,
     smooth: true,
     direction: 'vertical',
     inertia: 0.5,
@@ -39,13 +48,13 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="bg-background font-sans" id="main">
-    <AppHeader />
+  <div class="bg-background font-sans" id="main" data-scroll-container>
+    <AppHeader data-scroll-section />
     <main>
-      <HeroSection class="section" />
-      <MenuHighlight class="section" />
-      <GallerySection class="section" />
+      <HeroSection class="section" data-scroll-section />
+      <MenuHighlight class="section" data-scroll-section />
+      <GallerySection class="section" data-scroll-section />
     </main>
-    <AppFooter class="section" />
+    <AppFooter class="section" data-scroll-section />
   </div>
 </template>
