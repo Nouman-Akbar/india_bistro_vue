@@ -1,50 +1,125 @@
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue';
-import DragonIcon from './icons/DragonIcon.vue';
-
-const navLinks = ['Menu', 'About', 'Contact'];
-const scrolled = ref(false);
-
-const handleScroll = () => {
-  scrolled.value = window.scrollY > 50;
-};
-
-onMounted(() => {
-  window.addEventListener('scroll', handleScroll);
-});
-
-onUnmounted(() => {
-  window.removeEventListener('scroll', handleScroll);
-});
+const navLinks = ['Menu', 'Reservations', 'Recipes', 'Contact']
 </script>
 
 <template>
-  <header 
-    :class="[
-      'fixed top-0 left-0 right-0 z-50 transition-all duration-300 ease-in-out',
-      scrolled ? 'bg-background/70 backdrop-blur-lg shadow-lg' : 'bg-transparent'
-    ]"
-  >
-    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex items-center justify-between h-20">
-        <div class="flex items-center space-x-3">
-          <DragonIcon class="h-8 w-8 text-accent" />
-          <span class="text-xl font-serif font-bold text-text">India Bistro</span>
-        </div>
-        <nav class="hidden md:flex items-center space-x-8">
-          <a v-for="link in navLinks" :key="link" href="#" class="text-text-muted hover:text-accent transition-colors duration-300">
-            {{ link }}
-          </a>
-        </nav>
-        <a href="#" class="hidden md:inline-block bg-primary hover:bg-red-700 text-white font-bold py-2 px-6 rounded-full transition-transform duration-300 ease-in-out hover:scale-105">
-          Reserve Table
+  <header class="header-wrapper" data-scroll data-scroll-sticky data-scroll-target="#main">
+    <div class="header-inner">
+      <div class="brand">India Bistro</div>
+      <nav class="nav-links">
+        <a
+          v-for="link in navLinks"
+          :key="link"
+          href="#"
+          class="nav-link"
+        >
+          {{ link }}
         </a>
-        <button class="md:hidden text-text">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
-          </svg>
-        </button>
-      </div>
+      </nav>
     </div>
   </header>
 </template>
+
+<style scoped>
+.header-wrapper {
+  position: sticky;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 60;
+  display: flex;
+  justify-content: center;
+  background: radial-gradient(circle at 50% 0%, rgba(255, 239, 214, 0.12) 0%, rgba(167, 113, 58, 0.95) 48%, #9a6a35 100%);
+  border-top: 4px solid #1c1310;
+  border-bottom: 1px solid rgba(22, 9, 4, 0.55);
+}
+
+.header-inner {
+  width: min(1280px, 94%);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: clamp(0.9rem, 1.6vw, 1.15rem) clamp(2rem, 4vw, 3rem);
+}
+
+.brand {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  font-size: clamp(1.45rem, 3.5vw, 1.9rem);
+  color: #f4e0c8;
+  text-shadow: 0 3px 6px rgba(0, 0, 0, 0.5);
+}
+
+.nav-links {
+  display: flex;
+  gap: clamp(2rem, 6vw, 4.25rem);
+  align-items: center;
+}
+
+.nav-link {
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(0.68rem, 1.4vw, 0.78rem);
+  letter-spacing: 0.46em;
+  text-transform: uppercase;
+  color: rgba(248, 222, 190, 0.95);
+  position: relative;
+  transition: color 0.25s ease;
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -8px;
+  width: 100%;
+  height: 1px;
+  background-color: rgba(247, 226, 197, 0.7);
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.35s ease;
+}
+
+.nav-link:hover,
+.nav-link:focus {
+  color: #fff0dc;
+}
+
+.nav-link:hover::after,
+.nav-link:focus::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+@media (max-width: 768px) {
+  .header-inner {
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem 1.5rem;
+  }
+
+  .nav-links {
+    gap: 1.5rem;
+  }
+
+  .nav-link {
+    letter-spacing: 0.28em;
+    font-size: 0.7rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .nav-links {
+    width: 100%;
+    justify-content: center;
+    flex-wrap: wrap;
+    column-gap: 1.25rem;
+    row-gap: 0.75rem;
+  }
+
+  .brand {
+    letter-spacing: 0.26em;
+  }
+}
+</style>
