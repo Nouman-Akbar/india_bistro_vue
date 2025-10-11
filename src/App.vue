@@ -38,9 +38,8 @@ onMounted(async () => {
   } as Record<string, unknown>;
 
   scroll = new LocomotiveScroll(locoOptions as any);
-
   (window as typeof window & { locoScroll?: any }).locoScroll = scroll;
-
+  
   const globalWindow = window as typeof window & { __gsapLocoProxySetup?: boolean };
   const containerElement = container as HTMLElement;
 
@@ -86,6 +85,12 @@ onUnmounted(() => {
 
 <template>
   <div class="bg-background font-sans" id="main" data-scroll-container>
+    <svg width="0" height="0">
+      <clipPath id="curvedDiamond" clipPathUnits="userSpaceOnUse">
+        <path d="M276.519 54C281.345 44.94 288.288 38.1 293.232 33.9C298.351 29.58 302.529 27.24 303 27C302.47 26.7 298.292 24.3 293.232 20.1C288.23 15.96 281.286 9.06 276.519 0H26.4809C21.6555 9.06 14.7116 15.9 9.7685 20.1C4.64886 24.42 0.470771 26.76 0 27C0.529617 27.3 4.70771 29.7 9.7685 33.9C14.7704 38.04 21.7143 44.94 26.4809 54H276.519Z" />
+      </clipPath>
+    </svg>
+    
     <AppHeader data-scroll-section />
     <main>
       <HeroSection class="section" data-scroll-section />

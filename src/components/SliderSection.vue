@@ -166,11 +166,23 @@ defineProps<{
 }
 
 .diamond {
-  width: 20px;
-  height: 20px;
-  background: var(--section-color, #8b6f47);
+  width: 24px;
+  height: 24px;
+  background: var(--section-color, #5C823D);
   transform: rotate(45deg);
-  opacity: 0.8;
+  position: relative;
+}
+
+.diamond::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 8px;
+  height: 8px;
+  background: white;
+  transform: translate(-50%, -50%) rotate(-45deg);
+  clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
 }
 
 .section-button {
@@ -179,24 +191,29 @@ defineProps<{
 }
 
 .cta-button {
-  background: var(--section-color, #8b6f47);
+  background: var(--section-color, #5C823D);
   color: white;
   border: none;
-  padding: 0.8rem 2rem;
+  padding: 1rem 3rem;
   font-size: 0.9rem;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.15em;
-  border-radius: 0;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+  clip-path: url(#curvedDiamond);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
 .cta-button:hover {
-  background: #6d5a3a;
+  background: #4a6b2f;
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+.cta-button:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
 /* Mobile Responsive */
