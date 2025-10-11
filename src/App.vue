@@ -7,10 +7,12 @@ import AppHeader from './components/AppHeader.vue'
 import HeroSection from './components/HeroSection.vue'
 import MenuHighlight from './components/MenuHighlight.vue'
 import StorySection from './components/StorySection.vue'
+import SliderSection from './components/SliderSection.vue'
 import GallerySection from './components/GallerySection.vue'
 import AppFooter from './components/AppFooter.vue'
+import { favouritesSection, specialtiesSection, dessertsSection } from './data/sliderSections'
 
-let scroll: any;
+let scroll: any;  
 const containerSelector = '#main';
 const handleScrollTriggerRefresh = () => {
   scroll?.update();
@@ -89,6 +91,24 @@ onUnmounted(() => {
       <HeroSection class="section" data-scroll-section />
       <MenuHighlight class="section" data-scroll-section />
       <StorySection class="section" data-scroll-section />
+      
+      <!-- Dynamic Slider Sections -->
+      <SliderSection 
+        :section-data="favouritesSection" 
+        class="section" 
+        data-scroll-section 
+      />
+      <SliderSection 
+        :section-data="specialtiesSection" 
+        class="section" 
+        data-scroll-section 
+      />
+      <SliderSection 
+        :section-data="dessertsSection" 
+        class="section" 
+        data-scroll-section 
+      />
+      
       <GallerySection class="section" data-scroll-section />
     </main>
     <AppFooter class="section" data-scroll-section />

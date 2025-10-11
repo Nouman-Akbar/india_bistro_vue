@@ -29,9 +29,9 @@ const navLinks = ['Menu', 'Reservations', 'Recipes', 'Contact']
   z-index: 60;
   display: flex;
   justify-content: center;
-  background: radial-gradient(circle at 50% 0%, rgba(255, 239, 214, 0.12) 0%, rgba(167, 113, 58, 0.95) 48%, #9a6a35 100%);
-  border-top: 4px solid #1c1310;
-  border-bottom: 1px solid rgba(22, 9, 4, 0.55);
+  background: #A7713A;
+  /* border-top: 4px solid #1c1310;
+  border-bottom: 1px solid rgba(22, 9, 4, 0.55); */
 }
 
 .header-inner {
