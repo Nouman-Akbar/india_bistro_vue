@@ -1,50 +1,95 @@
-
 <template>
   <section 
-    class="slider-section"
-    :class="{ 'show-arrows': sectionData.show_arrows }"
-    :style="{ '--section-color': sectionData.section_color, 'background-image': `url(${section_bg_pattern})` }"
+    ref="sliderWrapper"
+    class="relative overflow-hidden min-h-screen bg-background"
+    style="z-index: 1;"
+    data-scroll
+    data-scroll-call="disableScroll"
+    :style="{ 
+      'background-image': `url(${section_bg_pattern})`,
+      'background-repeat': 'repeat',
+      'background-size': 'auto',
+      'background-position': 'center'
+    }"
   >
-    <!-- Section Heading -->
-    <div class="section-header">
-      <h2 class="section-heading">{{ sectionData.heading }}</h2>
-    </div>
+    <div class="py-16 md:py-20">
+      <!-- Section Heading -->
+      <div class="text-center px-8 pb-16">
+        <h2 class="text-xl md:text-3xl font-medium text-white uppercase tracking-[0.3em]">
+          {{ sectionData.heading }}
+        </h2>
+      </div>
 
-    <!-- Cards Container -->
-    <div class="cards-container">
-      <div 
-        v-for="(block, index) in sectionData.blocks" 
-        :key="index"
-        class="card"
-      >
-        <div class="card-image">
-          <img :src="block.block_image" :alt="block.block_heading" />
-        </div>
-        <div class="card-content">
-          <h3 class="card-title">{{ block.block_heading }}</h3>
-          <p class="card-description">{{ block.block_description }}</p>
+      <!-- Horizontal Scroll Container -->
+      <div ref="cardsWrapper" class="relative">
+        <div ref="cardsContainer" class="flex gap-2 px-8">
+          <div 
+            v-for="(block, index) in sectionData.blocks" 
+            :key="index"
+            class="flex-shrink-0 w-80 bg-transparent overflow-hidden"
+          >
+            <div class="relative w-full aspect-square overflow-hidden">
+              <img 
+                :src="block.block_image" 
+                :alt="block.block_heading"
+                class="w-full h-full object-cover"
+              />
+            </div>
+            <div class="py-6 bg-transparent">
+              <h3 class="text-sm font-semibold text-white mb-3 uppercase tracking-wider leading-tight">
+                {{ block.block_heading }}
+              </h3>
+              <p class="text-xs leading-relaxed text-gray-200">
+                {{ block.block_description }}
+              </p>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
 
-    <!-- Decorative Elements -->
-    <div class="decorative-elements">
-      <div class="diamond diamond--left"></div>
-      <div class="diamond diamond--right"></div>
-    </div>
+      <!-- Decorative Elements -->
+      <div class="flex justify-center gap-4 my-12">
+        <div 
+          class="w-6 h-6 rotate-45 relative"
+          :style="{ 'background-color': sectionData.section_color }"
+        >
+          <div class="absolute top-1/2 left-1/2 w-2 h-2 bg-white -translate-x-1/2 -translate-y-1/2 -rotate-45"
+               style="clip-path: polygon(50% 0%, 0% 100%, 100% 100%);">
+          </div>
+        </div>
+        <div 
+          class="w-6 h-6 rotate-45 relative"
+          :style="{ 'background-color': sectionData.section_color }"
+        >
+          <div class="absolute top-1/2 left-1/2 w-2 h-2 bg-white -translate-x-1/2 -translate-y-1/2 -rotate-45"
+               style="clip-path: polygon(50% 0%, 0% 100%, 100% 100%);">
+          </div>
+        </div>
+      </div>
 
-    <!-- Action Button -->
-    <div v-if="sectionData.button" class="section-button">
-      <button class="cta-button">
-        {{ sectionData.button.text }}
-      </button>
+      <!-- Action Button -->
+      <div v-if="sectionData.button" class="text-center pt-8">
+        <button 
+          class="px-12 py-4 text-sm font-semibold text-white uppercase tracking-widest cursor-pointer transition-all duration-300 shadow-lg hover:-translate-y-0.5 hover:shadow-xl active:translate-y-0 active:shadow-md"
+          :style="{ 
+            'background-color': sectionData.section_color,
+            'clip-path': 'polygon(50% 0%, 0% 100%, 100% 100%)'
+          }"
+        >
+          {{ sectionData.button.text }}
+        </button>
+      </div>
     </div>
   </section>
 </template>
 
 <script setup lang="ts">
+import { ref, onMounted, onUnmounted } from 'vue'
+import { gsap } from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
 const section_bg_pattern = new URL('../assets/images/section_bg_pattern.png', import.meta.url).href
+
 interface SliderBlock {
   block_image: string
   block_heading: string
@@ -63,181 +108,79 @@ interface SliderSectionData {
   blocks: SliderBlock[]
 }
 
-// Props
-defineProps<{
+const props = defineProps<{
   sectionData: SliderSectionData
 }>()
+
+const sliderWrapper = ref<HTMLElement | null>(null)
+const cardsWrapper = ref<HTMLElement | null>(null)
+const cardsContainer = ref<HTMLElement | null>(null)
+
+let scrollTriggerInstance: ScrollTrigger | null = null
+
+onMounted(() => {
+  if (!sliderWrapper.value || !cardsContainer.value || !cardsWrapper.value) return
+
+  gsap.registerPlugin(ScrollTrigger)
+
+  // Wait for next tick to ensure DOM is fully rendered
+  setTimeout(() => {
+    if (!cardsContainer.value || !cardsWrapper.value || !sliderWrapper.value) return
+
+    const cards = cardsContainer.value.children
+    if (cards.length === 0) return
+
+    // Calculate total width of all cards including padding
+    let totalWidth = 0
+    Array.from(cards).forEach((card) => {
+      totalWidth += (card as HTMLElement).offsetWidth
+    })
+
+    // Add gap widths (gap-2 = 0.5rem = 8px) and padding (px-8 = 2rem = 32px on each side)
+    const gapWidth = 8 * (cards.length - 1)
+    const paddingWidth = 64 // 32px left + 32px right
+    totalWidth += gapWidth + paddingWidth
+
+    // Get viewport width
+    const viewportWidth = window.innerWidth
+
+    // Only apply horizontal scroll if content is wider than viewport
+    if (totalWidth > viewportWidth) {
+      const scrollDistance = totalWidth - viewportWidth
+
+      // Create horizontal scroll animation with pinning
+      const tween = gsap.to(cardsContainer.value, {
+        x: -scrollDistance,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: sliderWrapper.value,
+          scroller: '#main',
+          pin: true,
+          pinSpacing: 'margin', // Use margin instead of padding for Locomotive compatibility
+          start: 'top 100px', // Pin below header
+          end: () => `+=${scrollDistance * 2.5}`,
+          scrub: 1,
+          anticipatePin: 1,
+          invalidateOnRefresh: true,
+          markers: false, // Set to true for debugging
+          onRefresh: () => {
+            // Force Locomotive to update when pin changes
+            const locoScroll = (window as any).locoScroll
+            if (locoScroll) {
+              setTimeout(() => locoScroll.update(), 100)
+            }
+          }
+        }
+      })
+
+      scrollTriggerInstance = tween.scrollTrigger as ScrollTrigger
+    }
+  }, 300)
+})
+
+onUnmounted(() => {
+  if (scrollTriggerInstance) {
+    scrollTriggerInstance.kill()
+  }
+})
 </script>
-
-<style scoped>
-.slider-section {
-  position: relative;
-  /* background: linear-gradient(135deg, #f5f1eb 0%, #ede5d8 100%); */
-  padding: 4rem 0 6rem;
-  overflow: hidden;
-  
-  /* Background pattern styling */
-  background-repeat: repeat;
-  background-size: auto;
-  background-position: center;
-}
-
-.section-header {
-  text-align: center;
-  padding: 0 2rem 4rem;
-}
-
-.section-heading {
-  font-size: clamp(1.2rem, 3vw, 1.8rem);
-  font-weight: 500;
-  color: #6b5b4d;
-  text-transform: uppercase;
-  letter-spacing: 0.3em;
-  margin: 0;
-}
-
-.cards-container {
-  display: flex;
-  gap: 0.5rem;
-  padding: 0 2rem;
-  max-width: 1400px;
-  margin: 0 auto;
-  overflow-x: auto;
-  scroll-behavior: smooth;
-  
-  /* Hide scrollbars */
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* Internet Explorer 10+ */
-}
-
-.cards-container::-webkit-scrollbar {
-  display: none; /* WebKit */
-}
-
-.card {
-  flex: 0 0 auto;
-  max-width: 320px;
-  background: transparent;
-  border-radius: 0;
-  overflow: hidden;
-  /* box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12); */
-}
-
-.card-image {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 1/1;
-  overflow: hidden;
-}
-
-.card-image img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.card-content {
-  padding: 1.5rem 0;
-  background: transparent;
-}
-
-.card-title {
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: #2c1810;
-  margin-bottom: 0.8rem;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  line-height: 1.3;
-}
-
-.card-description {
-  font-size: 0.8rem;
-  line-height: 1.5;
-  color: #6b5b4d;
-  margin: 0;
-}
-
-.decorative-elements {
-  display: flex;
-  justify-content: center;
-  gap: 1rem;
-  margin: 3rem 0 2rem;
-}
-
-.diamond {
-  width: 24px;
-  height: 24px;
-  background: var(--section-color, #5C823D);
-  transform: rotate(45deg);
-  position: relative;
-}
-
-.diamond::before {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 8px;
-  height: 8px;
-  background: white;
-  transform: translate(-50%, -50%) rotate(-45deg);
-  clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
-}
-
-.section-button {
-  text-align: center;
-  padding: 2rem;
-}
-
-.cta-button {
-  background: var(--section-color, #5C823D);
-  color: white;
-  border: none;
-  padding: 1rem 3rem;
-  font-size: 0.9rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.15em;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  clip-path: url(#curvedDiamond);
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-}
-
-.cta-button:hover {
-  background: #4a6b2f;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
-}
-
-.cta-button:active {
-  transform: translateY(0);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-}
-
-/* Mobile Responsive */
-@media (max-width: 768px) {
-  .cards-container {
-    padding: 0 1rem;
-    gap: 1.5rem;
-  }
-  
-  .card {
-    width: 280px;
-  }
-  
-  .card-image {
-    height: 220px;
-  }
-  
-  .card-content {
-    padding: 1.2rem;
-  }
-  
-  .section-heading {
-    font-size: 1rem;
-    letter-spacing: 0.2em;
-  }
-}
-</style>

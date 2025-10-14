@@ -61,9 +61,7 @@ const sectionBgSrc = new URL('../assets/images/section_bg_pattern.svg', import.m
   padding: 4rem 0;
   overflow: hidden;
   /* Method 1: Multiple backgrounds (pattern + color) */
-  background: 
-    linear-gradient(rgba(141, 58, 48, 0.85), rgba(141, 58, 48, 0.85)),
-    var(--bg-image);
+  background: #8D3A30;
   background-size: cover, contain;
   background-position: center, center;
   background-repeat: no-repeat, repeat;

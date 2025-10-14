@@ -1,20 +1,28 @@
 <script setup lang="ts">
-const navLinks = ['Menu', 'Reservations', 'Recipes', 'Contact']
+import { RouterLink } from 'vue-router'
+
+const navLinks = [
+  { name: 'Menu', path: '/menu' },
+  { name: 'Reservations', path: '/reservations' },
+  { name: 'Recipes', path: '/recipes' },
+  { name: 'Contact', path: '/contact' }
+]
 </script>
 
 <template>
-  <header class="header-wrapper" data-scroll data-scroll-sticky data-scroll-target="#main">
+  <header class="header-wrapper">
     <div class="header-inner">
-      <div class="brand">India Bistro</div>
+      <RouterLink to="/" class="brand">India Bistro</RouterLink>
       <nav class="nav-links">
-        <a
+        <RouterLink
           v-for="link in navLinks"
-          :key="link"
-          href="#"
+          :key="link.name"
+          :to="link.path"
           class="nav-link"
+          active-class="nav-link-active"
         >
-          {{ link }}
-        </a>
+          {{ link.name }}
+        </RouterLink>
       </nav>
     </div>
   </header>
@@ -88,6 +96,15 @@ const navLinks = ['Menu', 'Reservations', 'Recipes', 'Contact']
 
 .nav-link:hover::after,
 .nav-link:focus::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+.nav-link-active {
+  color: #fff0dc;
+}
+
+.nav-link-active::after {
   transform: scaleX(1);
   transform-origin: left;
 }
