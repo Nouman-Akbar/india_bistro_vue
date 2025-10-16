@@ -1,0 +1,106 @@
+================================================================================
+INDIA BISTRO VUE - PROJECT INSTRUCTIONS
+================================================================================
+
+GLOBAL PROJECT GUIDELINES:
+--------------------------
+
+1. DOCUMENTATION
+   - Keep ONE main documentation file (ROUTING_GUIDE.md)
+   - Update existing docs instead of creating new ones
+   - Add all fixes and changes to the main guide
+
+2. FILE MANAGEMENT
+   - Do NOT create multiple MD files for different issues
+   - Consolidate all information in existing documentation
+   - Delete redundant documentation files
+
+3. LOCOMOTIVE SCROLL RULES
+   - Only #main should have [data-scroll-container]
+   - Only direct children of #main should have [data-scroll-section]
+   - NEVER nest [data-scroll-section] attributes
+   - Page components inside <main> should NOT have [data-scroll-section]
+
+4. Z-INDEX LAYERING
+   - Header: z-index: 60 (always on top)
+   - Pinned sections: z-index: 1 (below header)
+   - Regular content: z-index: auto
+
+5. SCROLL TRIGGER PINNING
+   - Pin sections BELOW header height (e.g., 'top 80px')
+   - Never pin at 'top top' if header is sticky
+   - This prevents content from being hidden by header
+
+6. STICKY POSITIONING
+   - Use CSS position: sticky for header (NOT Locomotive sticky)
+   - Remove data-scroll-sticky to avoid transform conflicts
+   - CSS sticky is more reliable than Locomotive sticky
+
+7. ROUTER STRUCTURE
+   - All routes defined in src/router/index.ts
+   - Page components in src/views/
+   - Use <RouterView> with <Transition> for animated page changes
+   - Scroll position resets to top on navigation
+
+8. PAGE TRANSITIONS
+   - Duration: 0.4s ease
+   - Enter: opacity 0 → 1, translateY(20px) → 0
+   - Leave: opacity 1 → 0, translateY(0) → -20px
+   - Mode: out-in (wait for exit before enter)
+
+================================================================================
+CORRECT SCROLL STRUCTURE:
+================================================================================
+
+#main [data-scroll-container]
+├── AppHeader (CSS sticky, z-index: 60, NO data-scroll attributes)
+├── <main data-scroll-section>
+│   └── RouterView
+│       └── Page components (NO data-scroll-section)
+│           ├── HomePage
+│           ├── MenuPage
+│           ├── ReservationsPage
+│           ├── RecipesPage
+│           └── ContactPage
+└── AppFooter [data-scroll-section]
+
+================================================================================
+COMMON ISSUES & SOLUTIONS:
+================================================================================
+
+ISSUE: Header translates down with transform matrix3d
+FIX: Remove data-scroll-sticky, use CSS position: sticky
+
+ISSUE: Content not scrolling (overflow hidden behavior)
+FIX: Remove nested data-scroll-section from page components
+
+ISSUE: Pinned sections go blank/disappear
+FIX: Add z-index: 1 and pin below header (start: 'top 100px')
+
+ISSUE: Pin spacing not working with Locomotive Scroll
+FIX: Use pinSpacing: 'margin' instead of true for Locomotive compatibility
+     Add onRefresh callback to force Locomotive update after pin changes
+
+ISSUE: Scroll not working after route change
+FIX: Watch route changes and call scroll.update() + ScrollTrigger.refresh()
+
+================================================================================
+DEVELOPMENT COMMANDS:
+================================================================================
+
+npm run dev      - Start development server
+npm run build    - Build for production
+npm run preview  - Preview production build
+
+================================================================================
+KEY FILES:
+================================================================================
+
+src/App.vue                    - Main app with scroll container
+src/router/index.ts            - Route definitions
+src/components/AppHeader.vue   - Sticky header navigation
+src/components/SliderSection.vue - Horizontal scroll sections
+src/views/*                    - Page components
+ROUTING_GUIDE.md              - Complete implementation guide
+
+================================================================================

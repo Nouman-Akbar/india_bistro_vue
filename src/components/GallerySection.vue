@@ -7,10 +7,12 @@ const galleryImages = [
   { src: 'https://images.pexels.com/photos/2425705/pexels-photo-2425705.jpeg', alt: 'Plated dish' },
   { src: 'https://images.pexels.com/photos/2425705/pexels-photo-2425705.jpeg', alt: 'Another dish' },
 ];
+
+const bg_section = new URL('../assets/images/section_bg_pattern.svg', import.meta.url).href
 </script>
 
 <template>
-  <section class="py-20 sm:py-32 bg-background/95">
+  <section class="py-20 sm:py-32 bg-background/95" :style="{ '--bg-image': 'url(' + bg_section + ')' }">
     <div class="container mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center mb-16" v-motion-slide-visible-once-bottom>
         <h2 class="font-serif text-4xl md:text-5xl font-bold text-text">A Feast for the Eyes</h2>
