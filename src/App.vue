@@ -5,7 +5,7 @@ import LocomotiveScroll from 'locomotive-scroll'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import AppHeader from './components/AppHeader.vue'
-import AppFooter from './components/AppFooterSimple.vue'
+import AppFooter from './components/AppFooter.vue'
 
 const router = useRouter()
 

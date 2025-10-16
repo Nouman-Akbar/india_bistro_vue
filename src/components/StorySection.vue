@@ -1,30 +1,62 @@
 <script setup lang="ts">
-const borderChunkSrc = new URL('../assets/images/brown_story_section_svg.svg', import.meta.url).href
+interface Props {
+  heading?: string
+  text?: string
+  backgroundColor?: string
+  headingColor?: string
+  textColor?: string
+  showTopBorder?: boolean
+  showBottomBorder?: boolean
+  borderImageSrc?: string
+  diamondImageSrc?: string
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  heading: 'A Story on Every Plate',
+  text: "At India Bistro, we celebrate India's endless culinary stories. From Delhi's fiery chaats to Kerala's coastal curries, every plate is a tribute to tradition, served with a refreshing twist. Step in, sit back, and taste India — all on one table.",
+  backgroundColor: '#8D3A30',
+  headingColor: '#F6D7B0',
+  textColor: '#FCE6D5',
+  showTopBorder: true,
+  showBottomBorder: true,
+  borderImageSrc: new URL('../assets/images/brown_story_section.svg', import.meta.url).href
+})
+
 const sectionBgSrc = new URL('../assets/images/section_bg_pattern.svg', import.meta.url).href
 </script>
 
 <template>
-  <section class="story-section" :style="{ '--bg-image': 'url(' + sectionBgSrc + ')' }">
+  <section 
+    class="story-section" 
+    :style="{ 
+      '--bg-image': 'url(' + sectionBgSrc + ')',
+      '--bg-color': props.backgroundColor,
+      '--heading-color': props.headingColor,
+      '--text-color': props.textColor
+    }"
+  >
     <!-- Top decorative border -->
     <div 
+      v-if="props.showTopBorder && props.borderImageSrc"
       class="chunk-row chunk-row--top" 
-      :style="{ backgroundImage: 'url(' + borderChunkSrc + ')' }"
+      :style="{ backgroundImage: 'url(' + props.borderImageSrc + ')' }"
     ></div>
 
     <!-- Main content -->
     <div class="story-content">
-      <h2 class="story-heading">
-        A Story on Every Plate
+      <h2 v-if="props.heading" class="story-heading">
+        {{ props.heading }}
       </h2>
-      <p class="story-text">
-        At India Bistro, we celebrate India's endless culinary stories. From Delhi's fiery chaats to Kerala's coastal
-        curries, every plate is a tribute to tradition, served with a refreshing twist. Step in, sit back, and taste
-        India — all on one table.
+      <div class="flex items-center justify-center text-center py-10" v-if="props.diamondImageSrc ">
+        <img :src="props.diamondImageSrc" alt="Diamond" class="h-20" />
+      </div>
+      <p v-if="props.text" class="story-text">
+        {{ props.text }}
       </p>
     </div>
 
     <!-- Decorative waves -->
-    <div class="waves-container">
+    <!-- <div class="waves-container">
       <svg class="waves-svg" viewBox="0 0 1200 600" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path
           d="M0 300 C150 200 350 400 600 300 C850 200 1050 400 1200 300"
@@ -42,12 +74,13 @@ const sectionBgSrc = new URL('../assets/images/section_bg_pattern.svg', import.m
           stroke-width="2"
         />
       </svg>
-    </div>
+    </div> -->
 
     <!-- Bottom decorative border -->
     <div 
+      v-if="props.showBottomBorder && props.borderImageSrc"
       class="chunk-row chunk-row--bottom" 
-      :style="{ backgroundImage: 'url(' + borderChunkSrc + ')' }"
+      :style="{ backgroundImage: 'url(' + props.borderImageSrc + ')' }"
     ></div>
   </section>
 </template>
@@ -61,7 +94,7 @@ const sectionBgSrc = new URL('../assets/images/section_bg_pattern.svg', import.m
   padding: 4rem 0;
   overflow: hidden;
   /* Method 1: Multiple backgrounds (pattern + color) */
-  background: #8D3A30;
+  background: var(--bg-color, #8D3A30);
   background-size: cover, contain;
   background-position: center, center;
   background-repeat: no-repeat, repeat;
@@ -130,7 +163,7 @@ const sectionBgSrc = new URL('../assets/images/section_bg_pattern.svg', import.m
   font-size: 1.875rem;
   text-transform: uppercase;
   letter-spacing: 0.35em;
-  color: #F6D7B0;
+  color: var(--heading-color, #F6D7B0);
   margin-bottom: 2rem;
   font-weight: 400;
 }
@@ -139,7 +172,7 @@ const sectionBgSrc = new URL('../assets/images/section_bg_pattern.svg', import.m
   font-size: 1.5rem;
   line-height: 1.7;
   letter-spacing: 0.02em;
-  color: #FCE6D5;
+  color: var(--text-color, #FCE6D5);
   max-width: 600px;
   margin: 0 auto;
 }
