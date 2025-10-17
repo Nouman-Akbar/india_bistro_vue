@@ -153,13 +153,15 @@ const handleSubmit = () => {
 
 <style scoped>
 .contact-page {
-  min-height: 100vh;
   background: transparent;
   position: relative;
   padding: clamp(4rem, 8vw, 6rem) 0;
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 1;
+  overflow: visible;
+  min-height: 80vh;
 }
 
 /* Background Pattern - visible */
