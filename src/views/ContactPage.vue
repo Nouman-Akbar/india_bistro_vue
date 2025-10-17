@@ -7,6 +7,9 @@ const assets = {
     sectionBgPattern: new URL('../assets/images/section_bg_pattern.svg', import.meta.url).href,
     bigBgIcon: new URL('../assets/images/Big BG Icon.svg', import.meta.url).href,
     group24: new URL('../assets/images/Group 24.svg', import.meta.url).href,
+    facebook: new URL('../assets/images/Facebook.svg', import.meta.url).href,
+    instagram: new URL('../assets/images/Instagram.svg', import.meta.url).href,
+    tiktok: new URL('../assets/images/TikTok.svg', import.meta.url).href,
   },
   svgs: {
     greenDiamondButton: new URL('../assets/images/button_green_bg_diamond.svg', import.meta.url).href
@@ -55,6 +58,23 @@ const pageData = {
       {
         heading: 'INDIA BISTRO, PADDINGTON',
         content: '+44 (0) 2222 222 222'
+      }
+    ],
+    socialMedia: [
+      {
+        name: 'Facebook',
+        icon: assets.images.facebook,
+        url: 'https://facebook.com/indiabistro'
+      },
+      {
+        name: 'Instagram',
+        icon: assets.images.instagram,
+        url: 'https://instagram.com/indiabistro'
+      },
+      {
+        name: 'TikTok',
+        icon: assets.images.tiktok,
+        url: 'https://tiktok.com/@indiabistro'
       }
     ]
   }
@@ -144,6 +164,26 @@ const handleSubmit = () => {
           <!-- Small Divider after Leeds section -->
           <div class="small-divider-section">
             <img :src="pageData.contactSection.dividerImage" alt="" class="small-divider-image" />
+          </div>
+        </div>
+
+        <!-- Follow Us Section -->
+        <div class="follow-us-section">
+          <div class="follow-us-header">
+            <h3 class="follow-us-title">Follow Us</h3>
+          </div>
+          <div class="social-media-grid">
+            <a
+              v-for="social in pageData.contactSection.socialMedia"
+              :key="social.name"
+              :href="social.url"
+              :title="social.name"
+              class="social-link"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <img :src="social.icon" :alt="social.name" class="social-icon" />
+            </a>
           </div>
         </div>
       </div>
@@ -402,6 +442,59 @@ const handleSubmit = () => {
   color: #202A2C;
   line-height: 1.6;
   margin: 0;
+}
+
+/* Follow Us Section */
+.follow-us-section {
+  width: 100%;
+  margin-top: clamp(3rem, 5vw, 4rem);
+  text-align: center;
+}
+
+.follow-us-header {
+  margin-bottom: clamp(2rem, 4vw, 3rem);
+}
+
+.follow-us-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-weight: 700;
+  color: #202A2C;
+  margin: 0;
+  letter-spacing: 0.05em;
+}
+
+.social-media-grid {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: clamp(2rem, 4vw, 3rem);
+  width: 100%;
+}
+
+.social-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.social-link:hover {
+  transform: translateY(-3px);
+  opacity: 0.8;
+}
+
+.social-icon {
+  width: 100%;
+  height: auto;
+  max-width: clamp(40px, 6vw, 50px);
+  object-fit: contain;
+  transition: transform 0.3s ease;
+}
+
+.social-link:hover .social-icon {
+  transform: scale(1.1);
 }
 
 /* Responsive Design */
