@@ -4,6 +4,7 @@ import MenuPage from '../views/MenuPage.vue'
 import ReservationsPage from '../views/ReservationsPage.vue'
 import RecipesPage from '../views/RecipesPage.vue'
 import ContactPage from '../views/ContactPage.vue'
+import BlogPage from '../views/BlogPage.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -32,6 +33,11 @@ const router = createRouter({
       path: '/contact',
       name: 'contact',
       component: ContactPage
+    },
+    {
+      path: '/blog',
+      name: 'blog',
+      component: BlogPage
     }
   ],
   scrollBehavior() {
