@@ -9,7 +9,7 @@
       <!-- Section Heading -->
       <div class="text-center px-8 pb-16">
         <h2 ref="headingRef"
-          class="slider-heading text-xl md:text-3xl font-medium text-white uppercase tracking-[0.3em]">
+          class="slider-heading text-xl md:text-3xl font-medium text-black uppercase tracking-[0.3em]">
           <span v-for="(word, index) in headingWords" :key="`${word}-${index}`" class="slider-heading-word">
             <span class="slider-heading-word__inner">{{ word }}</span>
           </span>
@@ -29,10 +29,10 @@
               <img :src="block.block_image" :alt="block.block_heading" class="w-full h-full object-cover" />
             </div>
             <div class="py-6 bg-transparent">
-              <h3 class="text-sm font-semibold text-white mb-3 uppercase tracking-wider leading-tight">
+              <h3 class="text-sm font-semibold text-black mb-3 uppercase tracking-wider leading-tight">
                 {{ block.block_heading }}
               </h3>
-              <p class="text-xs leading-relaxed text-gray-200">
+              <p class="text-xs leading-relaxed text-black">
                 {{ block.block_description }}
               </p>
             </div>
@@ -109,7 +109,7 @@
       <!-- Action Button -->
       <div v-if="sectionData.button" class="text-center pt-8">
         <button
-          class="slider-action-button cursor-pointer transition-all duration-300 shadow-lg hover:-translate-y-0.5 hover:shadow-xl active:translate-y-0 active:shadow-md"
+          class="slider-action-button cursor-pointer"
           :style="{
             '--button-color': sectionData.section_color
           }">
@@ -131,7 +131,7 @@ import { computed, ref, onMounted, onUnmounted, reactive, watch } from 'vue'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
-const section_bg_pattern = new URL('../assets/images/section_bg_pattern.png', import.meta.url).href
+const section_bg_pattern = new URL('../assets/images/section_bg_pattern.svg', import.meta.url).href
 
 interface SliderBlock {
   block_image: string
@@ -346,12 +346,12 @@ watch(() => state.currentOffset, () => {
   letter-spacing: 0.38em;
   text-transform: uppercase;
   overflow: hidden;
+  transition: all 0.3s ease;
 }
 
 .slider-action-button__diamond+span {
   position: absolute;
-  inset: 50% auto auto 50%;
-  transform: translate(-50%, -50%);
+  inset: 0;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -364,6 +364,11 @@ watch(() => state.currentOffset, () => {
 
 .slider-action-button__diamond path {
   fill: var(--button-color, #a7713a);
+  transition: fill 0.3s ease;
+}
+
+.slider-action-button:hover .slider-action-button__diamond path {
+  fill: #f0a345;
 }
 
 .slider-action-button__label {

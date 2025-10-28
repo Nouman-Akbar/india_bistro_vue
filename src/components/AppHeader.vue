@@ -1,11 +1,15 @@
 <script setup lang="ts">
 import { RouterLink } from 'vue-router'
 
+// Logo import
+const logoImage = new URL('../Logos/India Bistro-05.png', import.meta.url).href
+
 const navLinks = [
   { name: 'Menu', path: '/menu' },
-  { name: 'Reservations', path: '/reservations' },
-  { name: 'Recipes', path: '/recipes' },
-  { name: 'Blog', path: '/blog' },
+  { name: 'Catering', path: '/catering' },
+  { name: 'Recipes', path: '/blog' },
+  // { name: 'Reservations', path: '/reservations' },
+  // { name: 'Blog', path: '/recipes' },
   { name: 'Gallery', path: '/gallery' },
   { name: 'Contact', path: '/contact' }
 ]
@@ -14,14 +18,16 @@ const navLinks = [
 <template>
   <header class="header-wrapper">
     <div class="header-inner">
-      <RouterLink to="/" class="brand">India Bistro</RouterLink>
+      <RouterLink to="/" class="brand">
+      <img :src="logoImage" alt="India Bistro" class="logo-image" />
+    </RouterLink>
       <nav class="nav-links">
         <RouterLink
           v-for="link in navLinks"
           :key="link.name"
           :to="link.path"
           class="nav-link"
-          active-class="nav-link-active"
+          active-class="nav-link-active"  
         >
           {{ link.name }}
         </RouterLink>
@@ -53,13 +59,20 @@ const navLinks = [
 }
 
 .brand {
-  font-family: 'Playfair Display', serif;
-  font-weight: 700;
-  letter-spacing: 0.32em;
-  text-transform: uppercase;
-  font-size: clamp(1.45rem, 3.5vw, 1.9rem);
-  color: #f4e0c8;
-  text-shadow: 0 3px 6px rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo-image {
+  height: clamp(1.5rem, 6vw, 3rem);
+  width: auto;
+  object-fit: contain;
+  transition: transform 0.3s ease;
+}
+
+.brand:hover .logo-image {
+  transform: scale(1.05);
 }
 
 .nav-links {
