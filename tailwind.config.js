@@ -16,6 +16,11 @@ export default {
       fontFamily: {
         serif: ['"Playfair Display"', 'serif'],
         sans: ['"Inter"', 'sans-serif'],
+        'pp-mori': ['"PPMori"', 'sans-serif'],
+        'pitch': ['"Pitch"', 'sans-serif'],
+        'sweet-sans': ['"SweetSansPro"', 'sans-serif'],
+        'founders': ['"FoundersGrotesk"', 'sans-serif'],
+        'britain': ['"F37Britain"', 'monospace'],
       },
       animation: {
         'fade-in-up': 'fade-in-up 0.8s ease-out forwards',

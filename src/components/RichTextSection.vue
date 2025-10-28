@@ -1,4 +1,10 @@
 <script setup lang="ts">
+interface Button {
+  text: string
+  link: string
+  backgroundImageSrc?: string
+}
+
 interface Props {
   heading: string
   description: string
@@ -8,6 +14,7 @@ interface Props {
   headingColor?: string
   descriptionColor?: string
   decorationColor?: string
+  button?: Button
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -68,6 +75,25 @@ const props = withDefaults(defineProps<Props>(), {
       >
         {{ props.description }}
       </p>
+
+      <!-- Button -->
+      <div v-if="props.button" class="mt-4">
+        <a
+          :href="props.button.link"
+          class="tab-button relative inline-block transition-all duration-300 hover:scale-105"
+        >
+          <span class="tab-bg absolute inset-0">
+            <img 
+              :src="props.button.backgroundImageSrc" 
+              alt="Button Decoration" 
+              class="h-full w-full"
+            />
+          </span>
+          <span class="tab-text relative z-10 block px-8 py-3 text-sm  md:text-base lg:text-xl  font-medium uppercase tracking-wider text-white md:px-10 md:py-4">
+            {{ props.button.text }}
+          </span>
+        </a>
+      </div>
     </div>
   </section>
 </template>

@@ -3,13 +3,76 @@
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
 
+/* Font Face Declarations */
+@font-face {
+  font-family: "PPMori";
+  src: url("../Fonts/PPMori-Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Pitch";
+  src: url("../Fonts/Pitch-Semibold.otf") format("opentype");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "SweetSansPro";
+  src: url("../Fonts/SweetSansProMedium.otf") format("opentype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "FoundersGrotesk";
+  src: url("../Fonts/FoundersGroteskXCond-Med.otf") format("opentype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "F37Britain";
+  src: url("../Fonts/F37Britain-TypewriterRegular.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
 
 body {
   background-color: #111111;
   color: #F7FAFC;
-  font-family: "Inter", sans-serif;
+  font-family: "PPMori", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* Global Font Applications */
+h1, h2, h3, h4, h5, h6 {
+  font-family: "Pitch", sans-serif !important;
+}
+
+p, span, div, button, input, textarea, select {
+  font-family: "PPMori", sans-serif !important;
+}
+
+/* Alternative font classes for specific use */
+.font-sweet-sans {
+  font-family: "SweetSansPro", sans-serif !important;
+}
+
+.font-founders {
+  font-family: "FoundersGrotesk", sans-serif !important;
+}
+
+.font-britain {
+  font-family: "F37Britain", monospace !important;
 }
 
 /* Custom scrollbar for a more modern look */

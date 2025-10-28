@@ -3,6 +3,7 @@ import StorySection from '../components/StorySection.vue'
 import SliderSection from '../components/SliderSection.vue'
 import ImageTextSection from '../components/ImageTextSection.vue'
 import ImageContentSection from '../components/ImageContentSection.vue'
+import HomePopup from '../components/HomePopup.vue'
 import { favouritesSection, specialtiesSection } from '../data/sliderSections'
 
 // Asset URLs
@@ -22,6 +23,15 @@ const assets = {
 
 // Page Data Structure
 const pageData = {
+  popupData: {
+      heading: "WE'RE NOW OPEN IN LEEDS! RESERVE YOUR TABLE TODAY.",
+      buttonText: 'BOOK A TABLE',
+      buttonLink: '/contact',
+      buttonBackgroundSrc: new URL('../assets/images/button_orange_bg_diamond.svg', import.meta.url).href,
+      patternSrc: new URL('../assets/images/home_popup_pattern.svg', import.meta.url).href,
+      backgroundColor: '#8D3A30',
+      textColor: '#FFFFFF'
+  },
   storySection1: {
     heading: '',
     text: "At India Bistro, we celebrate India's endless culinary stories. From Delhi's fiery chaats to Kerala's coastal curries, every plate is a tribute to tradition, served with a refreshing twist. Step in, sit back, and taste India — all on one table.",
@@ -37,17 +47,24 @@ const pageData = {
 
   imageTextSection1: {
     dishImageSrc: assets.images.brunaBlanco,
-    heading: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
-    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit Lorem ipsum dolor sit amet, consectetur adipiscing elit Lorem ipsum dolor sit amet, consectetur adipiscing elit Lorem ipsum dolor sit amet, consectetur adipiscing elit',
+    heading: 'More Than Just Food—A Celebration of India ON Every Plate, a Passage Through India',
+    description: [
+      "India is not a single story—it's millions of them, simmering in bustling kitchens, whispered in ancient recipes, carried across coasts, mountains, and cities.",
+      "At India Bistro, we gather these stories—from smoky tandoors in the North to coastal spice trails in the South—and reimagine them for today's table.",
+      "Every dish is a piece of our homeland's living, breathing culinary map: soulful, unexpected, and meant to be shared."
+    ],
     imagePosition: 'right' as const,
-    spacingBottomClasses: 'pt-20 pb-0 md:mb-[-15%] mb-0'
+    spacingBottomClasses: 'pt-20 pb-0 mb-0'
   },
 
   imageTextSection2: {
     dishImageSrc: assets.images.chicken,
     heading: '',
     diamondImageSrc: assets.svgs.diamond,
-    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit Lorem ipsum dolor sit amet, consectetur adipiscing elit Lorem ipsum dolor sit amet, consectetur adipiscing elit Lorem ipsum dolor sit amet, consectetur adipiscing elit',
+    description: [
+      "Our kitchen is where heritage meets curiosity—the warmth of your grandmother's curry, the crunch of a street-side chaat, the comfort of a meal that feels like home, yet surprises you every time.This is more than just dining.",
+      "This is India—generous, diverse, alive—served on a plate."
+    ],
     imagePosition: 'left' as const,
     spacingBottomClasses: 'pt-2 pb-20 mb-0'
   },
@@ -86,6 +103,8 @@ const pageData = {
 
 <template>
   <div class="home-page">
+    <!-- Popup Modal -->
+    <HomePopup v-bind="pageData.popupData" />
     
     <!-- Image Content Section -->
     <ImageContentSection

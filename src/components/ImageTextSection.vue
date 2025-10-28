@@ -5,7 +5,7 @@ interface Props {
   sectionBgSrc: string
   dishImageSrc: string
   heading: string
-  description: string
+  description: string | string[]
   imagePosition: 'left' | 'right'
   spacing_bottom_classes: string
   diamondImageSrc?: string
@@ -22,9 +22,17 @@ const props = withDefaults(defineProps<Props>(), {
 // Mobile: always flex-col (content first, image second)
 // Desktop: flex-row if image is right, flex-row-reverse if image is left
 const containerClasses = computed(() => {
-  return props.imagePosition === 'left' 
+  return props.imagePosition === 'left'
     ? 'flex flex-col gap-10 md:flex-row-reverse md:items-center'
     : 'flex flex-col gap-10 md:flex-row md:items-center'
+})
+
+// Compute description paragraphs
+const descriptionParagraphs = computed(() => {
+  if (Array.isArray(props.description)) {
+    return props.description
+  }
+  return [props.description]
 })
 </script>
 
@@ -35,7 +43,7 @@ const containerClasses = computed(() => {
   >
     <!-- <div class="absolute inset-0 bg-[#f4efe3]/85"></div> -->
 
-    <div class="relative mx-auto flex w-full max-w-6xl flex-col gap-12 px-6 md:px-10">
+    <div class="relative mx-auto flex w-full max-w-7xl flex-col gap-12 px-6 md:px-10">
       <!-- Heading Section -->
       <div v-if="props.heading" class="w-full">
         <h2
@@ -55,13 +63,15 @@ const containerClasses = computed(() => {
           </div> -->
           
           <!-- Description Text -->
-          <p class="text-base leading-relaxed text-[#000000] md:text-xl">
-            {{ props.description }}
-          </p>
+          <div v-if="props.description" class="text-base leading-relaxed text-[#000000] md:text-xl space-y-4">
+            <p v-for="(paragraph, index) in descriptionParagraphs" :key="index" class="mb-4 last:mb-0">
+              {{ paragraph }}
+            </p>
+          </div>
         </div>
 
         <!-- Image Section (always second on mobile) -->
-        <div v-if="props.dishImageSrc" class="w-full md:w-1/2">
+        <div v-if="props.dishImageSrc" :class="props.description ? 'w-full md:w-1/2' : 'w-full'">
           <div class="overflow-hidden rounded-0 shadow-[0_20px_55px_-20px_rgba(0,0,0,0.4)]">
             <img :src="props.dishImageSrc" alt="Traditional Indian dish" class="h-full w-full object-cover" />
           </div>
