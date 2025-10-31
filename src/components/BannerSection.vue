@@ -19,6 +19,9 @@ const props = withDefaults(defineProps<Props>(), {
   backgroundColor: '#f4efe3'
 })
 
+const section_bg_pattern = new URL('../assets/images/section_bg_pattern.svg', import.meta.url).href
+const bigBgIcon = new URL('../assets/images/Big BG Icon.svg', import.meta.url).href
+
 const imagePositionClass = computed(() => {
   switch (props.alignment) {
     case 'center':
@@ -33,13 +36,20 @@ const imagePositionClass = computed(() => {
 </script>
 
 <template>
-  <section 
-    :class="`relative w-full bg-repeat bg-[length:600px] ${props.spacingClasses}`"
-    :style="{ 
-      backgroundImage: `url(${props.sectionBgSrc})`,
-      backgroundColor: props.backgroundColor
+  <section
+    :class="`relative w-full bg-repeat bg-[length:600px] ${props.spacingClasses} overflow-hidden`"
+    :style="{
+      'background-image': `url(${section_bg_pattern})`,
+      'background-repeat': 'repeat',
+      'background-size': 'auto',
+      'background-position': 'center',
+      'background-color': props.backgroundColor
     }"
   >
+    <!-- Big BG Icon Overlay -->
+    <div class="big-bg-icon-overlay">
+      <img :src="bigBgIcon" alt="" class="big-bg-icon" />
+    </div>
     <div class="mx-auto w-full max-w-7xl overflow-hidden px-6 md:px-10">
       <img 
         :src="props.imageSrc" 
@@ -49,3 +59,30 @@ const imagePositionClass = computed(() => {
     </div>
   </section>
 </template>
+
+<style scoped>
+/* Big BG Icon Overlay */
+.big-bg-icon-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  max-width: 800px;
+  height: auto;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.big-bg-icon {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* Ensure content is above the background overlay */
+.relative {
+  position: relative;
+  z-index: 3;
+}
+</style>

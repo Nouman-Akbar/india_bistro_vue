@@ -19,14 +19,19 @@ interface Props {
   bgColor?: string
   categoryDecorationSrc?: string
   cardDecorationSrc?: string
+  decorationImageSrc?: string
   decorationColor?: string
 }
 
 const props = withDefaults(defineProps<Props>(), {
   sectionBgSrc: new URL('../assets/images/section_bg_pattern.svg', import.meta.url).href,
   bgColor: '#f4efe3',
+  decorationImageSrc: new URL('../assets/images/diamond_story_section.svg', import.meta.url).href,
   decorationColor: '#c85a3a'
 })
+
+const section_bg_pattern = new URL('../assets/images/section_bg_pattern.svg', import.meta.url).href
+const bigBgIcon = new URL('../assets/images/Big BG Icon.svg', import.meta.url).href
 
 // Tab SVG backgrounds
 const tabBgActive = new URL('../assets/images/button_orange_bg_diamond.svg', import.meta.url).href
@@ -34,34 +39,294 @@ const tabBgInactive = new URL('../assets/images/button_green_bg_diamond.svg', im
 const dishDiamond = new URL('../assets/images/dish_diamond.svg', import.meta.url).href
 const categoryDiamond = new URL('../assets/images/diamond_story_section.svg', import.meta.url).href
 
-const activeTab = ref(props.categories[0]?.id || '')
+// Default menu data if no categories provided
+const defaultCategories: MenuCategory[] = [
+  {
+    id: 'appetizers',
+    name: 'Appetizers',
+    dishes: [
+      {
+        name: 'Samosa Chat',
+        description: 'Crispy samosa pieces topped with chickpeas, yogurt, chutneys, and spices',
+        imageSrc: new URL('../assets/images/dishes/samosa-chat.jpg', import.meta.url).href
+      },
+      {
+        name: 'Paneer Tikka',
+        description: 'Marinated cottage cheese cubes grilled in tandoor with vegetables',
+        imageSrc: new URL('../assets/images/dishes/paneer-tikka.jpg', import.meta.url).href
+      },
+      {
+        name: 'Aloo Tikki',
+        description: 'Spiced potato patties served with chutney and yogurt',
+        imageSrc: new URL('../assets/images/dishes/aloo-tikki.jpg', import.meta.url).href
+      },
+      {
+        name: 'Hara Bhara Kebab',
+        description: 'Spinach and pea patties, crisp outside and tender inside',
+        imageSrc: new URL('../assets/images/dishes/aloo-tikki.jpg', import.meta.url).href
+      },
+      {
+        name: 'Papdi Chaat',
+        description: 'Crispy papdi topped with potatoes, chutneys and yogurt',
+        imageSrc: new URL('../assets/images/dishes/samosa-chat.jpg', import.meta.url).href
+      },
+      {
+        name: 'Dahi Puri',
+        description: 'Hollow puris filled with spiced potatoes, chutneys and yogurt',
+        imageSrc: new URL('../assets/images/dishes/samosa-chat.jpg', import.meta.url).href
+      }
+    ]
+  },
+  {
+    id: 'main-course',
+    name: 'Main Course',
+    dishes: [
+      {
+        name: 'Butter Chicken',
+        description: 'Tender chicken in creamy tomato and butter sauce with aromatic spices',
+        imageSrc: new URL('../assets/images/dishes/butter-chicken.jpg', import.meta.url).href
+      },
+      {
+        name: 'Paneer Butter Masala',
+        description: 'Cottage cheese cubes in rich, creamy tomato-based gravy',
+        imageSrc: new URL('../assets/images/dishes/paneer-butter-masala.jpg', import.meta.url).href
+      },
+      {
+        name: 'Lamb Rogan Josh',
+        description: 'Traditional Kashmiri curry with tender lamb in aromatic gravy',
+        imageSrc: new URL('../assets/images/dishes/rogan-josh.jpg', import.meta.url).href
+      },
+      {
+        name: 'Dal Makhani',
+        description: 'Creamy black lentils slow-cooked with butter and spices',
+        imageSrc: new URL('../assets/images/dishes/dal-makhani.jpg', import.meta.url).href
+      },
+      {
+        name: 'Chole',
+        description: 'Punjabi style chickpea curry simmered with spices',
+        imageSrc: new URL('../assets/images/dishes/dal-makhani.jpg', import.meta.url).href
+      },
+      {
+        name: 'Palak Paneer',
+        description: 'Cottage cheese simmered in smooth spinach gravy',
+        imageSrc: new URL('../assets/images/dishes/paneer-butter-masala.jpg', import.meta.url).href
+      }
+    ]
+  },
+  {
+    id: 'breads',
+    name: 'Breads',
+    dishes: [
+      {
+        name: 'Garlic Naan',
+        description: 'Soft leavened bread topped with garlic butter and fresh herbs',
+        imageSrc: new URL('../assets/images/dishes/garlic-naan.jpg', import.meta.url).href
+      },
+      {
+        name: 'Butter Roti',
+        description: 'Whole wheat flatbread brushed with butter',
+        imageSrc: new URL('../assets/images/dishes/butter-roti.jpg', import.meta.url).href
+      },
+      {
+        name: 'Paratha',
+        description: 'Layered flatbread with ghee, crispy and flaky',
+        imageSrc: new URL('../assets/images/dishes/paratha.jpg', import.meta.url).href
+      },
+      {
+        name: 'Tandoori Roti',
+        description: 'Whole wheat bread cooked in tandoor',
+        imageSrc: new URL('../assets/images/dishes/butter-roti.jpg', import.meta.url).href
+      },
+      {
+        name: 'Cheese Naan',
+        description: 'Stuffed naan with gooey cheese',
+        imageSrc: new URL('../assets/images/dishes/garlic-naan.jpg', import.meta.url).href
+      },
+      {
+        name: 'Laccha Paratha',
+        description: 'Multi-layered flaky paratha',
+        imageSrc: new URL('../assets/images/dishes/paratha.jpg', import.meta.url).href
+      }
+    ]
+  },
+  {
+    id: 'rice',
+    name: 'Rice Specialties',
+    dishes: [
+      {
+        name: 'Chicken Biryani',
+        description: 'Fragrant basmati rice with marinated chicken, aromatic spices and herbs',
+        imageSrc: new URL('../assets/images/dishes/chicken-biryani.jpg', import.meta.url).href
+      },
+      {
+        name: 'Vegetable Pulao',
+        description: 'Basmati rice cooked with mixed vegetables and aromatic spices',
+        imageSrc: new URL('../assets/images/dishes/veg-pulao.jpg', import.meta.url).href
+      },
+      {
+        name: 'Jeera Rice',
+        description: 'Basmati rice tempered with cumin',
+        imageSrc: new URL('../assets/images/dishes/veg-pulao.jpg', import.meta.url).href
+      },
+      {
+        name: 'Mutton Biryani',
+        description: 'Slow-cooked lamb layered with fragrant basmati rice',
+        imageSrc: new URL('../assets/images/dishes/chicken-biryani.jpg', import.meta.url).href
+      },
+      {
+        name: 'Peas Pulao',
+        description: 'Fluffy basmati with sweet green peas',
+        imageSrc: new URL('../assets/images/dishes/veg-pulao.jpg', import.meta.url).href
+      },
+      {
+        name: 'Egg Fried Rice',
+        description: 'Stir-fried rice with egg and aromatics',
+        imageSrc: new URL('../assets/images/dishes/veg-pulao.jpg', import.meta.url).href
+      }
+    ]
+  },
+  {
+    id: 'desserts',
+    name: 'Desserts',
+    dishes: [
+      {
+        name: 'Gulab Jamun',
+        description: 'Soft milk dumplings soaked in rose-flavored sugar syrup',
+        imageSrc: new URL('../assets/images/dishes/gulab-jamun.jpg', import.meta.url).href
+      },
+      {
+        name: 'Rasmalai',
+        description: 'Soft cottage cheese dumplings in creamy milk sauce with pistachios',
+        imageSrc: new URL('../assets/images/dishes/rasmalai.jpg', import.meta.url).href
+      },
+      {
+        name: 'Mango Kulfi',
+        description: 'Traditional Indian ice cream with mango flavor',
+        imageSrc: new URL('../assets/images/dishes/mango-kulfi.jpg', import.meta.url).href
+      },
+      {
+        name: 'Kheer',
+        description: 'Creamy rice pudding with cardamom and nuts',
+        imageSrc: new URL('../assets/images/dishes/rasmalai.jpg', import.meta.url).href
+      },
+      {
+        name: 'Jalebi',
+        description: 'Crisp spiral sweets soaked in syrup',
+        imageSrc: new URL('../assets/images/dishes/gulab-jamun.jpg', import.meta.url).href
+      },
+      {
+        name: 'Chocolate Kulfi',
+        description: 'Kulfi with rich chocolate flavor',
+        imageSrc: new URL('../assets/images/dishes/mango-kulfi.jpg', import.meta.url).href
+      }
+    ]
+  },
+  {
+    id: 'beverages',
+    name: 'Beverages',
+    dishes: [
+      {
+        name: 'Mango Lassi',
+        description: 'Creamy yogurt drink with mango pulp and cardamom',
+        imageSrc: new URL('../assets/images/dishes/mango-lassi.jpg', import.meta.url).href
+      },
+      {
+        name: 'Masala Chai',
+        description: 'Traditional Indian spiced tea with milk and sweeteners',
+        imageSrc: new URL('../assets/images/dishes/masala-chai.jpg', import.meta.url).href
+      },
+      {
+        name: 'Fresh Lime Soda',
+        description: 'Refreshing drink with fresh lime, soda water, and spices',
+        imageSrc: new URL('../assets/images/dishes/lime-soda.jpg', import.meta.url).href
+      },
+      {
+        name: 'Sweet Lassi',
+        description: 'Classic yogurt drink, lightly sweetened',
+        imageSrc: new URL('../assets/images/dishes/mango-lassi.jpg', import.meta.url).href
+      },
+      {
+        name: 'Cold Coffee',
+        description: 'Iced coffee with milk and a touch of sugar',
+        imageSrc: new URL('../assets/images/dishes/mango-lassi.jpg', import.meta.url).href
+      },
+      {
+        name: 'Sparkling Water',
+        description: 'Chilled soda water with a slice of lime',
+        imageSrc: new URL('../assets/images/dishes/lime-soda.jpg', import.meta.url).href
+      }
+    ]
+  }
+]
+
+// Use provided categories or default ones
+const categories = computed(() => props.categories.length > 0 ? props.categories : defaultCategories)
+
+const activeTab = ref(categories.value[0]?.id || '')
 
 const setActiveTab = (categoryId: string) => {
   activeTab.value = categoryId
 }
 
 const activeCategoryDishes = computed(() => {
-  const category = props.categories.find(cat => cat.id === activeTab.value)
+  const category = categories.value.find(cat => cat.id === activeTab.value)
   return category?.dishes || []
+})
+
+// Layout rows: repeatable pattern [image+text (img right)], [two text], [image+text (img left)], [two text]
+type RowType = 'imageText' | 'twoText'
+interface LayoutRow {
+  type: RowType
+  imageOn: 'left' | 'right'
+  dishes: DishItem[]
+}
+
+const layoutRows = computed<LayoutRow[]>(() => {
+  const items = activeCategoryDishes.value
+  const rows: LayoutRow[] = []
+  const pattern: Array<{ type: RowType; imageOn: 'left' | 'right'; take: number }> = [
+    { type: 'imageText', imageOn: 'right', take: 1 },
+    { type: 'twoText', imageOn: 'right', take: 2 },
+    { type: 'imageText', imageOn: 'left', take: 1 },
+    { type: 'twoText', imageOn: 'left', take: 2 }
+  ]
+  let index = 0
+  let pIndex = 0
+  while (index < items.length) {
+    const step = pattern[pIndex % pattern.length]
+    const slice = items.slice(index, index + step.take)
+    if (slice.length === 0) break
+    rows.push({ type: step.type, imageOn: step.imageOn, dishes: slice })
+    index += slice.length
+    pIndex += 1
+  }
+  return rows
 })
 </script>
 
 <template>
   <section
-    :class="`relative w-full bg-repeat bg-[length:600px] py-16 md:py-20`"
-    :style="{ 
-      backgroundImage: `url(${props.sectionBgSrc})`,
-      backgroundColor: props.bgColor
+    class="relative w-full bg-repeat bg-[length:600px] overflow-visible pb-16 md:pb-20"
+    :style="{
+      'background-image': `url(${section_bg_pattern})`,
+      'background-repeat': 'repeat',
+      'background-size': 'auto',
+      'background-position': 'center',
+      'background-color': props.bgColor
     }"
   >
-    <div class="relative mx-auto w-full max-w-4xl px-6 md:px-10">
+    <!-- Big BG Icon Overlay -->
+    <div class="big-bg-icon-overlay">
+      <img :src="bigBgIcon" alt="" class="big-bg-icon" />
+    </div>
+    <div class="relative mx-auto w-full max-w-6xl px-6 md:px-10">
       <!-- Tabs Navigation -->
-      <div class="mb-12 flex flex-wrap items-center justify-center gap-2 md:gap-3">
+      <div class="mb-12 tabs-container flex items-center justify-center gap-4 overflow-x-auto whitespace-nowrap no-scrollbar">
         <button
-          v-for="category in props.categories"
+          v-for="category in categories"
           :key="category.id"
           @click="setActiveTab(category.id)"
-          class="tab-button relative transition-all duration-300"
+          class="tab-button relative transition-all duration-300 flex-none"
           :class="{ 'active': activeTab === category.id }"
         >
           <span class="tab-bg" :class="{ 'active': activeTab === category.id }">
@@ -78,66 +343,56 @@ const activeCategoryDishes = computed(() => {
       </div>
 
       <!-- Category End Decoration -->
-      <div class="mb-10 flex items-center justify-center">
-        <img 
-          :src="props.categoryDecorationSrc || categoryDiamond" 
-          alt="Decoration" 
-          class="h-5 w-auto opacity-90 md:h-6"
-        />
-      </div>
+   
 
-      <!-- Dishes Grid -->
-      <div class="flex flex-col gap-12 md:gap-16">
-        <div
-          v-for="dish in activeCategoryDishes"
-          :key="dish.name"
-          class="dish-card group"
-        >
-          <!-- Dish Image -->
-          <div class="dish-image-container">
-            <img 
-              :src="dish.imageSrc" 
-              :alt="dish.name"
-              class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
-              loading="lazy"
-            />
-          </div>
-
-          <!-- Dish Content -->
-          <div class="dish-content">
-            <h3 class="dish-title">
-              {{ dish.name }}
-            </h3>
-
-            <p class="dish-description">
-              {{ dish.description }}
-            </p>
-
-            <!-- Card End Decoration -->
-            <div class="mt-6 flex items-center justify-center">
+      <!-- Dishes Grid (patterned rows) -->
+      <div class="flex flex-col gap-14 md:gap-20 max-w-4xl  mx-auto ">
+        <template v-for="(row, rIdx) in layoutRows" :key="`row-${rIdx}`">
+          <div
+            v-if="row.type === 'imageText'"
+            class="dish-card group"
+            :class="{ 'reverse': row.imageOn === 'right' }"
+          >
+            <div class="dish-image-container">
               <img 
-                :src="dishDiamond" 
-                alt="Decoration" 
-                class="h-6 w-auto opacity-90"
+                :src="row.dishes[0].imageSrc" 
+                :alt="row.dishes[0].name"
+                class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+                loading="lazy"
               />
             </div>
+            <div class="dish-content">
+              <h3 class="dish-title">{{ row.dishes[0].name }}</h3>
+              <p class="dish-description">{{ row.dishes[0].description }}</p>
+              <div class="mt-6 flex items-center justify-center">
+                <img :src="dishDiamond" alt="Decoration" class="h-6 w-auto opacity-90" />
+              </div>
+            </div>
           </div>
-        </div>
+          <div v-else class="two-text-row">
+            <div
+              v-for="dish in row.dishes"
+              :key="dish.name"
+              class="two-text-card"
+            >
+              <h3 class="dish-title">{{ dish.name }}</h3>
+              <p class="dish-description">{{ dish.description }}</p>
+              <div class="mt-5 flex items-center justify-center">
+                <img :src="dishDiamond" alt="Decoration" class="h-5 w-auto opacity-90" />
+              </div>
+            </div>
+          </div>
+        </template>
       </div>
 
       <!-- Bottom Section Decoration -->
-      <div class="mt-16 flex items-center justify-center gap-1">
-        <svg 
-          v-for="i in 7" 
-          :key="i" 
-          width="12" 
-          height="12" 
-          viewBox="0 0 12 12" 
-          :fill="props.decorationColor"
-          class="opacity-90"
-        >
-          <rect x="6" y="0" width="8" height="8" transform="rotate(45 6 6)" />
-        </svg>
+      <div class="mt-12 flex items-center justify-center">
+        <img 
+          :src="props.decorationImageSrc" 
+          alt="Decoration" 
+          class="h-6 w-auto opacity-90"
+          :style="{ filter: `brightness(0) saturate(100%) invert(38%) sepia(47%) saturate(1234%) hue-rotate(337deg) brightness(92%) contrast(87%)` }"
+        />
       </div>
     </div>
   </section>
@@ -147,6 +402,7 @@ const activeCategoryDishes = computed(() => {
 .tab-button {
   position: relative;
   min-width: 140px;
+  max-width: 200px;
   height: 50px;
   cursor: pointer;
   border: none;
@@ -192,7 +448,7 @@ const activeCategoryDishes = computed(() => {
 
 @media (min-width: 768px) {
   .tab-button {
-    min-width: 160px;
+    min-width: 200px;
   }
   
   .tab-text {
@@ -214,6 +470,9 @@ const activeCategoryDishes = computed(() => {
     flex-direction: row;
     align-items: center;
   }
+  .dish-card.reverse {
+    flex-direction: row-reverse;
+  }
 }
 
 .dish-image-container {
@@ -227,8 +486,8 @@ const activeCategoryDishes = computed(() => {
 
 @media (min-width: 768px) {
   .dish-image-container {
-    width: 320px;
-    height: 240px;
+    width: 360px;
+    height: 250px;
   }
 }
 
@@ -244,6 +503,9 @@ const activeCategoryDishes = computed(() => {
 @media (min-width: 768px) {
   .dish-content {
     padding: 0 0 0 3rem;
+  }
+  .dish-card.reverse .dish-content {
+    padding: 0 3rem 0 0;
   }
 }
 
@@ -275,6 +537,33 @@ const activeCategoryDishes = computed(() => {
   }
 }
 
+.card-divider {
+  margin-top: 0.9rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+/* Two-text row layout */
+.two-text-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
+
+@media (min-width: 768px) {
+  .two-text-row {
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+  }
+}
+
+.two-text-card {
+  background: transparent;
+  text-align: center;
+}
+
 /* Performance optimizations */
 .dish-card {
   will-change: auto;
@@ -283,5 +572,39 @@ const activeCategoryDishes = computed(() => {
 
 .dish-image-container img {
   will-change: transform;
+}
+
+/* Big BG Icon Overlay */
+.big-bg-icon-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  max-width: 800px;
+  height: auto;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.big-bg-icon {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* Ensure content is above the background overlay */
+.relative {
+  position: relative;
+  z-index: 3;
+}
+
+/* Hide horizontal scrollbar for tabs on supported browsers */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 }
 </style>

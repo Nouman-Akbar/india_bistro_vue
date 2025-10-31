@@ -17,7 +17,7 @@ const props = withDefaults(defineProps<Props>(), {
   buttonLink: '/contact',
   buttonBackgroundSrc: new URL('../assets/images/button_orange_bg_diamond.svg', import.meta.url).href,
   patternSrc: new URL('../assets/images/home_popup_pattern.svg', import.meta.url).href,
-  backgroundColor: '#B85A3A',
+  backgroundColor: '#AA8137',
   textColor: '#FFFFFF'
 })
 
@@ -105,7 +105,8 @@ const closePopup = () => {
 
 <style scoped>
 .popup-container {
-  max-height: 90vh;
+  max-height: 70vh;
+  max-width: 50vw;
   animation: slideUp 0.4s ease-out;
 }
 

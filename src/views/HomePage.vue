@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import StorySection from '../components/StorySection.vue'
+import StorySectionCanvas from '../components/StorySectionCanvas.vue'
 import SliderSection from '../components/SliderSection.vue'
-import ImageTextSection from '../components/ImageTextSection.vue'
+import SliderSectionNoButton from '../components/SliderSectionNoButton.vue'
+import DoubleImageTextSection from '../components/DoubleImageTextSection.vue'
 import ImageContentSection from '../components/ImageContentSection.vue'
 import HomePopup from '../components/HomePopup.vue'
 import { favouritesSection, specialtiesSection } from '../data/sliderSections'
@@ -34,7 +36,7 @@ const pageData = {
   },
   storySection1: {
     heading: '',
-    text: "At India Bistro, we celebrate India's endless culinary stories. From Delhi's fiery chaats to Kerala's coastal curries, every plate is a tribute to tradition, served with a refreshing twist. Step in, sit back, and taste India — all on one table.",
+    text: "At India Bistro, we celebrate India's endless culinary stories. From Delhi's fiery chaats to Kerala's coastal curries, every plate is a tribute to tradition, served with a refreshing twist. Step in, sit back, and taste India  all on one table.",
     backgroundColor: '#8D3A30',
     headingColor: '#8D3A30',
     textColor: '#F7E9E2',
@@ -47,10 +49,10 @@ const pageData = {
 
   imageTextSection1: {
     dishImageSrc: assets.images.brunaBlanco,
-    heading: 'More Than Just Food—A Celebration of India ON Every Plate, a Passage Through India',
+    heading: 'More Than Just Food A Celebration of India ON Every Plate, a Passage Through India',
     description: [
-      "India is not a single story—it's millions of them, simmering in bustling kitchens, whispered in ancient recipes, carried across coasts, mountains, and cities.",
-      "At India Bistro, we gather these stories—from smoky tandoors in the North to coastal spice trails in the South—and reimagine them for today's table.",
+      "India is not a single story it's millions of them, simmering in bustling kitchens, whispered in ancient recipes, carried across coasts, mountains, and cities.",
+      "At India Bistro, we gather these stories from smoky tandoors in the North to coastal spice trails in the South and reimagine them for today's table.",
       "Every dish is a piece of our homeland's living, breathing culinary map: soulful, unexpected, and meant to be shared."
     ],
     imagePosition: 'right' as const,
@@ -62,8 +64,8 @@ const pageData = {
     heading: '',
     diamondImageSrc: assets.svgs.diamond,
     description: [
-      "Our kitchen is where heritage meets curiosity—the warmth of your grandmother's curry, the crunch of a street-side chaat, the comfort of a meal that feels like home, yet surprises you every time.This is more than just dining.",
-      "This is India—generous, diverse, alive—served on a plate."
+      "Our kitchen is where heritage meets curiosity the warmth of your grandmother's curry, the crunch of a street-side chaat, the comfort of a meal that feels like home, yet surprises you every time.This is more than just dining.",
+      "This is India generous, diverse, alive served on a plate."
     ],
     imagePosition: 'left' as const,
     spacingBottomClasses: 'pt-2 pb-20 mb-0'
@@ -71,7 +73,7 @@ const pageData = {
 
   storySection2: {
     heading: 'A Living Culinary Canvas',
-    text: "Our chefs are explorers—collectors of recipes, stories, and old secrets passed down through generations. From the sizzle of the Show Kitchen to the last spoonful of dessert, we invite you to taste India as we see it: bold, honest, and endlessly rich in flavour.",
+    text: "Our chefs are explorers collectors of recipes, stories, and old secrets passed down through generations. From the sizzle of the Show Kitchen to the last spoonful of dessert, we invite you to taste India as we see it: bold, honest, and endlessly rich in flavour.",
     backgroundColor: '#5E6547',
     headingColor: '#F7E9E2',
     textColor: '#F7E9E2',
@@ -82,12 +84,66 @@ const pageData = {
 
   sliderSection2: specialtiesSection,
 
+  sliderSectionNoButton: {
+    name: "no_button_section",
+    heading: "What Our Guests Say",
+    section_color: "#D2691E",
+    show_arrows: true,
+    blocks: [
+      {
+        block_image: new URL('../assets/images/gellery/Rectangle 31.svg', import.meta.url).href,
+        block_heading: "@Rushi Gokani",
+        block_description: "Fragrant basmati rice layered with tender lamb, saffron and fried onions."
+      },
+      {
+        block_image: new URL('../assets/images/gellery/Rectangle 32.svg', import.meta.url).href,
+        block_heading: "@Chandni",
+        block_description: "Assorted meats and vegetables cooked in our traditional clay oven."
+      },
+      {
+        block_image: new URL('../assets/images/gellery/Rectangle 33.svg', import.meta.url).href,
+        block_heading: "@Tirth Joshi",
+        block_description: "Assorted meats and vegetables cooked in our traditional clay oven."
+      },
+      {
+        block_image: new URL('../assets/images/gellery/Rectangle 34.svg', import.meta.url).href,
+        block_heading: "@Anitket Biswas",
+        block_description: "Assorted meats and vegetables cooked in our traditional clay oven."
+      },
+      {
+        block_image: new URL('../assets/images/gellery/Rectangle 36.svg', import.meta.url).href,
+        block_heading: "@Tirth Joshi",
+        block_description: "Assorted meats and vegetables cooked in our traditional clay oven."
+      },
+      {
+        block_image: new URL('../assets/images/gellery/Rectangle 37.svg', import.meta.url).href,
+        block_heading: "@Rushi Gokani",
+        block_description: "Fresh catch of the day in coconut milk with curry leaves and mustard seeds."
+      },
+      {
+        block_image: new URL('../assets/images/gellery/Rectangle 37.svg', import.meta.url).href,
+        block_heading: "@For_yu",
+        block_description: "Fresh catch of the day in coconut milk with curry leaves and mustard seeds."
+      },
+      {
+        block_image: new URL('../assets/images/gellery/Rectangle 34.svg', import.meta.url).href,
+        block_heading: "@Hacker_2134",
+        block_description: "Assorted meats and vegetables cooked in our traditional clay oven."
+      },
+      {
+        block_image: new URL('../assets/images/gellery/Rectangle 37.svg', import.meta.url).href,
+        block_heading: "@Fruis",
+        block_description: "Fresh catch of the day in coconut milk with curry leaves and mustard seeds."
+      }
+    ]
+  },
+
   imageContentSection: {
     imageSrc: assets.images.indiaMap,
     imagePosition: 'left' as const,
     decoratorImageSrc: assets.svgs.diamond,
     heading: "India’s Culinary Mosaic, Served with Heart",
-    subheading: "A journey through India’s kitchens—vibrant, soulful, and made to share",
+    subheading: "A journey through India’s kitchens vibrant, soulful, and made to share",
     backgroundColor: '#F5F1E8',
     headingColor: '#2D2A26',
     subheadingColor: '#5A5550',
@@ -105,7 +161,7 @@ const pageData = {
   <div class="home-page">
     <!-- Popup Modal -->
     <HomePopup v-bind="pageData.popupData" />
-    
+
     <!-- Image Content Section -->
     <ImageContentSection
       class="section"
@@ -119,43 +175,32 @@ const pageData = {
     />
 
     <!-- Slider Section 1 -->
-    <SliderSection 
+    <SliderSection
       class="section"
       :section-data="pageData.sliderSection1"
     />
 
-    <!-- Image Text Section 1 -->
-    <ImageTextSection
+    <!-- Combined Image Text Section (exact layout) -->
+    <DoubleImageTextSection
       class="section"
-      :dish-image-src="pageData.imageTextSection1.dishImageSrc"
-      :heading="pageData.imageTextSection1.heading"
-      :description="pageData.imageTextSection1.description"
-      :image-position="pageData.imageTextSection1.imagePosition"
-      :spacing_bottom_classes="pageData.imageTextSection1.spacingBottomClasses"
-    />
-
-    <!-- Image Text Section 2 -->
-    <ImageTextSection
-      class="section"
-      :dish-image-src="pageData.imageTextSection2.dishImageSrc"
-      :heading="pageData.imageTextSection2.heading"
-      :diamondImageSrc="pageData.imageTextSection2.diamondImageSrc"
-      :description="pageData.imageTextSection2.description"
-      :image-position="pageData.imageTextSection2.imagePosition"
-      :spacing_bottom_classes="pageData.imageTextSection2.spacingBottomClasses"
+      :section-one="pageData.imageTextSection1"
+      :section-two="pageData.imageTextSection2"
     />
       
-    <!-- Story Section 2 -->
-    <StorySection 
+    <!-- Story Section 2 (Canvas variant with stars) -->
+    <StorySectionCanvas
       class="section"
       v-bind="pageData.storySection2"
+      :decorator-image-src="assets.svgs.diamond"
     />
 
-    <!-- Slider Section 2 -->
-    <SliderSection 
+    <!-- Slider Section No Button -->
+    <SliderSectionNoButton
       class="section"
-      :section-data="pageData.sliderSection2"
+      :section-data="pageData.sliderSectionNoButton"
     />
+
+  
     
   </div>
 </template>

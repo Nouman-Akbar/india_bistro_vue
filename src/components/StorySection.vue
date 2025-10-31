@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import TextGenerateEffect from './TextGenerateEffect.vue'
 interface Props {
   heading?: string
   text?: string
@@ -13,7 +14,7 @@ interface Props {
 
 const props = withDefaults(defineProps<Props>(), {
   heading: 'A Story on Every Plate',
-  text: "At India Bistro, we celebrate India's endless culinary stories. From Delhi's fiery chaats to Kerala's coastal curries, every plate is a tribute to tradition, served with a refreshing twist. Step in, sit back, and taste India — all on one table.",
+  text: "At India Bistro, we celebrate India's endless culinary stories. From Delhi's fiery chaats to Kerala's coastal curries, every plate is a tribute to tradition, served with a refreshing twist. Step in, sit back, and taste India  all on one table.",
   backgroundColor: '#8D3A30',
   headingColor: '#F6D7B0',
   textColor: '#FCE6D5',
@@ -26,9 +27,9 @@ const sectionBgSrc = new URL('../assets/images/section_bg_pattern.svg', import.m
 </script>
 
 <template>
-  <section 
-    class="story-section" 
-    :style="{ 
+  <section
+    class="story-section"
+    :style="{
       '--bg-image': 'url(' + sectionBgSrc + ')',
       '--bg-color': props.backgroundColor,
       '--heading-color': props.headingColor,
@@ -36,9 +37,9 @@ const sectionBgSrc = new URL('../assets/images/section_bg_pattern.svg', import.m
     }"
   >
     <!-- Top decorative border -->
-    <div 
+    <div
       v-if="props.showTopBorder && props.borderImageSrc"
-      class="chunk-row chunk-row--top" 
+      class="chunk-row chunk-row--top"
       :style="{ backgroundImage: 'url(' + props.borderImageSrc + ')' }"
     ></div>
 
@@ -47,12 +48,12 @@ const sectionBgSrc = new URL('../assets/images/section_bg_pattern.svg', import.m
       <h2 v-if="props.heading" class="story-heading">
         {{ props.heading }}
       </h2>
-      <div class="flex items-center justify-center text-center py-10" v-if="props.diamondImageSrc ">
+      <div v-if="props.diamondImageSrc" class="flex items-center justify-center text-center py-10">
         <img :src="props.diamondImageSrc" alt="Diamond" class="h-20" />
       </div>
-      <p v-if="props.text" class="story-text">
-        {{ props.text }}
-      </p>
+      <div v-if="props.text" class="story-text">
+        <TextGenerateEffect :words="props.text" />
+      </div>
     </div>
 
     <!-- Decorative waves -->
@@ -77,13 +78,14 @@ const sectionBgSrc = new URL('../assets/images/section_bg_pattern.svg', import.m
     </div> -->
 
     <!-- Bottom decorative border -->
-    <div 
+    <div
       v-if="props.showBottomBorder && props.borderImageSrc"
-      class="chunk-row chunk-row--bottom" 
+      class="chunk-row chunk-row--bottom"
       :style="{ backgroundImage: 'url(' + props.borderImageSrc + ')' }"
     ></div>
   </section>
 </template>
+
 <style scoped>
 .story-section {
   position: relative;
@@ -132,7 +134,7 @@ const sectionBgSrc = new URL('../assets/images/section_bg_pattern.svg', import.m
   /* position: absolute;
   left: 0;
   right: 0;*/
-  height: 60px; 
+  height: 60px;
   background-size: auto 100%;
   background-position: left center;
   background-repeat: repeat-x;
@@ -197,17 +199,17 @@ const sectionBgSrc = new URL('../assets/images/section_bg_pattern.svg', import.m
   .story-section {
     padding: 3rem 0;
   }
-  
+
   .story-heading {
     font-size: 0.75rem;
     margin-bottom: 1.5rem;
   }
-  
+
   .story-text {
     font-size: 1rem;
     line-height: 1.6;
   }
-  
+
   .chunk-row {
     height: 40px;
   }

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { ref } from 'vue'
 
 // Asset URLs
 const assets = {
@@ -103,9 +102,7 @@ const pageData = {
         </div>
 
         <!-- Divider Section -->
-        <div class="divider-section">
-          <img :src="pageData.contentSection.dividerImage" alt="" class="divider-image" />
-        </div>
+        
       </div>
     </div>
 
@@ -115,14 +112,15 @@ const pageData = {
         <div
           v-for="(image, index) in pageData.contentSection.galleryImages"
           :key="image.id"
-          class="gallery-item"
-          :class="`border-color-${index + 1}`"
+          class="gallery-block"
         >
-          <img :src="image.image" :alt="image.title" class="gallery-image" />
-          <div class="gallery-text">
-            <h3 class="gallery-title">{{ image.title }}</h3>
-            <p class="gallery-category">{{ image.category }}</p>
+          <div
+            class="gallery-item"
+            :class="`border-color-${index + 1}`"
+          >
+            <img :src="image.image" :alt="image.title" class="gallery-image" />
           </div>
+          <p class="gallery-category gallery-caption">{{ image.category }}</p>
         </div>
       </div>
     </div>
@@ -265,6 +263,13 @@ const pageData = {
   width: 100%;
 }
 
+/* Wrapper to keep card and caption together in masonry columns */
+.gallery-block {
+  break-inside: avoid;
+  display: inline-block;
+  width: 100%;
+}
+
 @media (max-width: 768px) {
   .gallery-grid {
     column-count: 1;
@@ -279,7 +284,6 @@ const pageData = {
   overflow: hidden;
   transition: transform 0.3s ease;
   position: relative;
-  margin-bottom: clamp(1rem, 2vw, 1.5rem);
   break-inside: avoid;
   display: inline-block;
   width: 100%;
@@ -351,8 +355,16 @@ const pageData = {
 }
 
 /* Gallery Text */
+.gallery-caption {
+  margin-bottom: clamp(1rem, 2vw, 1.5rem);
+
+  margin-top: 0.5rem;
+  text-align: left;
+}
 .gallery-text {
   padding: clamp(0.75rem, 1.5vw, 1rem);
+  margin-bottom: clamp(1rem, 2vw, 1.5rem);
+
   text-align: center;
   background: rgba(255, 255, 255, 0.95);
 }

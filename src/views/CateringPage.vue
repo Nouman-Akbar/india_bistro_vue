@@ -23,7 +23,7 @@ const assets = {
 const pageData = {
   richTextSection: {
     heading: 'Private Dining & Events',
-    description: "Host your next celebration the India Bistro way — authentic flavours, stylish spaces, and warm service. Whether it's an intimate gathering, a corporate lunch, or a festive party, our team will craft a bespoke menu and experience just for you.",
+    description: "Host your next celebration the India Bistro way  authentic flavours, stylish spaces, and warm service. Whether it's an intimate gathering, a corporate lunch, or a festive party, our team will craft a bespoke menu and experience just for you.",
     decorationImageSrc: assets.svgs.brownDiamonds,
     sectionBgSrc: assets.svgs.sectionBg,
     bgColor: '#f4efe3',

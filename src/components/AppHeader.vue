@@ -5,13 +5,12 @@ import { RouterLink } from 'vue-router'
 const logoImage = new URL('../Logos/India Bistro-05.png', import.meta.url).href
 
 const navLinks = [
-  { name: 'Menu', path: '/menu' },
-  { name: 'Catering', path: '/catering' },
-  { name: 'Recipes', path: '/blog' },
-  // { name: 'Reservations', path: '/reservations' },
-  // { name: 'Blog', path: '/recipes' },
+  { name: 'About Us', path: '#' },
   { name: 'Gallery', path: '/gallery' },
-  { name: 'Contact', path: '/contact' }
+  { name: 'Menu', path: '/menu' },
+  { name: 'Private Dining', path: '#' },
+  { name: 'Blog', path: '/blog' },
+  { name: 'Contact Us', path: '/contact' }
 ]
 </script>
 
@@ -22,15 +21,23 @@ const navLinks = [
       <img :src="logoImage" alt="India Bistro" class="logo-image" />
     </RouterLink>
       <nav class="nav-links">
-        <RouterLink
-          v-for="link in navLinks"
-          :key="link.name"
-          :to="link.path"
-          class="nav-link"
-          active-class="nav-link-active"  
-        >
-          {{ link.name }}
-        </RouterLink>
+        <template v-for="link in navLinks" :key="link.name">
+          <RouterLink
+            v-if="link.path !== '#'"
+            :to="link.path"
+            class="nav-link"
+            active-class="nav-link-active"
+          >
+            {{ link.name }}
+          </RouterLink>
+          <a
+            v-else
+            :href="link.path"
+            class="nav-link"
+          >
+            {{ link.name }}
+          </a>
+        </template>
       </nav>
     </div>
   </header>
@@ -45,7 +52,7 @@ const navLinks = [
   z-index: 60;
   display: flex;
   justify-content: center;
-  background: #A7713A;
+  background: #AA8137;
   /* border-top: 4px solid #1c1310;
   border-bottom: 1px solid rgba(22, 9, 4, 0.55); */
 }
@@ -77,14 +84,14 @@ const navLinks = [
 
 .nav-links {
   display: flex;
-  gap: clamp(2rem, 6vw, 4.25rem);
+  gap: clamp(2rem, 6vw, 0.25rem);
   align-items: center;
 }
 
 .nav-link {
   font-family: 'Inter', sans-serif;
   font-size: clamp(0.68rem, 1.4vw, 0.78rem);
-  letter-spacing: 0.46em;
+  letter-spacing: 0.3em;
   text-transform: uppercase;
   color: rgba(248, 222, 190, 0.95);
   position: relative;

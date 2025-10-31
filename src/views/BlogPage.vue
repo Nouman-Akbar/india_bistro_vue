@@ -70,7 +70,7 @@ const blogPosts = [
 const pageData = {
   heroSection: {
     title: ' The India Bistro Journal ',
-    subtitle: 'Stories from our kitchens, chefs’ tips, signature recipes, behind-the-scenes glimpses — stay inspired and hungry.',
+    subtitle: 'Stories from our kitchens, chefs’ tips, signature recipes, behind-the-scenes glimpses  stay inspired and hungry.',
     backgroundImageSrc: assets.images.sectionBgPattern,
     bigBgIconSrc: assets.images.bigBgIcon,
     containerWidth: '800px'
@@ -108,9 +108,7 @@ const pageData = {
         </div>
 
         <!-- Divider Section -->
-        <div class="divider-section">
-          <img :src="pageData.contentSection.dividerImage" alt="" class="divider-image" />
-        </div>
+       
       </div>
     </div>
 
@@ -369,11 +367,6 @@ const pageData = {
 }
 
 .read-more-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
-  background-image: url('../assets/images/button_green_bg_diamond.svg');
-  background-size: contain;
-  background-position: center;
 }
 
 .read-more-btn:active {

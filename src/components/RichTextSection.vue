@@ -22,42 +22,38 @@ const props = withDefaults(defineProps<Props>(), {
   bgColor: '#f4efe3',
   headingColor: '#000000',
   descriptionColor: '#000000',
-  decorationColor: '#c85a3a'
+  decorationColor: '#c85a3a',
+  decorationImageSrc: new URL('../assets/images/diamond_story_section.svg', import.meta.url).href
 })
+
+const section_bg_pattern = new URL('../assets/images/section_bg_pattern.svg', import.meta.url).href
+const bigBgIcon = new URL('../assets/images/Big BG Icon.svg', import.meta.url).href
 </script>
 
 <template>
   <section
-    :class="`relative w-full bg-repeat bg-[length:600px] py-16 md:py-24`"
-    :style="{ 
-      backgroundImage: `url(${props.sectionBgSrc})`,
-      backgroundColor: props.bgColor
+    class="relative w-full bg-repeat bg-[length:600px] py-16 md:py-24 overflow-hidden"
+    :style="{
+      'background-image': `url(${section_bg_pattern})`,
+      'background-repeat': 'repeat',
+      'background-size': 'auto',
+      'background-position': 'center',
+      'background-color': props.bgColor
     }"
   >
+    <!-- Big BG Icon Overlay -->
+    <div class="big-bg-icon-overlay">
+      <img :src="bigBgIcon" alt="" class="big-bg-icon" />
+    </div>
     <div class="relative mx-auto flex w-full max-w-4xl flex-col items-center gap-8 px-6 text-center md:px-10">
-      <!-- Decoration Image (Diamond Pattern) -->
-      <div v-if="props.decorationImageSrc" class="flex items-center justify-center">
+      <!-- Decoration Image (Always Visible) -->
+      <div class="flex items-center justify-center">
         <img 
           :src="props.decorationImageSrc" 
           alt="Decoration" 
           class="h-6 w-auto opacity-90"
           :style="{ filter: `brightness(0) saturate(100%) invert(38%) sepia(47%) saturate(1234%) hue-rotate(337deg) brightness(92%) contrast(87%)` }"
         />
-      </div>
-
-      <!-- Diamond SVG Pattern (Fallback) -->
-      <div v-else class="flex items-center justify-center gap-1">
-        <svg 
-          v-for="i in 7" 
-          :key="i" 
-          width="12" 
-          height="12" 
-          viewBox="0 0 12 12" 
-          :fill="props.decorationColor"
-          class="opacity-90"
-        >
-          <rect x="6" y="0" width="8" height="8" transform="rotate(45 6 6)" />
-        </svg>
       </div>
 
       <!-- Heading -->
@@ -97,3 +93,30 @@ const props = withDefaults(defineProps<Props>(), {
     </div>
   </section>
 </template>
+
+<style scoped>
+/* Big BG Icon Overlay */
+.big-bg-icon-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  max-width: 800px;
+  height: auto;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.big-bg-icon {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* Ensure content is above the background overlay */
+.relative {
+  position: relative;
+  z-index: 3;
+}
+</style>

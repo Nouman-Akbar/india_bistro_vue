@@ -18,6 +18,10 @@ const props = withDefaults(defineProps<Props>(), {
   diamondImageSrc: ''
 })
 
+const section_bg_pattern = new URL('../assets/images/section_bg_pattern.svg', import.meta.url).href
+
+const bigBgIcon = new URL('../assets/images/Big BG Icon.svg', import.meta.url).href
+
 // Compute flex direction based on image position
 // Mobile: always flex-col (content first, image second)
 // Desktop: flex-row if image is right, flex-row-reverse if image is left
@@ -38,10 +42,18 @@ const descriptionParagraphs = computed(() => {
 
 <template>
   <section
-    :class="`relative w-full bg-[#f4efe3] bg-repeat bg-[length:600px] ${spacing_bottom_classes}`"
-    :style="{ backgroundImage: `url(${props.sectionBgSrc})` }"
+    :class="`relative w-full bg-repeat bg-[length:600px] overflow-hidden ${spacing_bottom_classes}`"
+    :style="{
+      'background-image': `url(${section_bg_pattern})`,
+      'background-repeat': 'repeat',
+      'background-size': 'auto',
+      'background-position': 'center'
+    }"
   >
-    <!-- <div class="absolute inset-0 bg-[#f4efe3]/85"></div> -->
+    <!-- Big BG Icon Overlay -->
+    <div class="big-bg-icon-overlay">
+      <img :src="bigBgIcon" alt="" class="big-bg-icon" />
+    </div>
 
     <div class="relative mx-auto flex w-full max-w-7xl flex-col gap-12 px-6 md:px-10">
       <!-- Heading Section -->
@@ -80,3 +92,30 @@ const descriptionParagraphs = computed(() => {
     </div>
   </section>
 </template>
+
+<style scoped>
+/* Big BG Icon Overlay */
+.big-bg-icon-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  max-width: 800px;
+  height: auto;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.big-bg-icon {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* Ensure content is above the background overlay */
+.relative {
+  position: relative;
+  z-index: 3;
+}
+</style>

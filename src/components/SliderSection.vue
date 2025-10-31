@@ -5,6 +5,11 @@
     'background-size': 'auto',
     'background-position': 'center'
   }">
+    <!-- Big BG Icon Overlay -->
+    <div class="big-bg-icon-overlay">
+      <img :src="bigBgIcon" alt="" class="big-bg-icon" />
+    </div>
+
     <div class="py-16 md:py-20">
       <!-- Section Heading -->
       <div class="text-center px-8 pb-16">
@@ -126,12 +131,40 @@
   </section>
 </template>
 
+<style scoped>
+/* Big BG Icon Overlay */
+.big-bg-icon-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  max-width: 800px;
+  height: auto;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.big-bg-icon {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* Ensure content is above the background overlay */
+.py-16 {
+  position: relative;
+  z-index: 3;
+}
+</style>
+
 <script setup lang="ts">
 import { computed, ref, onMounted, onUnmounted, reactive, watch } from 'vue'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
 const section_bg_pattern = new URL('../assets/images/section_bg_pattern.svg', import.meta.url).href
+const bigBgIcon = new URL('../assets/images/Big BG Icon.svg', import.meta.url).href
 
 interface SliderBlock {
   block_image: string
@@ -368,7 +401,7 @@ watch(() => state.currentOffset, () => {
 }
 
 .slider-action-button:hover .slider-action-button__diamond path {
-  fill: #f0a345;
+  fill: #5c823d;
 }
 
 .slider-action-button__label {
