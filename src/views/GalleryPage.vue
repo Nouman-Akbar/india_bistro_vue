@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import GalleryParallax from '../components/GalleryParallax.vue';
 
 // Asset URLs
 const assets = {
@@ -125,6 +126,10 @@ const pageData = {
       </div>
     </div>
   </div>
+  <GalleryParallax
+    class="gallery-parallax-section"
+    :items="pageData.contentSection.galleryImages"
+  />
 </template>
 
 <style scoped>
@@ -386,6 +391,10 @@ const pageData = {
   font-weight: 500;
 }
 
+.gallery-parallax-section {
+  width: 100%;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
   .gallery-container {
@@ -395,6 +404,8 @@ const pageData = {
   .hero-main-container {
     padding: clamp(3rem, 6vw, 4rem) 0;
   }
+
+
 }
 
 @media (max-width: 480px) {
@@ -405,5 +416,7 @@ const pageData = {
   .hero-main-container {
     padding: clamp(2rem, 4vw, 3rem) 0;
   }
+
+
 }
 </style>

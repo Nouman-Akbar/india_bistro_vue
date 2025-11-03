@@ -5,7 +5,7 @@ import { RouterLink } from 'vue-router'
 const logoImage = new URL('../Logos/India Bistro-05.png', import.meta.url).href
 
 const navLinks = [
-  { name: 'About Us', path: '#' },
+  { name: 'About Us', path: '/about' },
   { name: 'Gallery', path: '/gallery' },
   { name: 'Menu', path: '/menu' },
   { name: 'Private Dining', path: '#' },

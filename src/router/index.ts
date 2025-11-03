@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomePage from '../views/HomePage.vue'
+import AboutUsPage from '../views/AboutUsPage.vue'
 import MenuPage from '../views/MenuPage.vue'
 import ReservationsPage from '../views/ReservationsPage.vue'
 import RecipesPage from '../views/RecipesPage.vue'
@@ -15,6 +16,11 @@ const router = createRouter({
       path: '/',
       name: 'home',
       component: HomePage
+    },
+    {
+      path: '/about',
+      name: 'about',
+      component: AboutUsPage
     },
     {
       path: '/menu',
@@ -52,8 +58,21 @@ const router = createRouter({
       component: CateringPage
     }
   ],
-  scrollBehavior() {
-    return { top: 0 }
+  scrollBehavior(to, from, savedPosition) {
+    if (savedPosition) {
+      return savedPosition
+    }
+
+    if (typeof window !== 'undefined') {
+      const locoScroll = (window as { locoScroll?: { scrollTo?: (target: number, options?: Record<string, unknown>) => void } }).locoScroll
+      if (locoScroll?.scrollTo) {
+        locoScroll.scrollTo(0, { duration: 0, disableLerp: true })
+      } else {
+        window.scrollTo({ top: 0, left: 0, behavior: 'auto' })
+      }
+    }
+
+    return { left: 0, top: 0 }
   }
 })
 

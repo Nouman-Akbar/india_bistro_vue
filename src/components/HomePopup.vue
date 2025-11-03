@@ -12,7 +12,7 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  heading: "WE'RE NOW OPEN IN LEEDS! RESERVE YOUR TABLE TODAY.",
+  heading: "We’re now open in Leeds! Reserve your table at India Bistro UK today and enjoy the best Indian food in town.",
   buttonText: 'BOOK A TABLE',
   buttonLink: '/contact',
   buttonBackgroundSrc: new URL('../assets/images/button_orange_bg_diamond.svg', import.meta.url).href,

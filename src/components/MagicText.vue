@@ -1,7 +1,5 @@
 <script setup lang="ts">
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
-import { gsap } from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
 interface Props {
   text: string
@@ -16,7 +14,6 @@ const props = withDefaults(defineProps<Props>(), {
 
 const containerRef = ref<HTMLElement | null>(null)
 const scrollProgress = ref(0)
-let trigger: ScrollTrigger | null = null
 
 const words = computed(() => {
   return props.text.trim().split(/\s+/).filter(Boolean)
@@ -68,27 +65,70 @@ onMounted(async () => {
     return
   }
 
-  gsap.registerPlugin(ScrollTrigger)
+  // Simple approach: use regular scroll events instead of Locomotive
+  const updateAnimation = () => {
+    if (!containerRef.value) return
 
-  trigger = ScrollTrigger.create({
-    trigger: containerRef.value,
-    scroller: '#main',
-    start: 'top 90%',
-    end: 'top 60%',
-    scrub: true,
-    onUpdate: (self) => {
-      setProgress(self.progress)
+    const rect = containerRef.value.getBoundingClientRect()
+    const viewportHeight = window.innerHeight
+    const elementTop = rect.top
+
+    let progress = 0
+
+    // When scrolling DOWN:
+    // - Element starts below viewport (elementTop > viewportHeight) -> progress = 0
+    // - Element enters viewport -> progress increases from 0 to 1
+    // - Element reaches top (elementTop <= 0) -> progress = 1
+
+    if (elementTop >= viewportHeight) {
+      // Element below viewport
+      progress = 0
+    } else if (elementTop <= 0) {
+      // Element at or above top of viewport
+      progress = 1
+    } else {
+      // Element is entering viewport from bottom
+      // elementTop goes from viewportHeight to 0 as we scroll DOWN
+      progress = 1 - (elementTop / viewportHeight)
     }
-  })
 
-  trigger.refresh()
-  setProgress(trigger.progress ?? 0)
+    setProgress(progress)
+  }
+
+  // Initial update
+  updateAnimation()
+
+  // Listen to scroll events
+  const throttledUpdate = () => {
+    requestAnimationFrame(updateAnimation)
+  }
+
+  window.addEventListener('scroll', throttledUpdate, { passive: true })
+  ;(containerRef.value as any)._scrollHandler = throttledUpdate
 })
 
 watch(words, () => {
   nextTick(() => {
-    trigger?.refresh()
-    setProgress(trigger?.progress ?? scrollProgress.value)
+    // Recalculate animation when words change
+    if (containerRef.value && (containerRef.value as any)._scrollHandler) {
+      const updateFunc = () => {
+        const rect = containerRef.value?.getBoundingClientRect()
+        const viewportHeight = window.innerHeight
+        const elementTop = rect?.top || 0
+
+        let progress = 0
+        if (elementTop >= viewportHeight) {
+          progress = 0
+        } else if (elementTop <= 0) {
+          progress = 1
+        } else {
+          progress = 1 - (elementTop / viewportHeight)
+        }
+
+        setProgress(progress)
+      }
+      updateFunc()
+    }
   })
 })
 
@@ -96,15 +136,35 @@ watch(
   () => [props.segmentIndex, props.segmentCount],
   () => {
     nextTick(() => {
-      trigger?.refresh()
-      setProgress(trigger?.progress ?? scrollProgress.value)
+      // Recalculate when segment props change
+      if (containerRef.value) {
+        const rect = containerRef.value.getBoundingClientRect()
+        const viewportHeight = window.innerHeight
+        const elementTop = rect.top
+
+        let progress = 0
+        if (elementTop >= viewportHeight) {
+          progress = 0
+        } else if (elementTop <= 0) {
+          progress = 1
+        } else {
+          progress = 1 - (elementTop / viewportHeight)
+        }
+
+        setProgress(progress)
+      }
     })
   }
 )
 
 onBeforeUnmount(() => {
-  trigger?.kill()
-  trigger = null
+  if (containerRef.value) {
+    // Remove scroll listener
+    if ((containerRef.value as any)._scrollHandler) {
+      window.removeEventListener('scroll', (containerRef.value as any)._scrollHandler)
+      delete (containerRef.value as any)._scrollHandler
+    }
+  }
 })
 
 const getWordOpacity = (index: number) => {
@@ -121,7 +181,13 @@ const getWordOpacity = (index: number) => {
   }
 
   const ratio = (segmentProgress.value - start) / (end - start)
-  return clamp(ratio, 0, 1)
+
+  // Apply easing for faster animation (quadratic ease-out)
+  const easedRatio = ratio < 0.5
+    ? 2 * ratio * ratio
+    : 1 - Math.pow(-2 * ratio + 2, 2) / 2
+
+  return clamp(easedRatio, 0, 1)
 }
 </script>
 
@@ -165,6 +231,6 @@ const getWordOpacity = (index: number) => {
 
 .magic-text-foreground {
   display: inline-block;
-  transition: opacity 0.35s ease-out;
+  transition: opacity 0.15s cubic-bezier(0.4, 0, 0.2, 1);
 }
 </style>

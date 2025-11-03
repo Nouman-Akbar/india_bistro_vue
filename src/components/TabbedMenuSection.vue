@@ -48,32 +48,32 @@ const defaultCategories: MenuCategory[] = [
       {
         name: 'Samosa Chat',
         description: 'Crispy samosa pieces topped with chickpeas, yogurt, chutneys, and spices',
-        imageSrc: new URL('../assets/images/dishes/samosa-chat.jpg', import.meta.url).href
+        imageSrc: new URL('../assets/images/samosa-chat.jpg', import.meta.url).href
       },
       {
         name: 'Paneer Tikka',
         description: 'Marinated cottage cheese cubes grilled in tandoor with vegetables',
-        imageSrc: new URL('../assets/images/dishes/paneer-tikka.jpg', import.meta.url).href
+        imageSrc: new URL('../assets/images/paneer-tikka.jpg', import.meta.url).href
       },
       {
         name: 'Aloo Tikki',
         description: 'Spiced potato patties served with chutney and yogurt',
-        imageSrc: new URL('../assets/images/dishes/aloo-tikki.jpg', import.meta.url).href
+        imageSrc: new URL('../assets/images/aloo-tikki.jpg', import.meta.url).href
       },
       {
         name: 'Hara Bhara Kebab',
         description: 'Spinach and pea patties, crisp outside and tender inside',
-        imageSrc: new URL('../assets/images/dishes/aloo-tikki.jpg', import.meta.url).href
+        imageSrc: new URL('../assets/images/aloo-tikki.jpg', import.meta.url).href
       },
       {
         name: 'Papdi Chaat',
         description: 'Crispy papdi topped with potatoes, chutneys and yogurt',
-        imageSrc: new URL('../assets/images/dishes/samosa-chat.jpg', import.meta.url).href
+        imageSrc: new URL('../assets/images/samosa-chat.jpg', import.meta.url).href
       },
       {
         name: 'Dahi Puri',
         description: 'Hollow puris filled with spiced potatoes, chutneys and yogurt',
-        imageSrc: new URL('../assets/images/dishes/samosa-chat.jpg', import.meta.url).href
+        imageSrc: new URL('../assets/images/samosa-chat.jpg', import.meta.url).href
       }
     ]
   },
@@ -84,32 +84,32 @@ const defaultCategories: MenuCategory[] = [
       {
         name: 'Butter Chicken',
         description: 'Tender chicken in creamy tomato and butter sauce with aromatic spices',
-        imageSrc: new URL('../assets/images/dishes/butter-chicken.jpg', import.meta.url).href
+        imageSrc: new URL('../assets/images/butter-chicken.jpg', import.meta.url).href
       },
       {
         name: 'Paneer Butter Masala',
         description: 'Cottage cheese cubes in rich, creamy tomato-based gravy',
-        imageSrc: new URL('../assets/images/dishes/paneer-butter-masala.jpg', import.meta.url).href
+        imageSrc: new URL('../assets/images/paneer-butter-masala.jpg', import.meta.url).href
       },
       {
         name: 'Lamb Rogan Josh',
         description: 'Traditional Kashmiri curry with tender lamb in aromatic gravy',
-        imageSrc: new URL('../assets/images/dishes/rogan-josh.jpg', import.meta.url).href
+        imageSrc: new URL('../assets/images/rogan-josh.jpg', import.meta.url).href
       },
       {
         name: 'Dal Makhani',
         description: 'Creamy black lentils slow-cooked with butter and spices',
-        imageSrc: new URL('../assets/images/dishes/dal-makhani.jpg', import.meta.url).href
+        imageSrc: new URL('../assets/images/dal-makhani.jpg', import.meta.url).href
       },
       {
         name: 'Chole',
         description: 'Punjabi style chickpea curry simmered with spices',
-        imageSrc: new URL('../assets/images/dishes/dal-makhani.jpg', import.meta.url).href
+        imageSrc: new URL('../assets/images/dal-makhani.jpg', import.meta.url).href
       },
       {
         name: 'Palak Paneer',
         description: 'Cottage cheese simmered in smooth spinach gravy',
-        imageSrc: new URL('../assets/images/dishes/paneer-butter-masala.jpg', import.meta.url).href
+        imageSrc: new URL('../assets/images/paneer-butter-masala.jpg', import.meta.url).href
       }
     ]
   },
@@ -120,32 +120,32 @@ const defaultCategories: MenuCategory[] = [
       {
         name: 'Garlic Naan',
         description: 'Soft leavened bread topped with garlic butter and fresh herbs',
-        imageSrc: new URL('../assets/images/dishes/garlic-naan.jpg', import.meta.url).href
+        imageSrc: new URL('../assets/images/garlic-naan.jpg', import.meta.url).href
       },
       {
         name: 'Butter Roti',
         description: 'Whole wheat flatbread brushed with butter',
-        imageSrc: new URL('../assets/images/dishes/butter-roti.jpg', import.meta.url).href
+        imageSrc: new URL('../assets/images/butter-roti.jpg', import.meta.url).href
       },
       {
         name: 'Paratha',
         description: 'Layered flatbread with ghee, crispy and flaky',
-        imageSrc: new URL('../assets/images/dishes/paratha.jpg', import.meta.url).href
+        imageSrc: new URL('../assets/images/paratha.jpg', import.meta.url).href
       },
       {
         name: 'Tandoori Roti',
         description: 'Whole wheat bread cooked in tandoor',
-        imageSrc: new URL('../assets/images/dishes/butter-roti.jpg', import.meta.url).href
+        imageSrc: new URL('../assets/images/butter-roti.jpg', import.meta.url).href
       },
       {
         name: 'Cheese Naan',
         description: 'Stuffed naan with gooey cheese',
-        imageSrc: new URL('../assets/images/dishes/garlic-naan.jpg', import.meta.url).href
+        imageSrc: new URL('../assets/images/garlic-naan.jpg', import.meta.url).href
       },
       {
         name: 'Laccha Paratha',
         description: 'Multi-layered flaky paratha',
-        imageSrc: new URL('../assets/images/dishes/paratha.jpg', import.meta.url).href
+        imageSrc: new URL('../assets/images/paratha.jpg', import.meta.url).href
       }
     ]
   },
@@ -156,32 +156,32 @@ const defaultCategories: MenuCategory[] = [
       {
         name: 'Chicken Biryani',
         description: 'Fragrant basmati rice with marinated chicken, aromatic spices and herbs',
-        imageSrc: new URL('../assets/images/dishes/chicken-biryani.jpg', import.meta.url).href
+        imageSrc: new URL('../assets/images/chicken-biryani.jpg', import.meta.url).href
       },
       {
         name: 'Vegetable Pulao',
         description: 'Basmati rice cooked with mixed vegetables and aromatic spices',
-        imageSrc: new URL('../assets/images/dishes/veg-pulao.jpg', import.meta.url).href
+        imageSrc: new URL('../assets/images/veg-pulao.jpg', import.meta.url).href
       },
       {
         name: 'Jeera Rice',
         description: 'Basmati rice tempered with cumin',
-        imageSrc: new URL('../assets/images/dishes/veg-pulao.jpg', import.meta.url).href
+        imageSrc: new URL('../assets/images/veg-pulao.jpg', import.meta.url).href
       },
       {
         name: 'Mutton Biryani',
         description: 'Slow-cooked lamb layered with fragrant basmati rice',
-        imageSrc: new URL('../assets/images/dishes/chicken-biryani.jpg', import.meta.url).href
+        imageSrc: new URL('../assets/images/chicken-biryani.jpg', import.meta.url).href
       },
       {
         name: 'Peas Pulao',
         description: 'Fluffy basmati with sweet green peas',
-        imageSrc: new URL('../assets/images/dishes/veg-pulao.jpg', import.meta.url).href
+        imageSrc: new URL('../assets/images/veg-pulao.jpg', import.meta.url).href
       },
       {
         name: 'Egg Fried Rice',
         description: 'Stir-fried rice with egg and aromatics',
-        imageSrc: new URL('../assets/images/dishes/veg-pulao.jpg', import.meta.url).href
+        imageSrc: new URL('../assets/images/veg-pulao.jpg', import.meta.url).href
       }
     ]
   },
@@ -192,32 +192,32 @@ const defaultCategories: MenuCategory[] = [
       {
         name: 'Gulab Jamun',
         description: 'Soft milk dumplings soaked in rose-flavored sugar syrup',
-        imageSrc: new URL('../assets/images/dishes/gulab-jamun.jpg', import.meta.url).href
+        imageSrc: new URL('../assets/images/gulab-jamun.jpg', import.meta.url).href
       },
       {
         name: 'Rasmalai',
         description: 'Soft cottage cheese dumplings in creamy milk sauce with pistachios',
-        imageSrc: new URL('../assets/images/dishes/rasmalai.jpg', import.meta.url).href
+        imageSrc: new URL('../assets/images/rasmalai.jpg', import.meta.url).href
       },
       {
         name: 'Mango Kulfi',
         description: 'Traditional Indian ice cream with mango flavor',
-        imageSrc: new URL('../assets/images/dishes/mango-kulfi.jpg', import.meta.url).href
+        imageSrc: new URL('../assets/images/mango-kulfi.jpg', import.meta.url).href
       },
       {
         name: 'Kheer',
         description: 'Creamy rice pudding with cardamom and nuts',
-        imageSrc: new URL('../assets/images/dishes/rasmalai.jpg', import.meta.url).href
+        imageSrc: new URL('../assets/images/rasmalai.jpg', import.meta.url).href
       },
       {
         name: 'Jalebi',
         description: 'Crisp spiral sweets soaked in syrup',
-        imageSrc: new URL('../assets/images/dishes/gulab-jamun.jpg', import.meta.url).href
+        imageSrc: new URL('../assets/images/gulab-jamun.jpg', import.meta.url).href
       },
       {
         name: 'Chocolate Kulfi',
         description: 'Kulfi with rich chocolate flavor',
-        imageSrc: new URL('../assets/images/dishes/mango-kulfi.jpg', import.meta.url).href
+        imageSrc: new URL('../assets/images/mango-kulfi.jpg', import.meta.url).href
       }
     ]
   },
@@ -228,32 +228,32 @@ const defaultCategories: MenuCategory[] = [
       {
         name: 'Mango Lassi',
         description: 'Creamy yogurt drink with mango pulp and cardamom',
-        imageSrc: new URL('../assets/images/dishes/mango-lassi.jpg', import.meta.url).href
+        imageSrc: new URL('../assets/images/mango-lassi.jpg', import.meta.url).href
       },
       {
         name: 'Masala Chai',
         description: 'Traditional Indian spiced tea with milk and sweeteners',
-        imageSrc: new URL('../assets/images/dishes/masala-chai.jpg', import.meta.url).href
+        imageSrc: new URL('../assets/images/masala-chai.jpg', import.meta.url).href
       },
       {
         name: 'Fresh Lime Soda',
         description: 'Refreshing drink with fresh lime, soda water, and spices',
-        imageSrc: new URL('../assets/images/dishes/lime-soda.jpg', import.meta.url).href
+        imageSrc: new URL('../assets/images/lime-soda.jpg', import.meta.url).href
       },
       {
         name: 'Sweet Lassi',
         description: 'Classic yogurt drink, lightly sweetened',
-        imageSrc: new URL('../assets/images/dishes/mango-lassi.jpg', import.meta.url).href
+        imageSrc: new URL('../assets/images/mango-lassi.jpg', import.meta.url).href
       },
       {
         name: 'Cold Coffee',
         description: 'Iced coffee with milk and a touch of sugar',
-        imageSrc: new URL('../assets/images/dishes/mango-lassi.jpg', import.meta.url).href
+        imageSrc: new URL('../assets/images/mango-lassi.jpg', import.meta.url).href
       },
       {
         name: 'Sparkling Water',
         description: 'Chilled soda water with a slice of lime',
-        imageSrc: new URL('../assets/images/dishes/lime-soda.jpg', import.meta.url).href
+        imageSrc: new URL('../assets/images/lime-soda.jpg', import.meta.url).href
       }
     ]
   }

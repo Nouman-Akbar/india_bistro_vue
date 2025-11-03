@@ -1,139 +1,133 @@
-npx shadcn@latest add https://reactbits.dev/r/ScrollReveal-JS-CSS
+'use client';
+import React from 'react';
+import { cn } from '@/lib/utils';
+import Lenis from '@studio-freight/lenis'
+import { ZoomParallax } from "@/components/ui/zoom-parallax";
 
-import ScrollReveal from './ScrollReveal';
+export default function DefaultDemo() {
 
-<ScrollReveal
-  baseOpacity={0}
-  enableBlur={true}
-  baseRotation={5}
-  blurStrength={10}
->
-  When does a man die? When he is hit by a bullet? No! When he suffers a disease?
-  No! When he ate a soup made out of a poisonous mushroom?
-  No! A man dies when he is forgotten!
-</ScrollReveal>
+	React.useEffect( () => {
+        const lenis = new Lenis()
+       
+        function raf(time: number) {
+            lenis.raf(time)
+            requestAnimationFrame(raf)
+        }
+
+        requestAnimationFrame(raf)
+    },[])
 
 
+	const images = [
+		{
+			src: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1280&h=720&fit=crop&crop=entropy&auto=format&q=80',
+			alt: 'Modern architecture building',
+		},
+		{
+			src: 'https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=1280&h=720&fit=crop&crop=entropy&auto=format&q=80',
+			alt: 'Urban cityscape at sunset',
+		},
+		{
+			src: 'https://images.unsplash.com/photo-1557683316-973673baf926?w=800&h=800&fit=crop&crop=entropy&auto=format&q=80',
+			alt: 'Abstract geometric pattern',
+		},
+		{
+			src: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1280&h=720&fit=crop&crop=entropy&auto=format&q=80',
+			alt: 'Mountain landscape',
+		},
+		{
+			src: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=800&h=800&fit=crop&crop=entropy&auto=format&q=80',
+			alt: 'Minimalist design elements',
+		},
+		{
+			src: 'https://images.unsplash.com/photo-1439066615861-d1af74d74000?w=1280&h=720&fit=crop&crop=entropy&auto=format&q=80',
+			alt: 'Ocean waves and beach',
+		},
+		{
+			src: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=1280&h=720&fit=crop&crop=entropy&auto=format&q=80',
+			alt: 'Forest trees and sunlight',
+		},
+	];
 
-##CSS
-.scroll-reveal {
-  margin: 20px 0;
+	return (
+		<main className="min-h-screen w-full">
+			<div className="relative flex h-[50vh] items-center justify-center">
+				{/* Radial spotlight */}
+				<div
+					aria-hidden="true"
+					className={cn(
+						'pointer-events-none absolute -top-1/2 left-1/2 h-[120vmin] w-[120vmin] -translate-x-1/2 rounded-full',
+						'bg-[radial-gradient(ellipse_at_center,--theme(--color-foreground/.1),transparent_50%)]',
+						'blur-[30px]',
+					)}
+				/>
+				<h1 className="text-center text-4xl font-bold">
+					Scroll Down for Zoom Parallax
+				</h1>
+			</div>
+			<ZoomParallax images={images} />
+			<div className="h-[50vh]"/>
+		</main>
+	);
 }
 
-.scroll-reveal-text {
-  font-size: clamp(1.6rem, 4vw, 3rem);
-  line-height: 1.5;
-  font-weight: 600;
+
+tsx
+'use client';
+
+import { useScroll, useTransform, motion } from 'framer-motion';
+import { useRef } from 'react';
+
+interface Image {
+	src: string;
+	alt?: string;
 }
 
-.word {
-  display: inline-block;
+interface ZoomParallaxProps {
+	/** Array of images to be displayed in the parallax effect max 7 images */
+	images: Image[];
 }
-##JS
-import { useEffect, useRef, useMemo } from 'react';
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
-import './ScrollReveal.css';
+export function ZoomParallax({ images }: ZoomParallaxProps) {
+	const container = useRef(null);
+	const { scrollYProgress } = useScroll({
+		target: container,
+		offset: ['start start', 'end end'],
+	});
 
-gsap.registerPlugin(ScrollTrigger);
+	const scale4 = useTransform(scrollYProgress, [0, 1], [1, 4]);
+	const scale5 = useTransform(scrollYProgress, [0, 1], [1, 5]);
+	const scale6 = useTransform(scrollYProgress, [0, 1], [1, 6]);
+	const scale8 = useTransform(scrollYProgress, [0, 1], [1, 8]);
+	const scale9 = useTransform(scrollYProgress, [0, 1], [1, 9]);
 
-const ScrollReveal = ({
-  children,
-  scrollContainerRef,
-  enableBlur = true,
-  baseOpacity = 0.1,
-  baseRotation = 3,
-  blurStrength = 4,
-  containerClassName = '',
-  textClassName = '',
-  rotationEnd = 'bottom bottom',
-  wordAnimationEnd = 'bottom bottom'
-}) => {
-  const containerRef = useRef(null);
+	const scales = [scale4, scale5, scale6, scale5, scale6, scale8, scale9];
 
-  const splitText = useMemo(() => {
-    const text = typeof children === 'string' ? children : '';
-    return text.split(/(\s+)/).map((word, index) => {
-      if (word.match(/^\s+$/)) return word;
-      return (
-        <span className="word" key={index}>
-          {word}
-        </span>
-      );
-    });
-  }, [children]);
+	return (
+		<div ref={container} className="relative h-[300vh]">
+			<div className="sticky top-0 h-screen overflow-hidden">
+				{images.map(({ src, alt }, index) => {
+					const scale = scales[index % scales.length];
 
-  useEffect(() => {
-    const el = containerRef.current;
-    if (!el) return;
+					return (
+						<motion.div
+							key={index}
+							style={{ scale }}
+							className={`absolute top-0 flex h-full w-full items-center justify-center ${index === 1 ? '[&>div]:!-top-[30vh] [&>div]:!left-[5vw] [&>div]:!h-[30vh] [&>div]:!w-[35vw]' : ''} ${index === 2 ? '[&>div]:!-top-[10vh] [&>div]:!-left-[25vw] [&>div]:!h-[45vh] [&>div]:!w-[20vw]' : ''} ${index === 3 ? '[&>div]:!left-[27.5vw] [&>div]:!h-[25vh] [&>div]:!w-[25vw]' : ''} ${index === 4 ? '[&>div]:!top-[27.5vh] [&>div]:!left-[5vw] [&>div]:!h-[25vh] [&>div]:!w-[20vw]' : ''} ${index === 5 ? '[&>div]:!top-[27.5vh] [&>div]:!-left-[22.5vw] [&>div]:!h-[25vh] [&>div]:!w-[30vw]' : ''} ${index === 6 ? '[&>div]:!top-[22.5vh] [&>div]:!left-[25vw] [&>div]:!h-[15vh] [&>div]:!w-[15vw]' : ''} `}
+						>
+							<div className="relative h-[25vh] w-[25vw]">
+								<img
+									src={src || '/placeholder.svg'}
+									alt={alt || `Parallax image ${index + 1}`}
+									className="h-full w-full object-cover"
+								/>
+							</div>
+						</motion.div>
+					);
+				})}
+			</div>
+		</div>
+	);
+}
 
-    const scroller = scrollContainerRef && scrollContainerRef.current ? scrollContainerRef.current : window;
 
-    gsap.fromTo(
-      el,
-      { transformOrigin: '0% 50%', rotate: baseRotation },
-      {
-        ease: 'none',
-        rotate: 0,
-        scrollTrigger: {
-          trigger: el,
-          scroller,
-          start: 'top bottom',
-          end: rotationEnd,
-          scrub: true
-        }
-      }
-    );
-
-    const wordElements = el.querySelectorAll('.word');
-
-    gsap.fromTo(
-      wordElements,
-      { opacity: baseOpacity, willChange: 'opacity' },
-      {
-        ease: 'none',
-        opacity: 1,
-        stagger: 0.05,
-        scrollTrigger: {
-          trigger: el,
-          scroller,
-          start: 'top bottom-=20%',
-          end: wordAnimationEnd,
-          scrub: true
-        }
-      }
-    );
-
-    if (enableBlur) {
-      gsap.fromTo(
-        wordElements,
-        { filter: `blur(${blurStrength}px)` },
-        {
-          ease: 'none',
-          filter: 'blur(0px)',
-          stagger: 0.05,
-          scrollTrigger: {
-            trigger: el,
-            scroller,
-            start: 'top bottom-=20%',
-            end: wordAnimationEnd,
-            scrub: true
-          }
-        }
-      );
-    }
-
-    return () => {
-      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
-    };
-  }, [scrollContainerRef, enableBlur, baseRotation, baseOpacity, rotationEnd, wordAnimationEnd, blurStrength]);
-
-  return (
-    <h2 ref={containerRef} className={`scroll-reveal ${containerClassName}`}>
-      <p className={`scroll-reveal-text ${textClassName}`}>{splitText}</p>
-    </h2>
-  );
-};
-
-export default ScrollReveal;

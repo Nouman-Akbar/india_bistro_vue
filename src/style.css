@@ -6,7 +6,7 @@
 /* Font Face Declarations */
 @font-face {
   font-family: "PPMori";
-  src: url("../Fonts/PPMori-Regular.ttf") format("truetype");
+  src: url("./Fonts/PPMori-Regular.ttf") format("truetype");
   font-weight: normal;
   font-style: normal;
   font-display: swap;
@@ -14,7 +14,7 @@
 
 @font-face {
   font-family: "Pitch";
-  src: url("../Fonts/Pitch-Semibold.otf") format("opentype");
+  src: url("./Fonts/Pitch-Semibold.otf") format("opentype");
   font-weight: 600;
   font-style: normal;
   font-display: swap;
@@ -22,7 +22,7 @@
 
 @font-face {
   font-family: "SweetSansPro";
-  src: url("../Fonts/SweetSansProMedium.otf") format("opentype");
+  src: url("./Fonts/SweetSansProMedium.otf") format("opentype");
   font-weight: 500;
   font-style: normal;
   font-display: swap;
@@ -30,7 +30,7 @@
 
 @font-face {
   font-family: "FoundersGrotesk";
-  src: url("../Fonts/FoundersGroteskXCond-Med.otf") format("opentype");
+  src: url("./Fonts/FoundersGroteskXCond-Med.otf") format("opentype");
   font-weight: 500;
   font-style: normal;
   font-display: swap;
@@ -38,12 +38,11 @@
 
 @font-face {
   font-family: "F37Britain";
-  src: url("../Fonts/F37Britain-TypewriterRegular.otf") format("opentype");
+  src: url("./Fonts/F37Britain-TypewriterRegular.otf") format("opentype");
   font-weight: normal;
   font-style: normal;
   font-display: swap;
 }
-
 
 body {
   background-color: #111111;
