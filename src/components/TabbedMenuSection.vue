@@ -321,7 +321,7 @@ const layoutRows = computed<LayoutRow[]>(() => {
     </div>
     <div class="relative mx-auto w-full max-w-6xl px-6 md:px-10">
       <!-- Tabs Navigation -->
-      <div class="mb-12 tabs-container flex items-center justify-center gap-4 overflow-x-auto whitespace-nowrap no-scrollbar">
+      <div class="mb-12 tabs-container flex items-center justify-start gap-4 overflow-x-auto whitespace-nowrap no-scrollbar">
         <button
           v-for="category in categories"
           :key="category.id"
