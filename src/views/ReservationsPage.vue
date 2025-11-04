@@ -175,7 +175,7 @@ const handleSubmit = () => {
 }
 
 .page-title {
-  font-family: 'Playfair Display', serif;
+  font-family: 'PPMori', sans-serif;
   font-size: clamp(2.5rem, 6vw, 4rem);
   font-weight: 700;
   color: #f4e0c8;
@@ -209,7 +209,7 @@ const handleSubmit = () => {
 }
 
 .info-title {
-  font-family: 'Playfair Display', serif;
+  font-family: 'PPMori', sans-serif;
   font-size: clamp(1.75rem, 3.5vw, 2.25rem);
   font-weight: 600;
   color: #f4e0c8;
@@ -224,7 +224,7 @@ const handleSubmit = () => {
 }
 
 .info-item h3 {
-  font-family: 'Playfair Display', serif;
+  font-family: 'PPMori', sans-serif;
   font-size: clamp(1.1rem, 2vw, 1.35rem);
   font-weight: 600;
   color: #A7713A;
@@ -247,7 +247,7 @@ const handleSubmit = () => {
 }
 
 .form-title {
-  font-family: 'Playfair Display', serif;
+  font-family: 'PPMori', sans-serif;
   font-size: clamp(1.75rem, 3.5vw, 2.25rem);
   font-weight: 600;
   color: #f4e0c8;

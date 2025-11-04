@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import MagicText from './MagicText.vue'
 
 interface Props {
   heading?: string
@@ -73,14 +72,13 @@ const storyParagraphs = computed(() => {
       </div>
 
       <template v-if="storyParagraphs.length">
-        <MagicText
+        <p
           v-for="(paragraph, idx) in storyParagraphs"
           :key="`story-paragraph-${idx}`"
-          :text="paragraph"
-          :segment-count="storyParagraphs.length"
-          :segment-index="idx"
-          class="story-text"
-        />
+          class="story-text whitespace-pre-line"
+        >
+          {{ paragraph }}
+        </p>
       </template>
     </div>
 
@@ -124,7 +122,7 @@ const storyParagraphs = computed(() => {
 
 .story-heading {
   /* Heading typography */
-  font-family: "SweetSansPro", sans-serif;
+  font-family: "PPMori", sans-serif;
   font-weight: 500;
   font-style: normal;
   font-size: 32px;

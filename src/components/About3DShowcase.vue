@@ -241,7 +241,7 @@ const narrativeParagraphs = [
 }
 
 .section-title {
-  font-family: 'Playfair Display', ui-serif, Georgia, 'Times New Roman', serif;
+  font-family: 'PPMori', sans-serif;
   font-size: clamp(2rem, 6vw, 4rem);
   font-weight: 700;
   color: #202A2C;

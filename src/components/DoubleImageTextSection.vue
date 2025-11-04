@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import MagicText from './MagicText.vue'
 
 interface SectionProps {
   dishImageSrc: string
@@ -87,14 +86,13 @@ const overlapTextClass = 'md:-mt-16 md:self-start'
         <!-- First Row: Text + Big Image aligned to 6/6 cols -->
         <div class="md:row-start-2 md:row-end-2" :class="s1TextGrid">
           <div class="ib-body-text text-[#000000] space-y-4">
-            <MagicText
+            <p
               v-for="(paragraph, idx) in sectionOneParagraphs"
               :key="`s1-${idx}`"
-              :text="paragraph"
-              :segment-count="sectionOneParagraphs.length"
-              :segment-index="idx"
-              class="mb-4 last:mb-0"
-            />
+              class="mb-4 last:mb-0 whitespace-pre-line"
+            >
+              {{ paragraph }}
+            </p>
           </div>
         </div>
         <div class="md:row-start-2 md:row-end-2" :class="s1ImageGrid">
@@ -111,14 +109,13 @@ const overlapTextClass = 'md:-mt-16 md:self-start'
         </div>
         <div class="md:row-start-3 md:row-end-3" :class="[s2TextGrid, overlapTextClass, 'md:self-end']">
           <div class="ib-body-text text-[#000000] space-y-4">
-            <MagicText
+            <p
               v-for="(paragraph, idx) in sectionTwoParagraphs"
               :key="`s2-${idx}`"
-              :text="paragraph"
-              :segment-count="sectionTwoParagraphs.length"
-              :segment-index="idx"
-              class="mb-4 last:mb-0"
-            />
+              class="mb-4 last:mb-0 whitespace-pre-line"
+            >
+              {{ paragraph }}
+            </p>
           </div>
         </div>
       </div>

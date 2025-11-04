@@ -131,6 +131,6 @@ const storyCopy =
   color: #202A2C;
   margin-bottom: 1rem;
   letter-spacing: 0.05em;
-  font-family: "Pitch", sans-serif;
+  font-family: "PPMori", sans-serif;
 }
 </style>

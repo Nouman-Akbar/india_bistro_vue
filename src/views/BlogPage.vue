@@ -235,7 +235,7 @@ const pageData = {
 }
 
 .hero-title {
-  font-family: 'Playfair Display', serif;
+  font-family: 'PPMori', sans-serif;
   font-size: clamp(2rem, 6vw, 4rem);
   font-weight: 700;
   color: #202A2C;
@@ -306,7 +306,7 @@ const pageData = {
 }
 
 .post-title {
-  font-family: 'Playfair Display', serif;
+  font-family: 'PPMori', sans-serif;
   font-size: clamp(1rem, 2.5vw, 1.4rem);
   font-weight: 700;
   color: #202A2C;

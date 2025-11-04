@@ -266,7 +266,7 @@ const handleSubmit = () => {
 }
 
 .form-title {
-  font-family: 'Playfair Display', serif;
+  font-family: 'PPMori', sans-serif;
   font-size: clamp(2.5rem, 6vw, 4rem);
   font-weight: 700;
   color: #202A2C;
@@ -428,7 +428,7 @@ const handleSubmit = () => {
 }
 
 .info-title {
-  font-family: 'Playfair Display', serif;
+  font-family: 'PPMori', sans-serif;
   font-size: clamp(1.1rem, 2vw, 1.35rem);
   font-weight: 600;
   color: #202A2C;
@@ -456,7 +456,7 @@ const handleSubmit = () => {
 }
 
 .follow-us-title {
-  font-family: 'Playfair Display', serif;
+  font-family: 'PPMori', sans-serif;
   font-size: clamp(1.5rem, 3vw, 2rem);
   font-weight: 700;
   color: #202A2C;
