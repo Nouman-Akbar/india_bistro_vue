@@ -8,7 +8,7 @@ const navLinks = [
   { name: 'About Us', path: '/about' },
   { name: 'Gallery', path: '/gallery' },
   { name: 'Menu', path: '/menu' },
-  { name: 'Private Dining', path: '#' },
+  { name: 'Private Dining', path: '/reservations' },
   { name: 'Blog', path: '/blog' },
   { name: 'Contact Us', path: '/contact' }
 ]

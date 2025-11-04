@@ -1,7 +1,7 @@
 // Sample slider section data
 export const favouritesSection = {
   name: "favourites_section",
-  heading: "Chef’s Specials.",
+  heading: "Favourites You’ll Come Back For",
   section_color: "#5C823D",
   show_arrows: true,
   button: {

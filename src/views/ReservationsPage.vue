@@ -17,118 +17,132 @@ const handleSubmit = () => {
   // Handle form submission
   alert('Thank you for your reservation! We will contact you shortly to confirm.')
 }
+
+const sectionBgPattern = new URL('../assets/images/section_bg_pattern.svg', import.meta.url).href
+const bigBgIcon = new URL('../assets/images/Big BG Icon.svg', import.meta.url).href
 </script>
 
 <template>
-  <div class="reservations-page">
-    <div class="reservations-hero">
-      <h1 class="page-title">Reserve Your Table</h1>
-      <p class="page-subtitle">Experience Authentic Indian Dining</p>
+  <div
+    class="reservations-page"
+    :style="{
+      'background-image': `url(${sectionBgPattern})`,
+      'background-repeat': 'repeat',
+      'background-size': 'auto',
+      'background-position': 'center'
+    }"
+  >
+    <div class="big-bg-icon-overlay">
+      <img :src="bigBgIcon" alt="" class="big-bg-icon" />
     </div>
-
-    <div class="reservations-container">
-      <div class="reservation-info" data-scroll data-scroll-speed="0.3">
-        <h2 class="info-title">Visit Us</h2>
-        <div class="info-content">
-          <div class="info-item">
-            <h3>Location</h3>
-            <p>India Bistro, Leeds<br>29258 Main Street<br>Leeds, UK</p>
-          </div>
-          <div class="info-item">
-            <h3>Opening Hours</h3>
-            <p>Monday - Friday: 12:00 PM - 10:00 PM<br>
-               Saturday - Sunday: 11:00 AM - 11:00 PM</p>
-          </div>
-          <div class="info-item">
-            <h3>Contact</h3>
-            <p>Phone: +44 (0) 1111 111 111<br>
-               Email: info@indiabistro.com</p>
-          </div>
-        </div>
+    <div class="reservations-content">
+      <div class="reservations-hero">
+        <h1 class="page-title">Reserve Your Table</h1>
+        <p class="page-subtitle">Experience Authentic Indian Dining</p>
       </div>
 
-      <form @submit.prevent="handleSubmit" class="reservation-form" data-scroll data-scroll-speed="0.5">
-        <h2 class="form-title">Book a Table</h2>
-        
-        <div class="form-grid">
-          <div class="form-group">
-            <label for="name" class="form-label">
-              <User :size="18" />
-              <span>Full Name</span>
-            </label>
-            <input 
-              id="name"
-              v-model="formData.name" 
-              type="text" 
-              class="form-input" 
-              placeholder="John Doe"
-              required
-            />
+      <div class="reservations-container">
+        <div class="reservation-info" data-scroll data-scroll-speed="0.3">
+          <h2 class="info-title">Visit Us</h2>
+          <div class="info-content">
+            <div class="info-item">
+              <h3>Location</h3>
+              <p>India Bistro, Leeds<br>29258 Main Street<br>Leeds, UK</p>
+            </div>
+            <div class="info-item">
+              <h3>Opening Hours</h3>
+              <p>Monday - Friday: 12:00 PM - 10:00 PM<br>
+                 Saturday - Sunday: 11:00 AM - 11:00 PM</p>
+            </div>
+            <div class="info-item">
+              <h3>Contact</h3>
+              <p>Phone: +44 (0) 1111 111 111<br>
+                 Email: info@indiabistro.com</p>
+            </div>
           </div>
+        </div>
+        <form @submit.prevent="handleSubmit" class="reservation-form" data-scroll data-scroll-speed="0.5">
+          <h2 class="form-title">Book a Table</h2>
+          
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="name" class="form-label">
+                <User :size="18" />
+                <span>Full Name</span>
+              </label>
+              <input 
+                id="name"
+                v-model="formData.name" 
+                type="text" 
+                class="form-input" 
+                placeholder="John Doe"
+                required
+              />
+            </div>
 
-          <div class="form-group">
-            <label for="email" class="form-label">
-              <Mail :size="18" />
-              <span>Email</span>
-            </label>
-            <input 
-              id="email"
-              v-model="formData.email" 
-              type="email" 
-              class="form-input" 
-              placeholder="john@example.com"
-              required
-            />
-          </div>
+            <div class="form-group">
+              <label for="email" class="form-label">
+                <Mail :size="18" />
+                <span>Email</span>
+              </label>
+              <input 
+                id="email"
+                v-model="formData.email" 
+                type="email" 
+                class="form-input" 
+                placeholder="john@example.com"
+                required
+              />
+            </div>
 
-          <div class="form-group">
-            <label for="phone" class="form-label">
-              <Phone :size="18" />
-              <span>Phone</span>
-            </label>
-            <input 
-              id="phone"
-              v-model="formData.phone" 
-              type="tel" 
-              class="form-input" 
-              placeholder="+44 1111 111 111"
-              required
-            />
-          </div>
+            <div class="form-group">
+              <label for="phone" class="form-label">
+                <Phone :size="18" />
+                <span>Phone</span>
+              </label>
+              <input 
+                id="phone"
+                v-model="formData.phone" 
+                type="tel" 
+                class="form-input" 
+                placeholder="+44 1111 111 111"
+                required
+              />
+            </div>
 
-          <div class="form-group">
-            <label for="date" class="form-label">
-              <Calendar :size="18" />
-              <span>Date</span>
-            </label>
-            <input 
-              id="date"
-              v-model="formData.date" 
-              type="date" 
-              class="form-input"
-              required
-            />
-          </div>
+            <div class="form-group">
+              <label for="date" class="form-label">
+                <Calendar :size="18" />
+                <span>Date</span>
+              </label>
+              <input 
+                id="date"
+                v-model="formData.date" 
+                type="date" 
+                class="form-input"
+                required
+              />
+            </div>
 
-          <div class="form-group">
-            <label for="time" class="form-label">
-              <Clock :size="18" />
-              <span>Time</span>
-            </label>
-            <input 
-              id="time"
-              v-model="formData.time" 
-              type="time" 
-              class="form-input"
-              required
-            />
-          </div>
+            <div class="form-group">
+              <label for="time" class="form-label">
+                <Clock :size="18" />
+                <span>Time</span>
+              </label>
+              <input 
+                id="time"
+                v-model="formData.time" 
+                type="time" 
+                class="form-input"
+                required
+              />
+            </div>
 
-          <div class="form-group">
-            <label for="guests" class="form-label">
-              <Users :size="18" />
-              <span>Number of Guests</span>
-            </label>
+            <div class="form-group">
+              <label for="guests" class="form-label">
+                <Users :size="18" />
+                <span>Number of Guests</span>
+              </label>
             <select 
               id="guests"
               v-model="formData.guests" 
@@ -158,14 +172,40 @@ const handleSubmit = () => {
         </button>
       </form>
     </div>
+    </div>
   </div>
 </template>
 
 <style scoped>
 .reservations-page {
+  position: relative;
   min-height: 100vh;
-  background: linear-gradient(135deg, #1a0f0a 0%, #2d1810 100%);
   padding: clamp(3rem, 8vw, 6rem) 0;
+  background-color: #fdf8f1;
+  overflow: hidden;
+}
+
+.reservations-content {
+  position: relative;
+  z-index: 3;
+}
+
+.big-bg-icon-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  max-width: 900px;
+  height: auto;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.big-bg-icon {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 
 .reservations-hero {
@@ -178,7 +218,7 @@ const handleSubmit = () => {
   font-family: 'PPMori', sans-serif;
   font-size: clamp(2.5rem, 6vw, 4rem);
   font-weight: 700;
-  color: #f4e0c8;
+  color: #000000;
   margin-bottom: 1rem;
   letter-spacing: 0.05em;
 }
@@ -186,7 +226,7 @@ const handleSubmit = () => {
 .page-subtitle {
   font-family: 'Inter', sans-serif;
   font-size: clamp(1rem, 2vw, 1.25rem);
-  color: rgba(244, 224, 200, 0.8);
+  color: #000000;
   letter-spacing: 0.1em;
   text-transform: uppercase;
 }
@@ -212,7 +252,7 @@ const handleSubmit = () => {
   font-family: 'PPMori', sans-serif;
   font-size: clamp(1.75rem, 3.5vw, 2.25rem);
   font-weight: 600;
-  color: #f4e0c8;
+  color: #000000;
   margin-bottom: 2rem;
   letter-spacing: 0.05em;
 }
@@ -227,14 +267,14 @@ const handleSubmit = () => {
   font-family: 'PPMori', sans-serif;
   font-size: clamp(1.1rem, 2vw, 1.35rem);
   font-weight: 600;
-  color: #A7713A;
+  color: #000000;
   margin-bottom: 0.75rem;
 }
 
 .info-item p {
   font-family: 'Inter', sans-serif;
   font-size: clamp(0.9rem, 1.5vw, 1rem);
-  color: rgba(244, 224, 200, 0.8);
+  color: #000000;
   line-height: 1.8;
 }
 
@@ -250,7 +290,7 @@ const handleSubmit = () => {
   font-family: 'PPMori', sans-serif;
   font-size: clamp(1.75rem, 3.5vw, 2.25rem);
   font-weight: 600;
-  color: #f4e0c8;
+  color: #000000;
   margin-bottom: 2rem;
   letter-spacing: 0.05em;
 }
@@ -279,7 +319,7 @@ const handleSubmit = () => {
   font-family: 'Inter', sans-serif;
   font-size: clamp(0.85rem, 1.5vw, 0.95rem);
   font-weight: 500;
-  color: #f4e0c8;
+  color: #000000;
   letter-spacing: 0.05em;
 }
 
@@ -291,7 +331,7 @@ const handleSubmit = () => {
   background: rgba(26, 15, 10, 0.6);
   border: 1px solid rgba(244, 224, 200, 0.2);
   border-radius: 8px;
-  color: #f4e0c8;
+  color: #000000;
   transition: all 0.3s ease;
 }
 
@@ -304,7 +344,7 @@ const handleSubmit = () => {
 
 .form-input::placeholder,
 .form-textarea::placeholder {
-  color: rgba(244, 224, 200, 0.4);
+  color: rgba(0, 0, 0, 0.4);
 }
 
 .form-textarea {
@@ -320,7 +360,7 @@ const handleSubmit = () => {
   font-weight: 600;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: #f4e0c8;
+  color: #000000;
   background: #A7713A;
   border: none;
   border-radius: 8px;

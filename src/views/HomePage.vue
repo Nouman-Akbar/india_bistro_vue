@@ -36,7 +36,7 @@ const pageData = {
   },
   storySection1: {
     heading: '',
-    text: "At India Bistro, we celebrate India's endless culinary stories. From Delhi's fiery chaats to Kerala's coastal curries, every plate is a tribute to tradition, served with a refreshing twist. Step in, sit back, and taste India  all on one table.",
+    text: "Celebrate the rich tapestry of Indian cuisine, from Delhi’s Street chaats to Kerala’s coastal curries. Every dish is prepared using traditional recipes with a contemporary twist for a true Indian dining experience in the UK.",
     backgroundColor: '#8D3A30',
     headingColor: '#8D3A30',
     textColor: '#F7E9E2',
