@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 
 interface DishItem {
   name: string
@@ -263,10 +263,45 @@ const defaultCategories: MenuCategory[] = [
 const categories = computed(() => props.categories.length > 0 ? props.categories : defaultCategories)
 
 const activeTab = ref(categories.value[0]?.id || '')
+const isTabsSticky = ref(false)
 
 const setActiveTab = (categoryId: string) => {
   activeTab.value = categoryId
 }
+
+// Sticky tabs functionality
+let scrollTimeout: NodeJS.Timeout
+
+const handleScroll = () => {
+  // Debounce scroll events for better performance
+  clearTimeout(scrollTimeout)
+  scrollTimeout = setTimeout(() => {
+    const tabsContainer = document.querySelector('.tabs-wrapper')
+    const header = document.querySelector('.header-wrapper')
+
+    if (tabsContainer && header) {
+      const headerHeight = header.offsetHeight
+      const tabsRect = tabsContainer.getBoundingClientRect()
+
+      // When the top of tabs container is at or below the header bottom, make sticky
+      if (tabsRect.top <= headerHeight) {
+        isTabsSticky.value = true
+      } else {
+        isTabsSticky.value = false
+      }
+    }
+  }, 16) // ~60fps
+}
+
+onMounted(() => {
+  window.addEventListener('scroll', handleScroll)
+  // Initial check
+  handleScroll()
+})
+
+onUnmounted(() => {
+  window.removeEventListener('scroll', handleScroll)
+})
 
 const activeCategoryDishes = computed(() => {
   const category = categories.value.find(cat => cat.id === activeTab.value)
@@ -320,8 +355,10 @@ const layoutRows = computed<LayoutRow[]>(() => {
       <img :src="bigBgIcon" alt="" class="big-bg-icon" />
     </div>
     <div class="relative mx-auto w-full max-w-6xl px-6 md:px-10">
-      <!-- Tabs Navigation -->
-      <div class="mb-12 tabs-container flex items-center justify-start gap-4 overflow-x-auto whitespace-nowrap no-scrollbar">
+      <!-- Tabs Wrapper for sticky functionality -->
+      <div class="tabs-wrapper" :class="{ 'sticky': isTabsSticky }">
+        <!-- Tabs Navigation -->
+        <div class="tabs-container flex items-center justify-start gap-4 overflow-x-auto whitespace-nowrap no-scrollbar" :class="{ 'mb-12': !isTabsSticky, 'mb-8': isTabsSticky }">
         <button
           v-for="category in categories"
           :key="category.id"
@@ -340,6 +377,7 @@ const layoutRows = computed<LayoutRow[]>(() => {
             {{ category.name }}
           </span>
         </button>
+        </div>
       </div>
 
       <!-- Category End Decoration -->
@@ -606,5 +644,58 @@ const layoutRows = computed<LayoutRow[]>(() => {
 .no-scrollbar {
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
+}
+
+/* Sticky tabs functionality */
+.tabs-wrapper {
+  position: relative;
+  z-index: 50;
+}
+
+.tabs-wrapper.sticky {
+  position: sticky;
+  top: 0;
+  background: linear-gradient(to bottom,
+    rgba(244, 239, 227, 1) 0%,
+    rgba(244, 239, 227, 0.95) 80%,
+    rgba(244, 239, 227, 0.9) 100%
+  );
+  padding: 1rem 0;
+  margin: 0 -6px;
+  padding-left: 6px;
+  padding-right: 6px;
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Enhanced sticky container for mobile */
+@media (max-width: 768px) {
+  .tabs-wrapper.sticky {
+    padding: 0.75rem 0;
+    margin: 0 -1.5rem;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    background: linear-gradient(to bottom,
+      rgba(244, 239, 227, 1) 0%,
+      rgba(244, 239, 227, 0.98) 90%,
+      rgba(244, 239, 227, 0.95) 100%
+    );
+  }
+
+  .tabs-wrapper.sticky .tabs-container {
+    padding: 0.25rem 0;
+  }
 }
 </style>

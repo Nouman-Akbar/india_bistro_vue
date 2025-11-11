@@ -1,0 +1,55 @@
+commit da022ab7cbf10ae92b1d27c8821f5830c4357ecb
+Author: Rushi Gokani <rushigokani124@gmail.com>
+Date:   Tue Nov 4 11:36:26 2025 +0530
+
+    Refactor: Update font usage across components and remove unused assets
+    
+    - Replaced 'Playfair Display' and 'Pitch' fonts with 'PPMori' in various components and views for consistency.
+    - Deleted unused SVG assets including 'brown_story_section', 'green_story_section', 'home_popup_pattern', 'india_map', and 'section_bg_pattern' to clean up the project.
+    - Removed the 'MagicText' component and adjusted related components to use standard paragraph tags for text rendering.
+    
+    ### Impact:
+    - Improved typography consistency across the application.
+    - Reduced project size by eliminating unused assets.
+
+diff --git a/src/views/ReservationsPage.vue b/src/views/ReservationsPage.vue
+index 5df3857..47fdcee 100644
+--- a/src/views/ReservationsPage.vue
++++ b/src/views/ReservationsPage.vue
+@@ -175,7 +175,7 @@ const handleSubmit = () => {
+ }
+ 
+ .page-title {
+-  font-family: 'Playfair Display', serif;
++  font-family: 'PPMori', sans-serif;
+   font-size: clamp(2.5rem, 6vw, 4rem);
+   font-weight: 700;
+   color: #f4e0c8;
+@@ -209,7 +209,7 @@ const handleSubmit = () => {
+ }
+ 
+ .info-title {
+-  font-family: 'Playfair Display', serif;
++  font-family: 'PPMori', sans-serif;
+   font-size: clamp(1.75rem, 3.5vw, 2.25rem);
+   font-weight: 600;
+   color: #f4e0c8;
+@@ -224,7 +224,7 @@ const handleSubmit = () => {
+ }
+ 
+ .info-item h3 {
+-  font-family: 'Playfair Display', serif;
++  font-family: 'PPMori', sans-serif;
+   font-size: clamp(1.1rem, 2vw, 1.35rem);
+   font-weight: 600;
+   color: #A7713A;
+@@ -247,7 +247,7 @@ const handleSubmit = () => {
+ }
+ 
+ .form-title {
+-  font-family: 'Playfair Display', serif;
++  font-family: 'PPMori', sans-serif;
+   font-size: clamp(1.75rem, 3.5vw, 2.25rem);
+   font-weight: 600;
+   color: #f4e0c8;
+

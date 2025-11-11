@@ -39,7 +39,7 @@ src/
 
 **Scroll Management**: The app uses Locomotive Scroll with GSAP ScrollTrigger integration. The main scroll container is `#main` with `data-scroll-container`. All scroll-related functionality is centralized in `App.vue`.
 
-**Routing**: Vue Router with 8 routes - home, menu, reservations, recipes, contact, blog, gallery, and catering. Routes include scroll behavior reset to top.
+**Routing**: Vue Router with 9 routes including home, about, menu, reservations, recipes, contact, blog, gallery, and catering. Routes include scroll behavior reset to top.
 
 **Animation System**: Combines GSAP ScrollTrigger with Locomotive Scroll proxy for performant scroll-based animations. Uses @vueuse/motion for component-level animations.
 
@@ -67,9 +67,9 @@ Static data is stored in `src/data/sliderSections.ts`. The project appears to us
 - TypeScript configuration uses project references with separate configs for app and node environments
 - Tailwind CSS configured with custom color palette, font families, and animations
 
-## Important Implementation Notes
+## Critical Implementation Rules
 
-### Scroll Structure Rules
+### Scroll Structure Rules (CRITICAL)
 The app has strict scroll management requirements:
 - **One scroll container**: Only `#main` should have `data-scroll-container`
 - **Top-level sections only**: Only direct children should have `data-scroll-section`
@@ -77,25 +77,33 @@ The app has strict scroll management requirements:
 - **Z-index layering**: Header (z-index: 60) > Content (z-index: 1) for proper stacking
 - **Pin offsets**: Pin sections below header height to avoid overlap
 
+### Locomotive Scroll Integration
+The app has complex scroll management with automatic page reloading on navigation:
+- Scroll is destroyed and recreated on each route change
+- GSAP ScrollTrigger instances are killed between routes
+- Page transitions use opacity and transform animations
+- Scroll position is reset on navigation
+
 ### Animation Integration
 The project uses GSAP ScrollTrigger with Locomotive Scroll proxy. When working with animations:
-- Register ScrollTrigger plugins in App.vue onMounted
+- Register ScrollTrigger plugins in App.vue onMounted (`gsap.registerPlugin(ScrollTrigger)`)
 - Use `ScrollTrigger.refresh()` after dynamic content changes
 - For pinned sections, use `pinSpacing: 'margin'` instead of `true` for Locomotive compatibility
 - Set appropriate z-index values to prevent overlap issues
+- All ScrollTrigger instances are automatically killed during navigation
 
 ### Component Architecture Patterns
 - Use `<script setup lang="ts">` syntax for all Vue components
 - Leverage @vueuse/motion for component-level animations
 - Follow the existing section-based component structure (HeroSection, GallerySection, etc.)
 - Maintain consistent styling patterns using Tailwind classes
+- Components should NOT add `data-scroll-section` attributes internally
 
 ### Asset Management
 Images and assets are stored in `src/assets/` and imported using `new URL()` pattern for proper Vite handling, as seen in `sliderSections.ts`.
 
-### Known Issues and Solutions
-Refer to `ROUTING_GUIDE.md` for detailed solutions to common issues like:
-- Header transform matrix3D conflicts
-- Content overflow problems
-- Slider section visibility issues
-- Pin spacing compatibility with Locomotive Scroll
+### Router Navigation Behavior
+The router automatically reloads pages on navigation to ensure proper scroll initialization:
+- Navigation triggers scroll destruction and recreation
+- Session storage tracks navigation to prevent infinite reloads
+- ScrollTrigger instances are cleaned up between routes
