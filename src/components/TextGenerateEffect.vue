@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
-import { gsap } from 'gsap'
+import { useGsap } from '@/utils/gsap'
 
 const props = withDefaults(
   defineProps<{
@@ -18,6 +18,7 @@ const props = withDefaults(
   }
 )
 
+const { gsap } = useGsap()
 const containerRef = ref<HTMLElement | null>(null)
 const hasAnimated = ref(false)
 let observer: IntersectionObserver | null = null

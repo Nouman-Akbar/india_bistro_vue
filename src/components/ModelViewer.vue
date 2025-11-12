@@ -598,6 +598,13 @@ const loadModel = async (modelUrl: string) => {
   touchState.isRotating = false
   touchState.isPinching = false
 
+  if (!modelUrl) {
+    console.warn('ModelViewer: no model URL provided. Rendering fallback geometry instead.')
+    buildFallbackModel()
+    signalModelLoaded(token)
+    return
+  }
+
   const onProgress = (event: ProgressEvent<EventTarget>) => {
     if (event.lengthComputable && event.total > 0) {
       progress.value = (event.loaded / event.total) * 100
@@ -616,10 +623,12 @@ const loadModel = async (modelUrl: string) => {
       object = gltf.scene.clone(true)
     } else if (lower.endsWith('.fbx')) {
       const loader = new FBXLoader()
+      loader.setCrossOrigin?.('anonymous')
       const group = await loader.loadAsync(modelUrl, onProgress)
       object = group.clone(true)
     } else if (lower.endsWith('.obj')) {
       const loader = new OBJLoader()
+      loader.setCrossOrigin?.('anonymous')
       const group = await loader.loadAsync(modelUrl, onProgress)
       object = group.clone(true)
     } else {

@@ -1,12 +1,15 @@
 <script setup lang="ts">
-import StorySection from '../components/StorySection.vue'
-import StorySectionCanvas from '../components/StorySectionCanvas.vue'
-import SliderSection from '../components/SliderSection.vue'
-import SliderSectionNoButton from '../components/SliderSectionNoButton.vue'
-import DoubleImageTextSection from '../components/DoubleImageTextSection.vue'
-import ImageContentSection from '../components/ImageContentSection.vue'
-import HomePopup from '../components/HomePopup.vue'
 import { favouritesSection, specialtiesSection } from '../data/sliderSections'
+import { createLazyComponent } from '@/utils/lazyComponent'
+
+const StorySection = createLazyComponent(() => import('../components/StorySection.vue'))
+const StorySectionCanvas = createLazyComponent(() => import('../components/StorySectionCanvas.vue'))
+const SliderSection = createLazyComponent(() => import('../components/SliderSection.vue'))
+const SliderSectionNoButton = createLazyComponent(() => import('../components/SliderSectionNoButton.vue'))
+const DoubleImageTextSection = createLazyComponent(() => import('../components/DoubleImageTextSection.vue'))
+const ImageContentSection = createLazyComponent(() => import('../components/ImageContentSection.vue'))
+const InteractiveMapSection = createLazyComponent(() => import('../components/InteractiveMapSection.vue'))
+const HomePopup = createLazyComponent(() => import('../components/HomePopup.vue'))
 
 // Asset URLs
 const assets = {
@@ -91,47 +94,47 @@ const pageData = {
     show_arrows: true,
     blocks: [
       {
-        block_image: new URL('../assets/images/gellery/Rectangle 31.svg', import.meta.url).href,
+        block_image: new URL('../assets/images/gallery/Rectangle 31.svg', import.meta.url).href,
         block_heading: "@Rushi Gokani",
         block_description: "Fragrant basmati rice layered with tender lamb, saffron and fried onions."
       },
       {
-        block_image: new URL('../assets/images/gellery/Rectangle 32.svg', import.meta.url).href,
+        block_image: new URL('../assets/images/gallery/Rectangle 32.svg', import.meta.url).href,
         block_heading: "@Chandni",
         block_description: "Assorted meats and vegetables cooked in our traditional clay oven."
       },
       {
-        block_image: new URL('../assets/images/gellery/Rectangle 33.svg', import.meta.url).href,
+        block_image: new URL('../assets/images/gallery/Rectangle 33.svg', import.meta.url).href,
         block_heading: "@Tirth Joshi",
         block_description: "Assorted meats and vegetables cooked in our traditional clay oven."
       },
       {
-        block_image: new URL('../assets/images/gellery/Rectangle 34.svg', import.meta.url).href,
+        block_image: new URL('../assets/images/gallery/Rectangle 34.svg', import.meta.url).href,
         block_heading: "@Anitket Biswas",
         block_description: "Assorted meats and vegetables cooked in our traditional clay oven."
       },
       {
-        block_image: new URL('../assets/images/gellery/Rectangle 36.svg', import.meta.url).href,
+        block_image: new URL('../assets/images/gallery/Rectangle 36.svg', import.meta.url).href,
         block_heading: "@Tirth Joshi",
         block_description: "Assorted meats and vegetables cooked in our traditional clay oven."
       },
       {
-        block_image: new URL('../assets/images/gellery/Rectangle 37.svg', import.meta.url).href,
+        block_image: new URL('../assets/images/gallery/Rectangle 37.svg', import.meta.url).href,
         block_heading: "@Rushi Gokani",
         block_description: "Fresh catch of the day in coconut milk with curry leaves and mustard seeds."
       },
       {
-        block_image: new URL('../assets/images/gellery/Rectangle 37.svg', import.meta.url).href,
+        block_image: new URL('../assets/images/gallery/Rectangle 37.svg', import.meta.url).href,
         block_heading: "@For_yu",
         block_description: "Fresh catch of the day in coconut milk with curry leaves and mustard seeds."
       },
       {
-        block_image: new URL('../assets/images/gellery/Rectangle 34.svg', import.meta.url).href,
+        block_image: new URL('../assets/images/gallery/Rectangle 34.svg', import.meta.url).href,
         block_heading: "@Hacker_2134",
         block_description: "Assorted meats and vegetables cooked in our traditional clay oven."
       },
       {
-        block_image: new URL('../assets/images/gellery/Rectangle 37.svg', import.meta.url).href,
+        block_image: new URL('../assets/images/gallery/Rectangle 37.svg', import.meta.url).href,
         block_heading: "@Fruis",
         block_description: "Fresh catch of the day in coconut milk with curry leaves and mustard seeds."
       }
@@ -152,21 +155,80 @@ const pageData = {
       { text: 'Order Online', link: '/menu', backgroundImageSrc: assets.svgs.greenDiamondButton },
       { text: 'View Menu', link: '/menu', backgroundImageSrc: assets.svgs.greenDiamondButton }
     ]
+  },
+
+  interactiveMapSection: {
+    heading: "Discover India's Culinary Heritage",
+    subheading: "A journey through India’s kitchens vibrant, soulful, and made to share",
+    description: "A journey through India’s kitchens vibrant, soulful, and made to share",
+  
+    decoratorImageSrc: assets.svgs.diamond,
+    backgroundColor: '#F5F1E8',
+    headingColor: '#2D2A26',
+    subheadingColor: '#5A5550',
+    descriptionColor: '#5A5550',
+    buttons: [
+      { text: 'Book a Table', link: '/reservations', backgroundImageSrc: assets.svgs.greenDiamondButton },
+      { text: 'Order Online', link: '/menu', backgroundImageSrc: assets.svgs.greenDiamondButton },
+      { text: 'View Menu', link: '/menu', backgroundImageSrc: assets.svgs.greenDiamondButton }
+    ],
+    markers: [
+      {
+        id: 'punjab',
+        stateName: 'Punjab',
+        x: 220,
+        y: 190,
+        shortText: 'Land of Butter Chicken & Makki di Roti'
+      },
+      {
+        id: 'gujarat',
+        stateName: 'Gujarat',
+        x: 100,
+        y: 430,
+        shortText: 'Dhokla, Fafda & Sweet Treasures'
+      },
+      {
+        id: 'kerala',
+        stateName: 'Kerala',
+        x: 230,
+        y: 820,
+        shortText: 'Coconut Curry & Appam Paradise'
+      },
+      {
+        id: 'bengal',
+        stateName: 'West Bengal',
+        x: 560,
+        y: 430,
+        shortText: 'Macher Jhol & Sweet Mishti'
+      },
+      {
+        id: 'rajasthan',
+        stateName: 'Rajasthan',
+        x: 200,
+        y: 320,
+        shortText: 'Dal Baati Churma & Royal Feasts'
+      }
+    ]
   }
 }
 
 </script>
 
 <template>
-  <div class="home-page">
+  <div class="home-page page-content">
     <!-- Popup Modal -->
     <HomePopup v-bind="pageData.popupData" />
 
+    <InteractiveMapSection
+      class="section"
+      v-bind="pageData.interactiveMapSection"
+    />
+
     <!-- Image Content Section -->
-    <ImageContentSection
+    <!-- <ImageContentSection
       class="section"
       v-bind="pageData.imageContentSection"
-    />
+    /> -->
     
     <!-- Story Section 1 -->
     <StorySection 
@@ -200,13 +262,25 @@ const pageData = {
       :section-data="pageData.sliderSectionNoButton"
     />
 
-  
-    
+    <!-- Interactive Map Section -->
+   
   </div>
 </template>
 
 <style scoped>
 .home-page {
   width: 100%;
+}
+
+/* Remove gaps between sections */
+.section {
+  margin-bottom: 0 !important;
+  margin-top: 0 !important;
+}
+
+/* Ensure no gaps between any sections */
+.home-page > * {
+  margin-bottom: 0 !important;
+  margin-top: 0 !important;
 }
 </style>

@@ -41,7 +41,7 @@ const infoSections = [
   },
   {
     title: 'Contact',
-    content: 'Phone: +44 (0) 1111 111 111<br>Email: info@indiabistro.com',
+    content: 'Phone: 0113 340 0236 <br>Email: info@indiabistro.co.uk',
     icon: Phone
   }
 ]
@@ -314,7 +314,7 @@ const infoSections = [
 .info-panel {
   background: rgba(255, 255, 255, 0.9);
   border: 1px solid rgba(167, 113, 58, 0.25);
-  border-radius: 28px;
+  border-radius: 0;
   padding: clamp(2rem, 4vw, 3rem);
   box-shadow: 0 20px 55px -35px rgba(0, 0, 0, 0.45);
 }
@@ -369,7 +369,7 @@ const infoSections = [
 }
 
 .info-heading {
-  font-size: 1rem;
+  font-size: 1rem !important;
   letter-spacing: 0.3em;
   text-transform: uppercase;
   color: #2d2a26;
@@ -396,7 +396,7 @@ const infoSections = [
 .reservation-form {
   background: rgba(255, 255, 255, 0.96);
   border: 1px solid rgba(167, 113, 58, 0.25);
-  border-radius: 28px;
+  border-radius: 0;
   padding: clamp(2rem, 4vw, 3.5rem);
   box-shadow: 0 25px 60px -40px rgba(0, 0, 0, 0.45);
   display: flex;
@@ -488,7 +488,8 @@ select.form-input:focus {
   background: transparent;
   cursor: pointer;
   padding: 0;
-  align-self: flex-start;
+  align-self: center;
+  margin: 0 auto;
   width: 100%;
   max-width: 320px;
 }
@@ -528,7 +529,7 @@ select.form-input:focus {
 
   .reservation-form,
   .info-panel {
-    border-radius: 20px;
+    border-radius: 0;
   }
 
   .form-grid {

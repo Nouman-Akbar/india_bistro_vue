@@ -97,7 +97,7 @@ const overlapTextClass = 'md:-mt-16 md:self-start'
         </div>
         <div class="md:row-start-2 md:row-end-2" :class="s1ImageGrid">
           <div class="overflow-hidden rounded-0 shadow-[0_20px_55px_-20px_rgba(0,0,0,0.4)]">
-            <img :src="sectionOne.dishImageSrc" alt="Section image" class="h-full w-full object-cover" />
+            <img :src="sectionOne.dishImageSrc" alt="Section image" class="h-[45rem] w-full object-cover" />
           </div>
         </div>
 
@@ -131,7 +131,7 @@ const overlapTextClass = 'md:-mt-16 md:self-start'
   left: 50%;
   transform: translate(-50%, -50%);
   width: 100%;
-  max-width: 800px;
+  max-width: 800px; 
   height: auto;
   z-index: 2;
   pointer-events: none;
@@ -153,10 +153,12 @@ const overlapTextClass = 'md:-mt-16 md:self-start'
 .ib-body-text p {
   font-weight: 400 !important;
   font-style: normal !important;
-  font-size: 22px !important;
+  font-size: 18px !important;
   line-height: 31px !important;
   letter-spacing: 1px !important;
   vertical-align: middle !important;
+  text-align: center !important;
+  text-justify: inter-word !important;
 }
 </style>
 

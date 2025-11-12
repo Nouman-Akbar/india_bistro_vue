@@ -44,12 +44,124 @@
   font-display: swap;
 }
 
+:root {
+  --app-header-height: 96px;
+
+  /* Typography Scale - Uniform Font System */
+  --font-size-xs: clamp(0.75rem, 1.25vw, 0.875rem);     /* 12-14px */
+  --font-size-sm: clamp(0.875rem, 1.5vw, 1rem);         /* 14-16px */
+  --font-size-base: clamp(1rem, 1.75vw, 1.125rem);      /* 16-18px */
+  --font-size-lg: clamp(1.125rem, 2vw, 1.25rem);        /* 18-20px */
+  --font-size-xl: clamp(1.25rem, 2.5vw, 1.5rem);        /* 20-24px */
+  --font-size-2xl: clamp(1.5rem, 3vw, 1.75rem);         /* 24-28px */
+  --font-size-3xl: clamp(1.75rem, 3.5vw, 2rem);         /* 28-32px */
+  --font-size-4xl: clamp(2rem, 4vw, 2.25rem);           /* 32-36px */
+  --font-size-5xl: clamp(2.25rem, 4.5vw, 2.5rem);       /* 36-40px */
+
+  /* Line Heights */
+  --line-height-tight: 1.25;
+  --line-height-normal: 1.5;
+  --line-height-relaxed: 1.75;
+
+  /* Letter Spacing */
+  --letter-spacing-tight: -0.02em;
+  --letter-spacing-normal: 0;
+  --letter-spacing-wide: 0.02em;
+  --letter-spacing-wider: 0.05em;
+
+  /* Shared surface styling */
+  --ib-base-surface: #f5f1e8;
+  --ib-base-surface-texture: url('./assets/images/section_bg_pattern.svg');
+  --ib-base-surface-size: 512px auto;
+}
+
 body {
-  background-color: #111111;
+  background-color: var(--ib-base-surface);
+  background-image: var(--ib-base-surface-texture);
+  background-repeat: repeat;
+  background-size: var(--ib-base-surface-size);
+  background-position: center top;
   color: #F7FAFC;
-  font-family: "PPMori", sans-serif;
+  font-family: "F37Britain", monospace;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  margin: 0;
+  padding: 0;
+}
+
+.base-surface,
+.app-shell,
+.app-scroll-container,
+[data-scroll-container],
+main[data-scroll-section] {
+  background-color: var(--ib-base-surface);
+  background-image: var(--ib-base-surface-texture);
+  background-repeat: repeat;
+  background-size: var(--ib-base-surface-size);
+  background-position: center top;
+}
+
+/* Remove gaps between sections globally */
+section {
+  margin-bottom: 0 !important;
+  margin-top: 0 !important;
+}
+
+/* Prevent any unwanted spacing between page components */
+main[data-scroll-section] > section,
+main[data-scroll-section] > * {
+  margin-bottom: 0 !important;
+  margin-top: 0 !important;
+}
+
+/* Ensure no gaps in router view content and all page views */
+main > * > *,
+main > * > section,
+main > section,
+main > div[class*="Page"],
+main > div[class*="page"] {
+  margin-bottom: 0 !important;
+  margin-top: 0 !important;
+}
+
+/* Prevent any black lines from showing between sections */
+section,
+main > * {
+  position: relative;
+}
+
+/* Specific fix for page containers */
+div[class*="Page"],
+div[class*="page"] {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+div[class*="Page"] > *,
+div[class*="page"] > *,
+div[class*="page"] > section,
+div[class*="Page"] > section {
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+/* Fix for all section elements within pages */
+div[class*="page"] section,
+div[class*="Page"] section,
+section[class*="section"] {
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+/* Remove any default margins that might cause gaps */
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
 }
 
 /* Global Font Applications */
@@ -58,7 +170,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 p, span, div, button, input, textarea, select {
-  font-family: "PPMori", sans-serif !important;
+  font-family: "F37Britain", monospace !important;
 }
 
 /* Alternative font classes for specific use */
@@ -72,6 +184,127 @@ p, span, div, button, input, textarea, select {
 
 .font-britain {
   font-family: "F37Britain", monospace !important;
+}
+
+/* Uniform Typography Classes */
+.text-uniform-xs {
+  font-size: var(--font-size-xs) !important;
+  line-height: var(--line-height-normal);
+  letter-spacing: var(--letter-spacing-normal);
+}
+
+.text-uniform-sm {
+  font-size: var(--font-size-sm) !important;
+  line-height: var(--line-height-normal);
+  letter-spacing: var(--letter-spacing-normal);
+}
+
+.text-uniform-base {
+  font-size: var(--font-size-base) !important;
+  line-height: var(--line-height-normal);
+  letter-spacing: var(--letter-spacing-normal);
+}
+
+.text-uniform-lg {
+  font-size: var(--font-size-lg) !important;
+  line-height: var(--line-height-normal);
+  letter-spacing: var(--letter-spacing-wide);
+}
+
+.text-uniform-xl {
+  font-size: var(--font-size-xl) !important;
+  line-height: var(--line-height-tight);
+  letter-spacing: var(--letter-spacing-wide);
+}
+
+.text-uniform-2xl {
+  font-size: var(--font-size-2xl) !important;
+  line-height: var(--line-height-tight);
+  letter-spacing: var(--letter-spacing-wider);
+}
+
+.text-uniform-3xl {
+  font-size: var(--font-size-3xl) !important;
+  line-height: var(--line-height-tight);
+  letter-spacing: var(--letter-spacing-wider);
+}
+
+.text-uniform-4xl {
+  font-size: var(--font-size-4xl) !important;
+  line-height: var(--line-height-tight);
+  letter-spacing: var(--letter-spacing-wider);
+}
+
+.text-uniform-5xl {
+  font-size: var(--font-size-5xl) !important;
+  line-height: var(--line-height-tight);
+  letter-spacing: var(--letter-spacing-wider);
+}
+
+/* Heading Styles with Proper Hierarchy */
+.heading-primary {
+  font-size: var(--font-size-4xl) !important;
+  font-weight: normal;
+  line-height: var(--line-height-tight);
+  letter-spacing: var(--letter-spacing-wide);
+}
+
+.heading-secondary {
+  font-size: var(--font-size-3xl) !important;
+  font-weight: normal;
+  line-height: var(--line-height-tight);
+  letter-spacing: var(--letter-spacing-wide);
+}
+
+.heading-tertiary {
+  font-size: var(--font-size-2xl) !important;
+  font-weight: normal;
+  line-height: var(--line-height-tight);
+  letter-spacing: var(--letter-spacing-normal);
+}
+
+.body-text {
+  font-size: var(--font-size-base) !important;
+  line-height: var(--line-height-normal);
+  letter-spacing: var(--letter-spacing-normal);
+}
+
+.body-text-small {
+  font-size: var(--font-size-sm) !important;
+  line-height: var(--line-height-normal);
+  letter-spacing: var(--letter-spacing-normal);
+}
+
+.caption-text {
+  font-size: var(--font-size-xs) !important;
+  line-height: var(--line-height-normal);
+  letter-spacing: var(--letter-spacing-wide);
+}
+
+/* Override oversized text across the site */
+h1:not(.heading-override) {
+  font-size: var(--font-size-4xl) !important;
+  line-height: var(--line-height-tight) !important;
+}
+
+h2:not(.heading-override) {
+  font-size: var(--font-size-3xl) !important;
+  line-height: var(--line-height-tight) !important;
+}
+
+h3:not(.heading-override) {
+  font-size: var(--font-size-2xl) !important;
+  line-height: var(--line-height-tight) !important;
+}
+
+h4:not(.heading-override) {
+  font-size: var(--font-size-xl) !important;
+  line-height: var(--line-height-normal) !important;
+}
+
+p:not(.text-override) {
+  font-size: var(--font-size-base) !important;
+  line-height: var(--line-height-normal) !important;
 }
 
 /* Custom scrollbar for a more modern look */

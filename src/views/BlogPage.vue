@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { ref } from 'vue'
 
 // Asset URLs
 const assets = {
@@ -83,11 +82,15 @@ const pageData = {
 </script>
 
 <template>
-  <div class="blog-page">
-    <!-- Background Pattern -->
-    <div class="bg-pattern">
-      <img :src="pageData.heroSection.backgroundImageSrc" alt="" class="pattern-overlay" />
-    </div>
+  <div
+    class="blog-page"
+    :style="{
+      'background-image': `url(${pageData.heroSection.backgroundImageSrc})`,
+      'background-repeat': 'repeat',
+      'background-size': 'auto',
+      'background-position': 'center'
+    }"
+  >
 
     <!-- Big BG Icon Overlay -->
     <div class="big-bg-icon-overlay">
@@ -160,47 +163,31 @@ const pageData = {
   min-height: 100vh;
 }
 
-/* Background Pattern - visible */
-.bg-pattern {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 1;
-}
-
-.pattern-overlay {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center;
-  background-repeat: repeat;
-}
+/* Background pattern now applied inline on .blog-page */
 
 /* Big BG Icon Overlay */
 .big-bg-icon-overlay {
   position: absolute;
-  top: 0;
-  left: 0;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   width: 100%;
-  height: 100%;
+  max-width: 800px;
+  height: auto;
   z-index: 2;
   pointer-events: none;
-  background-image: url('../assets/images/Big BG Icon.svg');
-  background-repeat: repeat;
-  background-size: auto;
-  background-position: center;
 }
 
 .big-bg-icon {
-  display: none;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 
 /* Hero Container */
 .hero-main-container {
   position: relative;
-  z-index: 2;
+  z-index: 3;
   width: 100%;
   padding: clamp(4rem, 8vw, 6rem) 0;
   display: flex;
@@ -366,8 +353,7 @@ const pageData = {
   margin: 0 auto;
 }
 
-.read-more-btn:hover {
-}
+
 
 .read-more-btn:active {
   transform: translateY(0);

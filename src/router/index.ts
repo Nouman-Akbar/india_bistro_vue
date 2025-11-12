@@ -1,13 +1,4 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomePage from '../views/HomePage.vue'
-import AboutUsPage from '../views/AboutUsPage.vue'
-import MenuPage from '../views/MenuPage.vue'
-import ReservationsPage from '../views/ReservationsPage.vue'
-import RecipesPage from '../views/RecipesPage.vue'
-import ContactPage from '../views/ContactPage.vue'
-import BlogPage from '../views/BlogPage.vue'
-import GalleryPage from '../views/GalleryPage.vue'
-import CateringPage from '../views/CateringPage.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -15,47 +6,57 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      component: HomePage
+      component: () => import('../views/HomePage.vue')
     },
     {
       path: '/about',
       name: 'about',
-      component: AboutUsPage
+      component: () => import('../views/AboutUsPage.vue')
     },
     {
       path: '/menu',
       name: 'menu',
-      component: MenuPage
+      component: () => import('../views/MenuPage.vue')
     },
     {
       path: '/reservations',
       name: 'reservations',
-      component: ReservationsPage
+      component: () => import('../views/ReservationsPage.vue')
+    },
+    {
+      path: '/careers',
+      name: 'careers',
+      component: () => import('../views/CareersPage.vue')
     },
     {
       path: '/recipes',
       name: 'recipes',
-      component: RecipesPage
+      component: () => import('../views/RecipesPage.vue')
     },
     {
       path: '/contact',
       name: 'contact',
-      component: ContactPage
+      component: () => import('../views/ContactPage.vue')
     },
     {
       path: '/blog',
       name: 'blog',
-      component: BlogPage
+      component: () => import('../views/BlogNextPage.vue')
     },
     {
       path: '/gallery',
       name: 'gallery',
-      component: GalleryPage
+      component: () => import('../views/GalleryPage.vue')
     },
     {
       path: '/catering',
       name: 'catering',
-      component: CateringPage
+      component: () => import('../views/CateringPage.vue')
+    },
+    {
+      path: '/:pathMatch(.*)*',
+      name: 'not-found',
+      component: () => import('../views/NotFoundPage.vue')
     }
   ],
   scrollBehavior(to, from, savedPosition) {

@@ -1,13 +1,12 @@
 <script setup lang="ts">
 import { nextTick, onMounted, onUnmounted, ref } from 'vue'
-import { useRouter } from 'vue-router'
-import { gsap } from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { useGsap } from '@/utils/gsap'
 import AppHeader from './components/AppHeader.vue'
 import AppFooter from './components/AppFooter.vue'
+import LoadingScreen from './components/LoadingScreen.vue'
 
 const containerRef = ref<HTMLElement | null>(null)
-const router = useRouter()
+const { ScrollTrigger } = useGsap()
 type LocomotiveScrollModule = typeof import('locomotive-scroll')
 type LocomotiveScrollInstance = InstanceType<LocomotiveScrollModule> & {
   scroll?: {
@@ -23,31 +22,132 @@ type GlobalWindow = Window & {
   __gsapLocoProxySetup?: boolean
 }
 
+type SmoothingConfig = {
+  multiplier: number
+  lerp: number
+  smooth: boolean
+}
+
+const containerSelector = '#main'
 let scroll: LocomotiveScrollInstance | null = null
 let removeScrollListener: (() => void) | undefined
-const containerSelector = '#main'
+let resizeObserver: ResizeObserver | null = null
+let mediaPreferenceCleanup: (() => void) | null = null
+let windowResizeRaf: number | null = null
+let isScrollTriggerTicking = false
+const MAX_CONTAINER_ATTEMPTS = 5
+
 const handleScrollTriggerRefresh = () => {
   scroll?.update()
 }
-const onScrollUpdate = () => {
-  ScrollTrigger.update()
+const computeSmoothingOptions = (): SmoothingConfig => {
+  if (typeof window === 'undefined') {
+    return { multiplier: 1, lerp: 0.08, smooth: true }
+  }
+
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  const prefersCoarsePointer = window.matchMedia('(pointer: coarse)').matches
+
+  if (prefersReducedMotion) {
+    return { multiplier: 0.75, lerp: 0.22, smooth: false }
+  }
+
+  if (prefersCoarsePointer) {
+    return { multiplier: 0.92, lerp: 0.12, smooth: true }
+  }
+
+  return { multiplier: 1.12, lerp: 0.075, smooth: true }
 }
-
-const initializeLocomotiveScroll = async () => {
-  const container = containerRef.value
-
-  if (!container) {
-    console.warn('[LocomotiveScroll] Container `#main` not found.')
+const onScrollUpdate = () => {
+  if (isScrollTriggerTicking) {
     return
   }
 
+  isScrollTriggerTicking = true
+  requestAnimationFrame(() => {
+    ScrollTrigger.update()
+    isScrollTriggerTicking = false
+  })
+}
+const handleWindowResize = () => {
+  if (windowResizeRaf) {
+    cancelAnimationFrame(windowResizeRaf)
+  }
+
+  windowResizeRaf = requestAnimationFrame(() => {
+    refreshScrollState(0)
+    windowResizeRaf = null
+  })
+}
+const attachMediaPreferenceListeners = () => {
+  if (typeof window === 'undefined' || mediaPreferenceCleanup) {
+    return
+  }
+
+  const mediaQueries = ['(prefers-reduced-motion: reduce)', '(pointer: coarse)'].map((query) =>
+    window.matchMedia(query)
+  )
+
+  const handlePreferenceChange = () => {
+    rebuildScroll()
+  }
+
+  const unsubscribers = mediaQueries.map((media) => {
+    if ('addEventListener' in media) {
+      media.addEventListener('change', handlePreferenceChange)
+      return () => media.removeEventListener('change', handlePreferenceChange)
+    }
+
+    media.addListener(handlePreferenceChange)
+    return () => media.removeListener(handlePreferenceChange)
+  })
+
+  mediaPreferenceCleanup = () => {
+    unsubscribers.forEach((unsubscribe) => unsubscribe())
+    mediaPreferenceCleanup = null
+  }
+}
+const detachMediaPreferenceListeners = () => {
+  mediaPreferenceCleanup?.()
+  mediaPreferenceCleanup = null
+}
+
+const waitForContainer = async (attempt = 0): Promise<HTMLElement | null> => {
+  if (containerRef.value) {
+    return containerRef.value
+  }
+
+  if (attempt >= MAX_CONTAINER_ATTEMPTS) {
+    return null
+  }
+
+  await nextTick()
+  await new Promise(resolve => requestAnimationFrame(resolve))
+  return waitForContainer(attempt + 1)
+}
+
+const initializeLocomotiveScroll = async () => {
+  const container = containerRef.value ?? (await waitForContainer())
+
+  if (!container) {
+    console.warn('[LocomotiveScroll] Container `#main` not found after multiple attempts.')
+    return
+  }
+
+  const smoothing = computeSmoothingOptions()
   const { default: LocomotiveScroll } = await import('locomotive-scroll')
   const locoOptions = {
     el: container,
-    smooth: true,
-    multiplier: 1,
-    lerp: 0.08,
-    smoothMobile: true
+    smooth: smoothing.smooth,
+    multiplier: smoothing.multiplier,
+    lerp: smoothing.lerp,
+    smoothMobile: smoothing.smooth,
+    smartphone: {
+      smooth: smoothing.smooth
+    },
+    tablet: {
+      smooth: smoothing.smooth
+    }
   } as Record<string, unknown>
 
   scroll = new LocomotiveScroll(locoOptions as any) as LocomotiveScrollInstance
@@ -79,6 +179,14 @@ const initializeLocomotiveScroll = async () => {
   }
 
   removeScrollListener = scroll.on('scroll', onScrollUpdate)
+
+  if (resizeObserver) {
+    resizeObserver.disconnect()
+  }
+
+  resizeObserver = new ResizeObserver(() => refreshScrollState(0))
+  resizeObserver.observe(container)
+
   ScrollTrigger.removeEventListener('refresh', handleScrollTriggerRefresh)
   ScrollTrigger.addEventListener('refresh', handleScrollTriggerRefresh)
   ScrollTrigger.refresh()
@@ -98,10 +206,20 @@ const destroyLocomotiveScroll = () => {
   globalWindow.locoScroll = null
   ScrollTrigger.removeEventListener('refresh', handleScrollTriggerRefresh)
 
+  if (resizeObserver) {
+    resizeObserver.disconnect()
+    resizeObserver = null
+  }
+
   if (container) {
     container.style.transform = 'translate3d(0px, 0px, 0px)'
     container.style.willChange = 'auto'
     container.scrollTop = 0
+  }
+
+  if (windowResizeRaf) {
+    cancelAnimationFrame(windowResizeRaf)
+    windowResizeRaf = null
   }
 
   document.documentElement.classList.remove('has-scroll-init', 'has-scroll-smooth', 'has-scroll-scrolling', 'has-scroll-dragging')
@@ -150,9 +268,6 @@ const refreshScrollState = (delay = 0) => {
 
 let rebuildPromise: Promise<void> | null = null
 let pendingNavigation = false
-let hasMounted = false
-let removeBeforeGuard: (() => void) | undefined
-let removeAfterGuard: (() => void) | undefined
 
 const rebuildScroll = (options: { ensureDestroy?: boolean } = {}) => {
   if (rebuildPromise) {
@@ -198,74 +313,68 @@ const handleAfterEnter = () => {
 }
 
 onMounted(async () => {
-  gsap.registerPlugin(ScrollTrigger)
   await rebuildScroll({ ensureDestroy: false })
-  hasMounted = true
+  attachMediaPreferenceListeners()
 
-  removeBeforeGuard = router.beforeEach((to, from, next) => {
-    pendingNavigation = true
-    ScrollTrigger.getAll().forEach(trigger => trigger.kill())
-    destroyLocomotiveScroll()
-    next()
-  })
-
-  const RELOAD_MARKER = '__ib_auto_reload__'
-
-  removeAfterGuard = router.afterEach((to) => {
-    const markerValue = sessionStorage.getItem(RELOAD_MARKER)
-
-    if (markerValue === to.fullPath) {
-      sessionStorage.removeItem(RELOAD_MARKER)
-      return
-    }
-
-    sessionStorage.setItem(RELOAD_MARKER, to.fullPath)
-    setTimeout(() => {
-      window.location.reload()
-    }, 80)
-  })
-
+  if (typeof window !== 'undefined') {
+    window.addEventListener('resize', handleWindowResize)
+  }
 })
 
 onUnmounted(() => {
-  removeBeforeGuard?.()
-  removeAfterGuard?.()
+  if (typeof window !== 'undefined') {
+    window.removeEventListener('resize', handleWindowResize)
+  }
+
+  detachMediaPreferenceListeners()
   ScrollTrigger.getAll().forEach(trigger => trigger.kill())
   destroyLocomotiveScroll()
 })
 </script>
 
 <template>
-  <div
-    ref="containerRef"
-    class="bg-background font-sans"
-    id="main"
-    data-scroll-container
-  >
-    <svg xmlns="http://www.w3.org/2000/svg" width="0" height="0" viewBox="0 0 351 27"  fill="none">
-      <clipPath id="curvedDiamond" clipPathUnits="userSpaceOnUse">
-        <path d="M276.519 54C281.345 44.94 288.288 38.1 293.232 33.9C298.351 29.58 302.529 27.24 303 27C302.47 26.7 298.292 24.3 293.232 20.1C288.23 15.96 281.286 9.06 276.519 0H26.4809C21.6555 9.06 14.7116 15.9 9.7685 20.1C4.64886 24.42 0.470771 26.76 0 27C0.529617 27.3 4.70771 29.7 9.7685 33.9C14.7704 38.04 21.7143 44.94 26.4809 54H276.519Z" fill="currentColor"/>
-      </clipPath>
-    </svg>
-    
+  <div class="app-shell base-surface font-sans">
+    <LoadingScreen />
     <AppHeader />
-    <main data-scroll-section>
-      <RouterView v-slot="{ Component }">
-        <Transition
-          name="page"
-          mode="out-in"
-          @before-leave="handleBeforeLeave"
-          @after-enter="handleAfterEnter"
-        >
-          <component :is="Component" :key="$route.path" />
-        </Transition>
-      </RouterView>
-    </main>
-    <AppFooter data-scroll-section />
+    <div
+      ref="containerRef"
+      class="app-scroll-container base-surface font-sans"
+      id="main"
+      data-scroll-container
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" width="0" height="0" viewBox="0 0 351 27"  fill="none">
+        <clipPath id="curvedDiamond" clipPathUnits="userSpaceOnUse">
+          <path d="M276.519 54C281.345 44.94 288.288 38.1 293.232 33.9C298.351 29.58 302.529 27.24 303 27C302.47 26.7 298.292 24.3 293.232 20.1C288.23 15.96 281.286 9.06 276.519 0H26.4809C21.6555 9.06 14.7116 15.9 9.7685 20.1C4.64886 24.42 0.470771 26.76 0 27C0.529617 27.3 4.70771 29.7 9.7685 33.9C14.7704 38.04 21.7143 44.94 26.4809 54H276.519Z" fill="currentColor"/>
+        </clipPath>
+      </svg>
+      <main data-scroll-section>
+        <RouterView v-slot="{ Component }">
+          <Transition
+            name="page"
+            mode="out-in"
+            @before-leave="handleBeforeLeave"
+            @after-enter="handleAfterEnter"
+          >
+            <component :is="Component" :key="$route.path" />
+          </Transition>
+        </RouterView>
+      </main>
+      <AppFooter data-scroll-section />
+    </div>
   </div>
 </template>
 
 <style>
+.app-shell {
+  position: relative;
+  min-height: 100vh;
+}
+
+.app-scroll-container {
+  min-height: 100vh;
+  padding-top: var(--app-header-height, 96px);
+}
+
 .page-enter-active,
 .page-leave-active {
   transition: opacity 0.4s ease, transform 0.4s ease;

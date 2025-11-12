@@ -89,7 +89,7 @@
 import { computed, onMounted, onUnmounted, ref } from 'vue'
 import ModelViewer from './ModelViewer.vue'
 
-const chickenPaprikaModel = new URL('../../chicken_paprika.glb', import.meta.url).href
+const chickenPaprikaModel = '/models/chicken_paprika.glb'
 const sectionBgPattern = new URL('../assets/images/section_bg_pattern.svg', import.meta.url).href
 const bigBgIcon = new URL('../assets/images/Big BG Icon.svg', import.meta.url).href
 

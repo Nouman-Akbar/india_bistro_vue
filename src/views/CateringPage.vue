@@ -1,14 +1,16 @@
 <script setup lang="ts">
-import RichTextSection from '@/components/RichTextSection.vue'
-import BannerSection from '@/components/BannerSection.vue'
-import CateringDetailSection from '@/components/CateringDetailSection.vue'
+import { createLazyComponent } from '@/utils/lazyComponent'
+
+const RichTextSection = createLazyComponent(() => import('@/components/RichTextSection.vue'))
+const BannerSection = createLazyComponent(() => import('@/components/BannerSection.vue'))
+const CateringDetailSection = createLazyComponent(() => import('@/components/CateringDetailSection.vue'))
 
 const assets = {
   images: {
-    diningRoom: new URL('../assets/images/gellery/Rectangle 31.svg', import.meta.url).href,
-    intimateSetup: new URL('../assets/images/gellery/Rectangle 34.svg', import.meta.url).href,
+    diningRoom: new URL('../assets/images/gallery/Rectangle 31.svg', import.meta.url).href,
+    intimateSetup: new URL('../assets/images/gallery/Rectangle 34.svg', import.meta.url).href,
     platedExperience: new URL('../assets/images/ib_nihari.jpg', import.meta.url).href,
-    culinaryShowcase: new URL('../assets/images/gellery/Rectangle 33.svg', import.meta.url).href,
+    culinaryShowcase: new URL('../assets/images/gallery/Rectangle 33.svg', import.meta.url).href,
     bannerImage: new URL('../assets/images/india_bistro_dining_view_small.jpg', import.meta.url).href
   },
   svgs: {

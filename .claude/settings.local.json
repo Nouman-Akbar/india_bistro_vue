@@ -5,7 +5,14 @@
       "Bash(cat:*)",
       "Bash(npx vue-tsc:*)",
       "Bash(npm install:*)",
-      "Bash(npm run build:*)"
+      "Bash(npm run build:*)",
+      "Bash(git checkout:*)",
+      "Bash(git push:*)",
+      "mcp__ide__getDiagnostics",
+      "WebFetch(domain:localhost)",
+      "Bash(npm run type-check:*)",
+      "Bash(npm ls:*)",
+      "Bash(npm run)"
     ],
     "deny": [],
     "ask": []

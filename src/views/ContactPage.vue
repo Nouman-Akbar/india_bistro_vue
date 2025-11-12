@@ -52,7 +52,7 @@ const pageData = {
     contactInfo: [
       {
         heading: 'INDIA BISTRO, LEEDS',
-        content: '+44 (0) 1111 111 111'
+        content: 'Address: Regents Court, 33-39 Harrogate Rd, Chapel Allerton, Leeds LS7 3PD\nPhone: 0113 340 0236\nEmail: info@indiabistro.co.uk'
       },
 
       {
@@ -80,7 +80,8 @@ const pageData = {
   }
 }
 
-const contactForm = ref({
+type ContactForm = { name: string; email: string; message: string } & Record<string, string>
+const contactForm = ref<ContactForm>({
   name: '',
   email: '',
   message: ''
@@ -93,16 +94,26 @@ const handleSubmit = () => {
 </script>
 
 <template>
-  <div class="contact-page">
-    <!-- Background Pattern -->
-    <div class="bg-pattern">
-      <img :src="pageData.contactSection.backgroundImageSrc" alt="" class="pattern-overlay" />
-    </div>
+  <div
+    class="contact-page"
+    :style="{
+      'background-image': `url(${pageData.contactSection.backgroundImageSrc})`,
+      'background-repeat': 'repeat',
+      'background-size': 'auto',
+      'background-position': 'center'
+    }"
+  >
 
     <!-- Big BG Icon Overlay -->
-    <div class="big-bg-icon-overlay">
-      <img :src="assets.images.bigBgIcon" alt="" class="big-bg-icon" />
-    </div>
+    <div
+      class="big-bg-icon-overlay"
+      :style="{
+        'background-image': `url(${assets.images.bigBgIcon})`,
+        'background-repeat': 'no-repeat',
+        'background-size': '800px',
+        'background-position': 'center'
+      }"
+    ></div>
 
     <!-- Contact Form Container -->
     <div class="contact-main-container">
@@ -157,7 +168,7 @@ const handleSubmit = () => {
               class="contact-info-item"
             >
               <h3 class="info-title">{{ item.heading }}</h3>
-              <p class="info-text">{{ item.content }}</p>
+              <p class="info-text" style="white-space: pre-line;">{{ item.content }}</p>
             </div>
           </div>
 
@@ -205,45 +216,22 @@ const handleSubmit = () => {
 }
 
 /* Background Pattern - visible */
-.bg-pattern {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 1;
-  opacity: 1;
-}
-
-.pattern-overlay {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
+/* Removed bg-pattern block in favor of inline background on .contact-page */
 
 /* Big BG Icon Overlay */
 .big-bg-icon-overlay {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 100%;
-  max-width: 800px;
-  height: auto;
-  z-index: 2;
-  pointer-events: none;
-}
-
-.big-bg-icon {
+  inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: contain;
+  z-index: 2;
+  pointer-events: none;
 }
 
 /* Main Container */
 .contact-main-container {
   position: relative;
-  z-index: 2;
+  z-index: 3;
   max-width: 1000px;
   margin: 0 auto;
   padding: 0 clamp(2rem, 4vw, 3rem);

@@ -1,5 +1,5 @@
 <template>
-  <section ref="sliderWrapper" class="relative overflow-hidden bg-background" style="z-index: 1;" :style="{
+  <section ref="sliderWrapper" class="relative overflow-hidden base-surface" style="z-index: 1;" :style="{
     'background-image': `url(${section_bg_pattern})`,
     'background-repeat': 'repeat',
     'background-size': 'auto',
@@ -224,9 +224,9 @@
 
 <script setup lang="ts">
 import { computed, ref, onMounted, onUnmounted, reactive, watch } from 'vue'
-import { gsap } from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { useGsap } from '@/utils/gsap'
 
+const { gsap, ScrollTrigger } = useGsap()
 const section_bg_pattern = new URL('../assets/images/section_bg_pattern.svg', import.meta.url).href
 const bigBgIcon = new URL('../assets/images/Big BG Icon.svg', import.meta.url).href
 
@@ -391,8 +391,6 @@ let horizontalTween: gsap.core.Tween | null = null
 
 onMounted(() => {
   if (!sliderWrapper.value || !cardsContainer.value || !cardsWrapper.value) return
-
-  gsap.registerPlugin(ScrollTrigger)
 
   if (headingRef.value) {
     const wordSpans = Array.from(

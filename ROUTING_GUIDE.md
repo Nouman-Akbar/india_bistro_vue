@@ -6,10 +6,15 @@ This project includes Vue Router with animated page transitions and Locomotive S
 ## Routes Implemented
 
 - **Home** (`/`) - Main landing page with hero, menu highlights, story, sliders, and gallery
+- **About** (`/about`) - Brand story with rich media sections
 - **Menu** (`/menu`) - Full menu with categorized dishes (Starters, Main Course, Vegetarian Specials)
 - **Reservations** (`/reservations`) - Table reservation form with contact information
 - **Recipes** (`/recipes`) - Traditional Indian recipes with ingredients and cooking details
 - **Contact** (`/contact`) - Contact form and business information
+- **Gallery** (`/gallery`) - Visual showcase + parallax gallery section
+- **Blog** (`/blog`) - Editorial entries
+- **Catering** (`/catering`) - Private dining and events overview
+- **Not Found** (`/:pathMatch(.*)*`) - Friendly 404 fallback to keep routing stable
 
 ## Key Features
 
@@ -19,9 +24,9 @@ This project includes Vue Router with animated page transitions and Locomotive S
 - **No page reload** - all navigation happens client-side
 
 ### 2. Navigation
-- **Header navigation** - Click on Menu, Reservations, Recipes, or Contact
-- **Footer navigation** - Additional links in the footer
-- **Active link highlighting** - Current page is visually indicated
+- **Header navigation** - Links are driven by `src/data/navigation.ts` so every primary route (About, Gallery, Menu, Recipes, Private Dining, Catering, Blog, Contact) is surfaced consistently
+- **Footer navigation** - Reuses the same data module and now uses `<RouterLink>` for internal paths, so navigating from the footer no longer reloads the page or breaks Locomotive Scroll
+- **Active link highlighting** - Exact matches add `nav-link-active` for clarity
 - **Brand logo** - Clicking "India Bistro" returns to home page
 
 ### 3. Scroll Integration
@@ -33,19 +38,16 @@ This project includes Vue Router with animated page transitions and Locomotive S
 
 ```
 src/
-├── views/                    # Page components
-│   ├── HomePage.vue         # Home page (all original sections)
-│   ├── MenuPage.vue         # Menu listing page
-│   ├── ReservationsPage.vue # Reservation form page
-│   ├── RecipesPage.vue      # Recipes showcase page
-│   └── ContactPage.vue      # Contact form page
+├── views/                    # Page components (Home, About, Menu, Reservations, Recipes, Contact, Blog, Gallery, Catering, NotFound)
 ├── router/
-│   └── index.ts             # Router configuration
+│   └── index.ts             # Router configuration + scrollBehavior
 ├── components/
-│   ├── AppHeader.vue        # Updated with RouterLink navigation
-│   └── AppFooterSimple.vue  # New footer with router links
-├── App.vue                  # Updated with RouterView and transitions
-└── main.ts                  # Updated to use router
+│   ├── AppHeader.vue        # Sticky header navigation
+│   └── AppFooter.vue        # Footer navigation (shares link data)
+├── data/
+│   └── navigation.ts        # Single source of truth for header/footer links
+├── App.vue                  # RouterView, transitions, Locomotive Scroll wrapper
+└── main.ts                  # App bootstrap + router/motion plugin
 ```
 
 ## Technical Details
@@ -53,7 +55,7 @@ src/
 ### Router Configuration (`src/router/index.ts`)
 - Uses `createWebHistory` for clean URLs
 - Scroll behavior set to top on navigation
-- All routes use eager loading (not lazy loaded)
+- Routes use dynamic `() => import('../views/Example.vue')` factories so each page becomes its own chunk and only loads when visited.
 
 ### Page Transitions (`App.vue`)
 ```vue
@@ -68,8 +70,34 @@ CSS classes:
 - `.page-leave-to` - Exit state (opacity 0, translateY -20px)
 
 ### Navigation Components
-- **AppHeader.vue** - Uses `<RouterLink>` with `active-class="nav-link-active"`
-- **AppFooterSimple.vue** - Simplified footer with router navigation
+- **AppHeader.vue** - Uses `<RouterLink>` with `exact-active-class="nav-link-active"` and consumes the shared navigation data
+- **AppFooter.vue** - Mirrors the same data source, so footer links no longer perform hard reloads and stay in sync with the header
+
+### Lazy Components (`src/utils/lazyComponent.ts`)
+- Shared `createLazyComponent()` wraps `defineAsyncComponent` with retry + delay defaults and `suspensible: false`, so pages can lazy load heavy sections without adding `<Suspense>`.
+- Example usage:
+  ```ts
+  import { createLazyComponent } from '@/utils/lazyComponent'
+
+  const SliderSection = createLazyComponent(() => import('@/components/SliderSection.vue'))
+  ```
+- Home, About, Menu, Gallery, and Catering views now lazy load their hero/slider/bespoke sections, reducing the initial bundle while keeping Locomotive + GSAP working.
+
+### Smooth Scroll Manager (`App.vue`)
+- Locomotive Scroll now reads viewport/motion preferences before instantiating, so desktop, touch, and reduced-motion users get tuned `multiplier`/`lerp` values or native scrolling when requested.
+- A shared `ResizeObserver`, throttled `scroll` listener, and `window` resize handler keep Locomotive + ScrollTrigger in sync without jank or manual reloads.
+- Route changes rely on the existing `<Transition>` lifecycle instead of forced `window.location.reload`, which keeps navigation instant while still rebuilding the scroll instance when needed.
+- Media query listeners trigger a scroll rebuild whenever users toggle reduced-motion or pointer preferences, ensuring settings take effect immediately.
+
+### GSAP Utility (`src/utils/gsap.ts`)
+- `useGsap()` guarantees `ScrollTrigger` is registered once and returns the shared `{ gsap, ScrollTrigger }` pair for any component that needs animations.
+- Example usage:
+  ```ts
+  import { useGsap } from '@/utils/gsap'
+
+  const { gsap, ScrollTrigger } = useGsap()
+  ```
+- Components such as `SliderSection`, `SliderSectionNoButton`, and `TextGenerateEffect` now consume this helper, so every animation automatically targets the `#main` scroller proxy configured in `App.vue`.
 
 ## Usage
 
@@ -153,3 +181,10 @@ Consider adding:
 - 404 Not Found page
 - Breadcrumb navigation
 - Back to top button
+
+## Codebase Maintenance
+
+- Pruned unused presentation components (`GallerySection`, `HeroSection`, `MenuHighlight`, `SplashScreen`, `HelloWorld`, and `DragonIcon`) so Vite only bundles live sections.
+- Removed redundant markdown files (`README.md`, `CLAUDE.md`, `PROJECT_DESCRIPTION.md`, `Newcomponent.md`) and centralized documentation here per project guidelines.
+- Dropped unused packages (`@faker-js/faker`, `defu`, `i`) and ran `npm install` to sync `package-lock.json`; always rerun the install step after editing dependencies.
+- Shared navigation copy lives in `src/data/navigation.ts`, keeping header/footer menus aligned and ensuring `<RouterLink>` is used everywhere for internal pages.

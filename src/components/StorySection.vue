@@ -94,6 +94,7 @@ const sectionBgSrc = new URL('../assets/images/section_bg_pattern.svg', import.m
   color: white;
   text-align: center;
   padding: 4rem 0;
+  margin: 0;
   overflow: hidden;
   /* Method 1: Multiple backgrounds (pattern + color) */
   background: var(--bg-color, #8D3A30);
@@ -171,9 +172,9 @@ const sectionBgSrc = new URL('../assets/images/section_bg_pattern.svg', import.m
 }
 
 .story-text {
-  font-size: 1.5rem;
-  line-height: 1.7;
-  letter-spacing: 0.02em;
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-normal);
+  letter-spacing: var(--letter-spacing-normal);
   color: var(--text-color, #FCE6D5);
   max-width: 600px;
   margin: 0 auto;
@@ -206,8 +207,6 @@ const sectionBgSrc = new URL('../assets/images/section_bg_pattern.svg', import.m
   }
 
   .story-text {
-    font-size: 1rem;
-    line-height: 1.6;
   }
 
   .chunk-row {

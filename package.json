@@ -10,7 +10,6 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@faker-js/faker": "^8.4.1",
     "@types/three": "^0.180.0",
     "@vueuse/core": "^10.11.1",
     "@vueuse/motion": "^2.2.3",

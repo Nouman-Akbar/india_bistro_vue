@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { ref, computed, watch, nextTick } from 'vue'
 
 interface DishItem {
   name: string
@@ -21,13 +21,17 @@ interface Props {
   cardDecorationSrc?: string
   decorationImageSrc?: string
   decorationColor?: string
+  showViewFullMenuButton?: boolean
+  showBottomDecoration?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
   sectionBgSrc: new URL('../assets/images/section_bg_pattern.svg', import.meta.url).href,
   bgColor: '#f4efe3',
   decorationImageSrc: new URL('../assets/images/diamond_story_section.svg', import.meta.url).href,
-  decorationColor: '#c85a3a'
+  decorationColor: '#c85a3a',
+  showViewFullMenuButton: true,
+  showBottomDecoration: true
 })
 
 const section_bg_pattern = new URL('../assets/images/section_bg_pattern.svg', import.meta.url).href
@@ -37,7 +41,8 @@ const bigBgIcon = new URL('../assets/images/Big BG Icon.svg', import.meta.url).h
 const tabBgActive = new URL('../assets/images/button_orange_bg_diamond.svg', import.meta.url).href
 const tabBgInactive = new URL('../assets/images/button_green_bg_diamond.svg', import.meta.url).href
 const dishDiamond = new URL('../assets/images/dish_diamond.svg', import.meta.url).href
-const categoryDiamond = new URL('../assets/images/diamond_story_section.svg', import.meta.url).href
+const buttonBackground = new URL('../assets/images/button_green_bg_diamond.svg', import.meta.url).href
+// const categoryDiamond = new URL('../assets/images/diamond_story_section.svg', import.meta.url).href
 
 // Default menu data if no categories provided
 const defaultCategories: MenuCategory[] = [
@@ -263,45 +268,28 @@ const defaultCategories: MenuCategory[] = [
 const categories = computed(() => props.categories.length > 0 ? props.categories : defaultCategories)
 
 const activeTab = ref(categories.value[0]?.id || '')
-const isTabsSticky = ref(false)
+
+type GlobalWindow = Window & {
+  locoScroll?: { update?: () => void; updateElements?: () => void } | null
+}
+
+const syncCustomScroll = () => {
+  if (typeof window === 'undefined') return
+  const globalWindow = window as GlobalWindow
+  const loco = globalWindow.locoScroll
+  if (loco && typeof loco.update === 'function') {
+    requestAnimationFrame(() => {
+      loco.update?.()
+      loco.updateElements?.()
+    })
+  } else {
+    window.dispatchEvent(new Event('resize'))
+  }
+}
 
 const setActiveTab = (categoryId: string) => {
   activeTab.value = categoryId
 }
-
-// Sticky tabs functionality
-let scrollTimeout: NodeJS.Timeout
-
-const handleScroll = () => {
-  // Debounce scroll events for better performance
-  clearTimeout(scrollTimeout)
-  scrollTimeout = setTimeout(() => {
-    const tabsContainer = document.querySelector('.tabs-wrapper')
-    const header = document.querySelector('.header-wrapper')
-
-    if (tabsContainer && header) {
-      const headerHeight = header.offsetHeight
-      const tabsRect = tabsContainer.getBoundingClientRect()
-
-      // When the top of tabs container is at or below the header bottom, make sticky
-      if (tabsRect.top <= headerHeight) {
-        isTabsSticky.value = true
-      } else {
-        isTabsSticky.value = false
-      }
-    }
-  }, 16) // ~60fps
-}
-
-onMounted(() => {
-  window.addEventListener('scroll', handleScroll)
-  // Initial check
-  handleScroll()
-})
-
-onUnmounted(() => {
-  window.removeEventListener('scroll', handleScroll)
-})
 
 const activeCategoryDishes = computed(() => {
   const category = categories.value.find(cat => cat.id === activeTab.value)
@@ -337,17 +325,39 @@ const layoutRows = computed<LayoutRow[]>(() => {
   }
   return rows
 })
+
+watch(
+  () => categories.value,
+  (newCategories) => {
+    if (!newCategories.length) {
+      activeTab.value = ''
+      return
+    }
+
+    if (!newCategories.some(category => category.id === activeTab.value)) {
+      activeTab.value = newCategories[0].id
+    }
+  },
+  { immediate: true }
+)
+
+watch(
+  () => activeTab.value,
+  async () => {
+    await nextTick()
+    syncCustomScroll()
+  }
+)
 </script>
 
 <template>
   <section
-    class="relative w-full bg-repeat bg-[length:600px] overflow-visible pb-16 md:pb-20"
+    class="relative w-full bg-repeat overflow-hidden pb-16 md:pb-20"
     :style="{
       'background-image': `url(${section_bg_pattern})`,
       'background-repeat': 'repeat',
       'background-size': 'auto',
-      'background-position': 'center',
-      'background-color': props.bgColor
+      'background-position': 'center'
     }"
   >
     <!-- Big BG Icon Overlay -->
@@ -355,10 +365,10 @@ const layoutRows = computed<LayoutRow[]>(() => {
       <img :src="bigBgIcon" alt="" class="big-bg-icon" />
     </div>
     <div class="relative mx-auto w-full max-w-6xl px-6 md:px-10">
-      <!-- Tabs Wrapper for sticky functionality -->
-      <div class="tabs-wrapper" :class="{ 'sticky': isTabsSticky }">
+      <!-- Tabs Wrapper -->
+      <div class="tabs-wrapper">
         <!-- Tabs Navigation -->
-        <div class="tabs-container flex items-center justify-start gap-4 overflow-x-auto whitespace-nowrap no-scrollbar" :class="{ 'mb-12': !isTabsSticky, 'mb-8': isTabsSticky }">
+        <div class="tabs-container flex items-center justify-center gap-4 overflow-x-auto whitespace-nowrap no-scrollbar mb-12">
         <button
           v-for="category in categories"
           :key="category.id"
@@ -423,11 +433,28 @@ const layoutRows = computed<LayoutRow[]>(() => {
         </template>
       </div>
 
+      <!-- View Full Menu Button -->
+      <a
+        v-if="props.showViewFullMenuButton"
+        class="cta-button"
+        href="https://drive.google.com/file/d/1h2bltIsB_OulQEZASHMH99Vs54VN5WD5/view?usp=sharing"
+        target="_blank"
+        rel="noopener"
+      >
+        <span class="cta-button-bg">
+          <img :src="buttonBackground" alt="Button background" />
+        </span>
+        <span class="cta-button-text">View Full Menu</span>
+      </a>
+
       <!-- Bottom Section Decoration -->
-      <div class="mt-12 flex items-center justify-center">
-        <img 
-          :src="props.decorationImageSrc" 
-          alt="Decoration" 
+      <div
+        v-if="props.showBottomDecoration"
+        class="mt-12 flex items-center justify-center"
+      >
+        <img
+          :src="props.decorationImageSrc"
+          alt="Decoration"
           class="h-6 w-auto opacity-90"
           :style="{ filter: `brightness(0) saturate(100%) invert(38%) sepia(47%) saturate(1234%) hue-rotate(337deg) brightness(92%) contrast(87%)` }"
         />
@@ -623,6 +650,7 @@ const layoutRows = computed<LayoutRow[]>(() => {
   height: auto;
   z-index: 2;
   pointer-events: none;
+  opacity: 1;
 }
 
 .big-bg-icon {
@@ -646,56 +674,46 @@ const layoutRows = computed<LayoutRow[]>(() => {
   scrollbar-width: none; /* Firefox */
 }
 
-/* Sticky tabs functionality */
+/* Tabs wrapper - non-sticky */
 .tabs-wrapper {
   position: relative;
   z-index: 50;
 }
 
-.tabs-wrapper.sticky {
-  position: sticky;
-  top: 0;
-  background: linear-gradient(to bottom,
-    rgba(244, 239, 227, 1) 0%,
-    rgba(244, 239, 227, 0.95) 80%,
-    rgba(244, 239, 227, 0.9) 100%
-  );
-  padding: 1rem 0;
-  margin: 0 -6px;
-  padding-left: 6px;
-  padding-right: 6px;
-  backdrop-filter: blur(8px);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-  animation: slideDown 0.3s ease-out;
+.cta-button {
+  position: relative;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  padding: 0;
+  align-self: center;
+  margin: 8rem auto 0;
+  width: 100%;
+  max-width: 320px;
+  display: block;
 }
 
-@keyframes slideDown {
-  from {
-    transform: translateY(-100%);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
+.cta-button-bg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
 }
 
-/* Enhanced sticky container for mobile */
-@media (max-width: 768px) {
-  .tabs-wrapper.sticky {
-    padding: 0.75rem 0;
-    margin: 0 -1.5rem;
-    padding-left: 1.5rem;
-    padding-right: 1.5rem;
-    background: linear-gradient(to bottom,
-      rgba(244, 239, 227, 1) 0%,
-      rgba(244, 239, 227, 0.98) 90%,
-      rgba(244, 239, 227, 0.95) 100%
-    );
-  }
+.cta-button-bg img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
 
-  .tabs-wrapper.sticky .tabs-container {
-    padding: 0.25rem 0;
-  }
+.cta-button-text {
+  position: relative;
+  display: block;
+  width: 100%;
+  padding: 0.95rem 2rem;
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  letter-spacing: 0.35em;
+  color: #ffffff;
+  text-align: center;
 }
 </style>

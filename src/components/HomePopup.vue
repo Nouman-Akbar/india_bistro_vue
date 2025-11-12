@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { onMounted, onUnmounted, ref } from 'vue'
 
 interface Props {
   heading?: string
@@ -22,17 +22,73 @@ const props = withDefaults(defineProps<Props>(), {
 })
 
 const isVisible = ref(false)
+const DISPLAY_INTERVAL_MS = 24 * 60 * 60 * 1000
+const STORAGE_KEY = 'ib-home-popup-last-shown'
+const POPUP_DELAY_MS = 1000
+let showTimer: number | null = null
+
+const canUseLocalStorage = () => {
+  try {
+    if (typeof window === 'undefined' || !window.localStorage) {
+      return false
+    }
+
+    const testKey = '__ib_popup_test__'
+    window.localStorage.setItem(testKey, '1')
+    window.localStorage.removeItem(testKey)
+    return true
+  } catch {
+    return false
+  }
+}
+
+const hasSeenPopupRecently = () => {
+  if (!canUseLocalStorage()) {
+    return false
+  }
+
+  const lastShownRaw = window.localStorage.getItem(STORAGE_KEY)
+  if (!lastShownRaw) {
+    return false
+  }
+
+  const lastShown = Number(lastShownRaw)
+  if (Number.isNaN(lastShown)) {
+    return false
+  }
+
+  return Date.now() - lastShown < DISPLAY_INTERVAL_MS
+}
+
+const markPopupShown = () => {
+  if (!canUseLocalStorage()) {
+    return
+  }
+
+  window.localStorage.setItem(STORAGE_KEY, Date.now().toString())
+}
 
 onMounted(() => {
-  // Show popup after a short delay
-  setTimeout(() => {
+  if (hasSeenPopupRecently()) {
+    return
+  }
+
+  showTimer = window.setTimeout(() => {
     isVisible.value = true
-  }, 1000)
+    markPopupShown()
+  }, POPUP_DELAY_MS)
 })
 
 const closePopup = () => {
   isVisible.value = false
 }
+
+onUnmounted(() => {
+  if (showTimer) {
+    clearTimeout(showTimer)
+    showTimer = null
+  }
+})
 </script>
 
 <template>
@@ -40,11 +96,11 @@ const closePopup = () => {
     <Transition name="fade">
       <div
         v-if="isVisible"
-        class="popup-overlay fixed inset-0 z-[100] flex items-center justify-center bg-black/60 px-4"
+        class="popup-overlay fixed inset-0 z-[100] flex items-center justify-center bg-black/60 px-4 sm:px-6 lg:px-10"
         @click="closePopup"
       >
         <div
-          class="popup-container relative flex overflow-hidden shadow-2xl h-full"
+          class="popup-container relative flex w-full flex-col overflow-hidden rounded-3xl shadow-2xl md:flex-row"
           @click.stop
           :style="{ backgroundColor: props.backgroundColor }"
         >
@@ -61,7 +117,7 @@ const closePopup = () => {
           
           <!-- Left Side - Pattern -->
           <div
-            class="hidden w-1/2 bg-repeat-y h-full md:block"
+            class="hidden h-full min-h-[400px] w-full bg-repeat-y md:block md:w-1/2"
             :style="{
               backgroundImage: `url(${props.patternSrc})`,
               opacity: 1.0,
@@ -71,11 +127,14 @@ const closePopup = () => {
           ></div>
 
           <!-- Right Side - Content -->
-          <div class="flex w-full flex-col items-center justify-center gap-8 px-8 py-12 md:w-1/2 md:px-12 md:py-16">
+          <div class="flex w-full flex-col items-center justify-center gap-8 px-6 py-10 text-center sm:px-10 sm:py-12 md:w-1/2 md:px-12 md:py-14 lg:px-16 lg:py-16">
             <!-- Heading -->
             <h2
-              class="text-center text-xl font-normal uppercase leading-tight tracking-[0.15em] md:text-2xl lg:text-3xl"
-              :style="{ color: props.textColor }"
+              class="text-center font-normal uppercase leading-tight tracking-[0.15em] md:text-2xl lg:text-3xl"
+              :style="{
+                color: props.textColor,
+                fontSize: 'clamp(0.875rem, 2.5vw, 1.125rem) !important'
+              }"
             >
               {{ props.heading }}
             </h2>
@@ -105,8 +164,8 @@ const closePopup = () => {
 
 <style scoped>
 .popup-container {
-  max-height: 70vh;
-  max-width: 50vw;
+  width: min(90vw, 960px);
+  max-height: min(80vh, 640px);
   animation: slideUp 0.4s ease-out;
 }
 
@@ -133,7 +192,8 @@ const closePopup = () => {
 
 @media (max-width: 768px) {
   .popup-container {
-    width: 95%;
+    width: 100%;
+    max-height: none;
   }
 }
 </style>

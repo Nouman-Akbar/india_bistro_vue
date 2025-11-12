@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import GalleryParallax from '../components/GalleryParallax.vue';
+import { createLazyComponent } from '@/utils/lazyComponent'
+const GalleryParallax = createLazyComponent(() => import('../components/GalleryParallax.vue'))
 
 // Asset URLs
 const assets = {
@@ -7,13 +8,13 @@ const assets = {
     sectionBgPattern: new URL('../assets/images/section_bg_pattern.svg', import.meta.url).href,
     bigBgIcon: new URL('../assets/images/Big BG Icon.svg', import.meta.url).href,
     group24: new URL('../assets/images/Group 24.svg', import.meta.url).href,
-    // Gallery images from the gellery folder
-    gallery1: new URL('../assets/images/gellery/Rectangle 31.svg', import.meta.url).href,
-    gallery2: new URL('../assets/images/gellery/Rectangle 32.svg', import.meta.url).href,
-    gallery3: new URL('../assets/images/gellery/Rectangle 33.svg', import.meta.url).href,
-    gallery4: new URL('../assets/images/gellery/Rectangle 34.svg', import.meta.url).href,
-    gallery5: new URL('../assets/images/gellery/Rectangle 36.svg', import.meta.url).href,
-    gallery6: new URL('../assets/images/gellery/Rectangle 37.svg', import.meta.url).href,
+    // Gallery images from the gallery folder
+    gallery1: new URL('../assets/images/gallery/Rectangle 31.svg', import.meta.url).href,
+    gallery2: new URL('../assets/images/gallery/Rectangle 32.svg', import.meta.url).href,
+    gallery3: new URL('../assets/images/gallery/Rectangle 33.svg', import.meta.url).href,
+    gallery4: new URL('../assets/images/gallery/Rectangle 34.svg', import.meta.url).href,
+    gallery5: new URL('../assets/images/gallery/Rectangle 36.svg', import.meta.url).href,
+    gallery6: new URL('../assets/images/gallery/Rectangle 37.svg', import.meta.url).href,
   },
   svgs: {
     greenDiamondButton: new URL('../assets/images/button_green_bg_diamond.svg', import.meta.url).href,
@@ -78,12 +79,15 @@ const pageData = {
 </script>
 
 <template>
-  <div class="gallery-page">
-    <!-- Background Pattern -->
-    <div class="bg-pattern">
-      <img :src="pageData.heroSection.backgroundImageSrc" alt="" class="pattern-overlay" />
-    </div>
-
+  <div
+    class="gallery-page"
+    :style="{
+      'background-image': `url(${pageData.heroSection.backgroundImageSrc})`,
+      'background-repeat': 'repeat',
+      'background-size': 'auto',
+      'background-position': 'center'
+    }"
+  >
     <!-- Big BG Icon Overlay -->
     <div class="big-bg-icon-overlay">
       <img :src="pageData.heroSection.bigBgIconSrc" alt="" class="big-bg-icon" />
@@ -125,11 +129,12 @@ const pageData = {
         </div>
       </div>
     </div>
+
+    <GalleryParallax
+      class="gallery-parallax-section"
+      :items="pageData.contentSection.galleryImages"
+    />
   </div>
-  <GalleryParallax
-    class="gallery-parallax-section"
-    :items="pageData.contentSection.galleryImages"
-  />
 </template>
 
 <style scoped>
@@ -145,47 +150,29 @@ const pageData = {
   min-height: 100vh;
 }
 
-/* Background Pattern - visible */
-.bg-pattern {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 1;
-}
-
-.pattern-overlay {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center;
-  background-repeat: repeat;
-}
-
 /* Big BG Icon Overlay */
 .big-bg-icon-overlay {
   position: absolute;
-  top: 0;
-  left: 0;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   width: 100%;
-  height: 100%;
+  max-width: 800px;
+  height: auto;
   z-index: 2;
   pointer-events: none;
-  background-image: url('../assets/images/Big BG Icon.svg');
-  background-repeat: repeat;
-  background-size: auto;
-  background-position: center;
 }
 
 .big-bg-icon {
-  display: none;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 
 /* Hero Container */
 .hero-main-container {
   position: relative;
-  z-index: 2;
+  z-index: 3;
   width: 100%;
   padding: clamp(4rem, 8vw, 6rem) 0;
   display: flex;
@@ -256,7 +243,7 @@ const pageData = {
 /* Gallery Container */
 .gallery-container {
   position: relative;
-  z-index: 2;
+  z-index: 3;
   width: 100%;
   max-width: 1000px;
   padding: 0 clamp(1rem, 2vw, 1.5rem) clamp(2rem, 4vw, 3rem);
